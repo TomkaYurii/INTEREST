@@ -8,7 +8,7 @@ using System.Text;
 
 namespace INTEREST.DAL.Repositories
 {
-    public class BaseRepository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly AppDBContext Database;
         protected readonly DbSet<T> entities;

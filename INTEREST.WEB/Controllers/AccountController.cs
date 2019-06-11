@@ -78,7 +78,7 @@ namespace INTEREST.WEB.Controllers
                 };
                 OperationDetails operationDetails = await userService.Create(userDto);
                 if (operationDetails.Succedeed)
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("UserProfile", "Account");
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
@@ -101,12 +101,6 @@ namespace INTEREST.WEB.Controllers
         {
             await AuthenticationManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
-        }
-
-        //PROFILE
-        public IActionResult Profile()
-        {
-            return View();
         }
 
     }

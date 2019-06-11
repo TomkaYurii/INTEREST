@@ -14,10 +14,10 @@ namespace INTEREST.DAL.Repositories
         public AppDBContext Database { get; private set; }
         public UserManager<User> UserManager { get; private set; }
         public RoleManager<IdentityRole> RoleManager { get; private set; }
-        public IUserProfileManager UserProfileManager { get; private set; }
+        public IUserProfileRepository UserProfileRepository { get; private set; }
         public SignInManager<User> SignInManager { get; private set; }
 
-        public IdentityUnitOfWork(IUserProfileManager _profileManager,
+        public IdentityUnitOfWork(IUserProfileRepository _profileManager,
                                   AppDBContext db,
                                   SignInManager<User> signInManager,
                                   UserManager<User> userManager,
@@ -27,7 +27,7 @@ namespace INTEREST.DAL.Repositories
             UserManager = userManager;
             RoleManager = roleManager;
             SignInManager = signInManager;
-            UserProfileManager = _profileManager;
+            UserProfileRepository = _profileManager;
         }
 
         public void Dispose()
@@ -45,7 +45,7 @@ namespace INTEREST.DAL.Repositories
                 {
                     UserManager.Dispose();
                     RoleManager.Dispose();
-                    UserProfileManager.Dispose();
+                    UserProfileRepository.Dispose();
                 }
                 this.disposed = true;
             }

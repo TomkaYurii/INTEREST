@@ -5,8 +5,7 @@ using System.Text;
 
 namespace INTEREST.DAL.Interfaces
 {
-    public interface IUserProfileManager : IDisposable
+    interface ICategoryRepository : IBaseRepository<Category>
     {
-        void Create(UserProfile profile);
     }
 }

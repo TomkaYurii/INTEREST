@@ -7,11 +7,11 @@ using System.Text;
 
 namespace INTEREST.DAL.Repositories
 {
-    public class UserProfileManager : IUserProfileManager
+    public class UserProfileRepository : IUserProfileRepository
     {
         private readonly AppDBContext Database;
 
-        public UserProfileManager(AppDBContext db)
+        public UserProfileRepository(AppDBContext db)
         {
             Database = db;
         }

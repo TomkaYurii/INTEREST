@@ -35,7 +35,7 @@ namespace INTEREST.BLL.Services
                 await Database.UserManager.AddToRoleAsync(user, userDto.Role);
                 // create UserProfile
                 UserProfile clientProfile = new UserProfile { Id = user.Id, Birthday = userDto.Birthday, Gender = userDto.Gender, Location = userDto.Location };
-                Database.UserProfileManager.Create(clientProfile);
+                Database.UserProfileRepository.Create(clientProfile);
                 await Database.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
