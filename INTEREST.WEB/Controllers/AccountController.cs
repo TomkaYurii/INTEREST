@@ -18,15 +18,14 @@ namespace INTEREST.WEB.Controllers
         private readonly IUserService userService;
         private readonly SignInManager<User> AuthenticationManager;
 
-        public AccountController(
-            SignInManager<User> authenticationManager,
-            IUserService _userService
-            )
+        public AccountController ( SignInManager<User> authenticationManager, IUserService _userService )
         {
             AuthenticationManager = authenticationManager;
             userService = _userService;
         }
 
+        //LOGIN
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -43,7 +42,7 @@ namespace INTEREST.WEB.Controllers
                 bool auth = await userService.Authenticate(userDto);
                 if (!auth)
                 {
-                    ModelState.AddModelError("", "Неверный логин или пароль.");
+                    ModelState.AddModelError("", "Wrong Login or Password!");
                 }
                 else
                 {
@@ -53,6 +52,7 @@ namespace INTEREST.WEB.Controllers
             return View(model);
         }
 
+        //REGISTER
         public ActionResult Register()
         {
             return View();
@@ -68,12 +68,13 @@ namespace INTEREST.WEB.Controllers
                 UserDTO userDto = new UserDTO
                 {
                     Email = model.Email,
+                    UserName = model.UserName,
                     Password = model.Password,
                     Role = "user",
                     Birthday = model.Birthday,
                     Gender = model.Gender,
                     Phone = model.Phone,
-                    UserName = model.Login
+                    Location = model.Location
                 };
                 OperationDetails operationDetails = await userService.Create(userDto);
                 if (operationDetails.Succedeed)
@@ -95,13 +96,14 @@ namespace INTEREST.WEB.Controllers
             }, new List<string> { "user", "admin" });
         }
 
+        //LOGOUT
         public async Task<IActionResult> Logout()
         {
             await AuthenticationManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
-
+        //PROFILE
         public IActionResult Profile()
         {
             return View();

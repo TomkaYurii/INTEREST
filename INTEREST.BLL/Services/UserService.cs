@@ -26,14 +26,15 @@ namespace INTEREST.BLL.Services
             User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
+                // create User
                 user = new User { Email = userDto.Email, UserName = userDto.UserName, PhoneNumber = userDto.Phone };
                 var result = await Database.UserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault().ToString(), "");
-                // добавляем роль
+                // create Role
                 await Database.UserManager.AddToRoleAsync(user, userDto.Role);
-                // создаем профиль клиента
-                UserProfile clientProfile = new UserProfile { Id = user.Id, Birthday = userDto.Birthday, Gender = userDto.Gender };
+                // create UserProfile
+                UserProfile clientProfile = new UserProfile { Id = user.Id, Birthday = userDto.Birthday, Gender = userDto.Gender, Location = userDto.Location };
                 Database.UserProfileManager.Create(clientProfile);
                 await Database.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
@@ -46,15 +47,15 @@ namespace INTEREST.BLL.Services
 
         public async Task<bool> Authenticate(UserDTO userDto)
         {
-            // находим пользователя    
+            // Find User    
             var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
             var username = user.UserName;
             var auth = await Database.SignInManager.PasswordSignInAsync(username, userDto.Password, false, lockoutOnFailure: false);
-            // авторизуем его 
+            // Auteentification 
             return auth.Succeeded;
         }
 
-        // начальная инициализация бд
+        // DataBase Initialization
         public async Task SetInitialData(UserDTO adminDto, List<string> roles)
         {
             foreach (string roleName in roles)

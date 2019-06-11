@@ -8,37 +8,36 @@ using System.Text;
 
 namespace INTEREST.DAL.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IRepository<T> where T : class
     {
-
         protected readonly AppDBContext Database;
         protected readonly DbSet<T> entities;
 
-        public Repository(AppDBContext context)
+        public BaseRepository(AppDBContext context)
         {
             Database = context;
             entities = context.Set<T>();
         }
 
 
-        public T Add(T entity)
+        public void Add(T entity)
         {
             if (entity == null)
             {
                 throw new NotImplementedException();
             }
             entities.Add(entity);
-            return entity;
+            //return entity;
         }
 
-        public T Delete(T entity)
+        public void Delete(T entity)
         {
             if (entity == null)
             {
                 throw new NotImplementedException();
             }
             entities.Remove(entity);
-            return entity;
+            //return entity;
         }
 
         public IEnumerable<T> GetAll()
@@ -56,12 +55,12 @@ namespace INTEREST.DAL.Repositories
             Database.SaveChanges();
         }
 
-        public T Update(T entity)
+        public void Update(T entity)
         {
             if (entity == null)
                 throw new NotImplementedException();
             entities.Update(entity);
-            return entity;
+           // return entity;
         }
     }
 }

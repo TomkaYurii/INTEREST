@@ -67,9 +67,7 @@ namespace INTEREST.WEB
                 options.User.RequireUniqueEmail = false;
             });
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUnitOfWork, IdentityUnitOfWork>();
