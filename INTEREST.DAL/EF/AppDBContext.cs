@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-using static INTERESTS.DAL.Enums.GenderEnums;
-
 namespace INTERESTS.DAL.EF
 {
     public class AppDBContext : IdentityDbContext<User>
@@ -55,12 +53,12 @@ namespace INTERESTS.DAL.EF
                 .WithMany(c => c.CategoryEvents)
                 .HasForeignKey(ce => ce.EventId);
 
-            modelBuilder
-                .Entity<UserProfile>()
-                .Property(p => p.Gender)
-                .HasConversion(
-                    v => v.ToString(),
-                    v => (Genders)Enum.Parse(typeof(Genders), v));
+            //modelBuilder
+            //    .Entity<UserProfile>()
+            //    .Property(p => p.Gender)
+            //    .HasConversion(
+            //        v => v.ToString(),
+            //        v => (Genders)Enum.Parse(typeof(Genders), v));
         }
     }
 }

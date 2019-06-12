@@ -10,7 +10,8 @@ namespace INTEREST.BLL.Interfaces
     public interface IUserService : IDisposable
     {
         Task<OperationDetails> Create(UserDTO userDto);
-        Task<bool> Authenticate(UserDTO userDto);
+        Task<bool> SignIn(UserDTO userDto);
         Task SetInitialData(UserDTO adminDto, List<string> roles);
+        Task SignOut();
     }
 }

@@ -69,8 +69,12 @@ namespace INTEREST.WEB
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            //SERVICES
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUnitOfWork, IdentityUnitOfWork>();
+            services.AddTransient<IUserProfileService, UserProfileService>();
+            //UNIT_OF_WORKS
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //REPOSITORIES
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
         }
 

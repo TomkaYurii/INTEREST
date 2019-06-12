@@ -14,14 +14,14 @@ namespace INTEREST.WEB.Controllers
 {
     public class AccountController : Controller
     {
-
         private readonly IUserService userService;
-        private readonly SignInManager<User> AuthenticationManager;
+        private readonly IUserProfileService userProfileService;
 
-        public AccountController ( SignInManager<User> authenticationManager, IUserService _userService )
+        public AccountController (IUserService _userService,
+                                  IUserProfileService _userProfileService)
         {
-            AuthenticationManager = authenticationManager;
             userService = _userService;
+            userProfileService = _userProfileService;
         }
 
         //LOGIN
@@ -38,8 +38,9 @@ namespace INTEREST.WEB.Controllers
             await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
-                UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
-                bool auth = await userService.Authenticate(userDto);
+                UserDTO userDto = new UserDTO { Email = model.Email,
+                                                Password = model.Password };
+                bool auth = await userService.SignIn(userDto);
                 if (!auth)
                 {
                     ModelState.AddModelError("", "Wrong Login or Password!");
@@ -80,7 +81,8 @@ namespace INTEREST.WEB.Controllers
                 if (operationDetails.Succedeed)
                     return RedirectToAction("UserProfile", "Account");
                 else
-                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                    ModelState.AddModelError(operationDetails.Property, 
+                                             operationDetails.Message);
             }
             return View(model);
         }
@@ -96,12 +98,27 @@ namespace INTEREST.WEB.Controllers
             }, new List<string> { "user", "admin" });
         }
 
+        //USERPROFILE
+        public async Task<IActionResult> UserProfile()
+        {
+            UserProfileDTO userprofile = await userProfileService.FindUserProfileByUserName(User.Identity.Name); 
+            UserProfileViewModel profile = new UserProfileViewModel {
+                UserName = userprofile.GetUser.UserName,
+                Email = userprofile.GetUser.Email,
+                Phone = userprofile.GetUser.PhoneNumber,
+                Age = DateTime.Now.Year - userprofile.GetUser.UserProfile.Birthday.Year,
+                Location = userprofile.GetUser.UserProfile.Location,
+                Gender = userprofile.GetUser.UserProfile.Gender
+                // Avatar = userprofile.GetUser.UserProfile.Avatar?.Url
+            };
+            return View(profile);
+        }
+
         //LOGOUT
         public async Task<IActionResult> Logout()
         {
-            await AuthenticationManager.SignOutAsync();
+            await userService.SignOut();
             return RedirectToAction("Index", "Home");
         }
-
     }
 }

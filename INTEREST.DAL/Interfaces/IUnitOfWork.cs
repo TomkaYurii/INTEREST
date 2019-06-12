@@ -10,9 +10,9 @@ namespace INTEREST.DAL.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         UserManager<User> UserManager { get; }
-        IUserProfileRepository UserProfileRepository { get; }
         SignInManager<User> SignInManager { get; }
         RoleManager<IdentityRole> RoleManager { get; }
+        IUserProfileRepository UserProfileRepository { get; }
         Task SaveAsync();
     }
 }

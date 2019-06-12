@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using static INTERESTS.DAL.Enums.GenderEnums;
 
 namespace INTERESTS.DAL.Entities
 {
@@ -15,7 +14,7 @@ namespace INTERESTS.DAL.Entities
 
         public String Location { get; set; }
         public DateTime Birthday { get; set; }
-        public Genders Gender { get; set; }
+        public String Gender { get; set; }
         public String Avatar { get; set; }
 
         public IList<UserCategory> UserCategories { get; set; }

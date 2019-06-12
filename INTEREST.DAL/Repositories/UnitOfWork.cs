@@ -9,25 +9,26 @@ using System.Threading.Tasks;
 
 namespace INTEREST.DAL.Repositories
 {
-    public class IdentityUnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         public AppDBContext Database { get; private set; }
         public UserManager<User> UserManager { get; private set; }
         public RoleManager<IdentityRole> RoleManager { get; private set; }
-        public IUserProfileRepository UserProfileRepository { get; private set; }
         public SignInManager<User> SignInManager { get; private set; }
+        public IUserProfileRepository UserProfileRepository { get; private set; }
 
-        public IdentityUnitOfWork(IUserProfileRepository _profileManager,
-                                  AppDBContext db,
-                                  SignInManager<User> signInManager,
+
+        public UnitOfWork(AppDBContext db,
                                   UserManager<User> userManager,
-                                  RoleManager<IdentityRole> roleManager)
+                                  RoleManager<IdentityRole> roleManager,
+                                  SignInManager<User> signInManager,
+                                  IUserProfileRepository _userProfileRepository)
         {
             Database = db;
             UserManager = userManager;
             RoleManager = roleManager;
             SignInManager = signInManager;
-            UserProfileRepository = _profileManager;
+            UserProfileRepository = _userProfileRepository;
         }
 
         public void Dispose()

@@ -14,8 +14,7 @@ namespace INTEREST.BLL.Services
 {
     public class UserService : IUserService
     {
-        IUnitOfWork Database { get; set; }
-
+        private IUnitOfWork Database { get; set; }
         public UserService(IUnitOfWork uow)
         {
             Database = uow;
@@ -45,7 +44,7 @@ namespace INTEREST.BLL.Services
             }
         }
 
-        public async Task<bool> Authenticate(UserDTO userDto)
+        public async Task<bool> SignIn(UserDTO userDto)
         {
             // Find User    
             var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
@@ -68,6 +67,11 @@ namespace INTEREST.BLL.Services
                 }
             }
             await Create(adminDto);
+        }
+
+        public async Task SignOut()
+        {
+            await Database.SignInManager.SignOutAsync();
         }
 
         public void Dispose()
