@@ -56,7 +56,9 @@ namespace INTEREST.WEB.Controllers
         //REGISTER
         public ActionResult Register()
         {
-            return View();
+            var model = new RegisterViewModel();
+            model.Gender = "Male";
+            return View(model);
         }
 
         [HttpPost]
@@ -79,7 +81,7 @@ namespace INTEREST.WEB.Controllers
                 };
                 OperationDetails operationDetails = await userService.Create(userDto);
                 if (operationDetails.Succedeed)
-                    return RedirectToAction("UserProfile", "Account");
+                    return RedirectToAction("Login", "Account");
                 else
                     ModelState.AddModelError(operationDetails.Property, 
                                              operationDetails.Message);

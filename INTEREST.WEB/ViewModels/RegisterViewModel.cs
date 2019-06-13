@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace INTEREST.WEB.ViewModels
 {
@@ -33,6 +31,8 @@ namespace INTEREST.WEB.ViewModels
         [Display(Name = "Location")]
         public string Location { get; set; }
 
+
+
         [Required]
         [Display(Name = "Gender")]
         public string Gender { get; set; }
@@ -42,11 +42,5 @@ namespace INTEREST.WEB.ViewModels
             new SelectListItem { Value = "Male", Text = "Male" },
             new SelectListItem { Value = "Female", Text = "Female" }
         };
-
-
-
-
-
-
     }
 }
