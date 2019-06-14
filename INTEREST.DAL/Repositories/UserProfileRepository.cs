@@ -7,34 +7,34 @@ namespace INTEREST.DAL.Repositories
 {
     public class UserProfileRepository : IUserProfileRepository
     {
-        private readonly AppDBContext Database;
+        private readonly AppDBContext db;
 
-        public UserProfileRepository(AppDBContext db)
+        public UserProfileRepository(AppDBContext context)
         {
-            Database = db;
+            db = context;
         }
 
         public void Create(UserProfile userprofile)
         {
-            Database.UserProfiles.Add(userprofile);
-            Database.SaveChanges();
+            db.UserProfiles.Add(userprofile);
+            db.SaveChanges();
         }
 
         public UserProfile FindById(string id)
         {
-            return Database.UserProfiles.FirstOrDefault(x => x.Id == id);
+            return db.UserProfiles.FirstOrDefault(x => x.Id == id);
         }
 
         public User FindByUserName(string UserName)
         {
-            User user = Database.Users.FirstOrDefault(x => x.UserName == UserName);
-            user.UserProfile = Database.UserProfiles.FirstOrDefault(x => x.Id == user.Id);
+            User user = db.Users.FirstOrDefault(x => x.UserName == UserName);
+            user.UserProfile = db.UserProfiles.FirstOrDefault(x => x.Id == user.Id);
             return user;
         }
 
         public void Dispose()
         {
-            Database.Dispose();
+            db.Dispose();
         }
     }
 }

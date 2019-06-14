@@ -1,8 +1,9 @@
 ﻿using INTEREST.DAL.Entities;
+using System;
 
 namespace INTEREST.DAL.Interfaces
 {
-    interface ICategoryRepository : IBaseRepository<Category>
+    public interface ICategoryRepository : IDisposable
     {
     }
 }

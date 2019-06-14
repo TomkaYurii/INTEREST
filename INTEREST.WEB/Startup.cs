@@ -1,10 +1,10 @@
 ﻿using System;
 using INTEREST.BLL.Interfaces;
 using INTEREST.BLL.Services;
-using INTEREST.DAL.Interfaces;
-using INTEREST.DAL.Repositories;
 using INTEREST.DAL.EF;
 using INTEREST.DAL.Entities;
+using INTEREST.DAL.Interfaces;
+using INTEREST.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -65,13 +65,16 @@ namespace INTEREST.WEB
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            //SERVICES
+            //REPOSITORIES
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserProfileService, UserProfileService>();
+
+            services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IEventRepository, EventRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
             //UNIT_OF_WORKS
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            //REPOSITORIES
-            services.AddTransient<IUserProfileRepository, UserProfileRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

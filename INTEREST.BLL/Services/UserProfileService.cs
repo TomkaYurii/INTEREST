@@ -13,9 +13,9 @@ namespace INTEREST.BLL.Services
     {
         private readonly IUnitOfWork Database;
 
-        public UserProfileService(IUnitOfWork db)
+        public UserProfileService(IUnitOfWork uow)
         {
-            Database = db;
+            this.Database = uow;
         }
 
         public async Task<UserProfileDTO> FindUserProfileByUserName(string UserName)

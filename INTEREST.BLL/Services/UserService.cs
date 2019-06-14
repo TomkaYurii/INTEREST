@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace INTEREST.BLL.Services
 {
@@ -68,6 +69,13 @@ namespace INTEREST.BLL.Services
             }
             await Create(adminDto);
         }
+
+
+        public async Task<User> GetCurrentUserAsync(HttpContext context)
+        {
+            return await Database.UserManager.GetUserAsync(context.User);
+        }
+
 
         public async Task SignOut()
         {
