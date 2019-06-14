@@ -2,7 +2,7 @@
 using INTEREST.BLL.Infrastructure;
 using INTEREST.BLL.Interfaces;
 using INTEREST.DAL.Interfaces;
-using INTERESTS.DAL.Entities;
+using INTEREST.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

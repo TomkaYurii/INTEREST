@@ -2,7 +2,7 @@
 using INTEREST.BLL.Infrastructure;
 using INTEREST.BLL.Interfaces;
 using INTEREST.WEB.ViewModels;
-using INTERESTS.DAL.Entities;
+using INTEREST.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;

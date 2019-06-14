@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace INTERESTS.DAL.Entities
+namespace INTEREST.DAL.Entities
 {
     public class CategoryEvent
     {

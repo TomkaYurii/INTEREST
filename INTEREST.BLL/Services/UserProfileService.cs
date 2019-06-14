@@ -1,7 +1,7 @@
 ﻿using INTEREST.BLL.DTO;
 using INTEREST.BLL.Interfaces;
 using INTEREST.DAL.Interfaces;
-using INTERESTS.DAL.Entities;
+using INTEREST.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

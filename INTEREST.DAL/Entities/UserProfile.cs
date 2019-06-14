@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
-namespace INTERESTS.DAL.Entities
+namespace INTEREST.DAL.Entities
 {
     public class UserProfile
     {
@@ -22,5 +21,10 @@ namespace INTERESTS.DAL.Entities
         public IList<Photo> Photos { get; set; }
 
         public User User { get; set; }
+
+        public bool Online { get; set; }
+        public System.DateTime TimeLogin { get; set; }
+        public ICollection<Message> Messages { get; set; }
+
     }
 }

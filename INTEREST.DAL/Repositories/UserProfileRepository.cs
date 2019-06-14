@@ -1,10 +1,7 @@
 ﻿using INTEREST.DAL.Interfaces;
-using INTERESTS.DAL.EF;
-using INTERESTS.DAL.Entities;
-using System;
-using System.Collections.Generic;
+using INTEREST.DAL.EF;
+using INTEREST.DAL.Entities;
 using System.Linq;
-using System.Text;
 
 namespace INTEREST.DAL.Repositories
 {

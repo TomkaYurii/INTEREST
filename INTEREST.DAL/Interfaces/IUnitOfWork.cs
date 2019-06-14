@@ -1,8 +1,6 @@
-﻿using INTERESTS.DAL.Entities;
+﻿using INTEREST.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace INTEREST.DAL.Interfaces

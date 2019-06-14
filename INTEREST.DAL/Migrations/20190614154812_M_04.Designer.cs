@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace INTEREST.DAL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20190612143358_M_02")]
-    partial class M_02
+    [Migration("20190614154812_M_04")]
+    partial class M_04
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace INTEREST.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.Category", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,7 +34,7 @@ namespace INTEREST.DAL.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.CategoryEvent", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.CategoryEvent", b =>
                 {
                     b.Property<int>("CategoryId");
 
@@ -47,15 +47,17 @@ namespace INTEREST.DAL.Migrations
                     b.ToTable("CategoryEvent");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.Event", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.Event", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Date");
+                    b.Property<string>("EventName");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("EventText");
+
+                    b.Property<DateTime>("EventTime");
 
                     b.Property<string>("Location");
 
@@ -70,7 +72,40 @@ namespace INTEREST.DAL.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.Photo", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EventId");
+
+                    b.Property<int>("InternalId");
+
+                    b.Property<string>("MessageText");
+
+                    b.Property<DateTime>("MessageTime");
+
+                    b.Property<int>("StatusMessageId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("UserProfileId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("StatusMessageId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("INTEREST.DAL.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,7 +130,42 @@ namespace INTEREST.DAL.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.User", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.StatusMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("StatusMessageText");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusMessages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            StatusMessageText = "Message is created"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            StatusMessageText = "Message is edited"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            StatusMessageText = "Message is deleted"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            StatusMessageText = "Message is deleted by admin"
+                        });
+                });
+
+            modelBuilder.Entity("INTEREST.DAL.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -146,7 +216,7 @@ namespace INTEREST.DAL.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.UserCategory", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.UserCategory", b =>
                 {
                     b.Property<string>("UserId");
 
@@ -159,7 +229,7 @@ namespace INTEREST.DAL.Migrations
                     b.ToTable("UserCategory");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.UserProfile", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.UserProfile", b =>
                 {
                     b.Property<string>("Id");
 
@@ -170,6 +240,10 @@ namespace INTEREST.DAL.Migrations
                     b.Property<string>("Gender");
 
                     b.Property<string>("Location");
+
+                    b.Property<bool>("Online");
+
+                    b.Property<DateTime>("TimeLogin");
 
                     b.HasKey("Id");
 
@@ -202,15 +276,15 @@ namespace INTEREST.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d6b4f65a-66d4-497c-b652-94c069a01b9b",
-                            ConcurrencyStamp = "f44afc61-414c-43b4-99f0-fd8ba9d2b968",
+                            Id = "e0b21b6c-f91a-42df-9624-d510de1e6883",
+                            ConcurrencyStamp = "88ad55be-6081-4e5f-9441-db8bb030d43f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ec35057d-d85e-4199-a078-eb802be6ae0a",
-                            ConcurrencyStamp = "3aa860f7-33cd-40ba-b332-37c1c29f3079",
+                            Id = "962c5b98-45f2-4feb-bc57-5ea4494ac795",
+                            ConcurrencyStamp = "374b2bcd-debf-4139-ac44-e67ab2d3b737",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -302,55 +376,76 @@ namespace INTEREST.DAL.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.CategoryEvent", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.CategoryEvent", b =>
                 {
-                    b.HasOne("INTERESTS.DAL.Entities.Category", "Category")
+                    b.HasOne("INTEREST.DAL.Entities.Category", "Category")
                         .WithMany("CategoryEvents")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("INTERESTS.DAL.Entities.Event", "Event")
+                    b.HasOne("INTEREST.DAL.Entities.Event", "Event")
                         .WithMany("CategoryEvents")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.Event", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.Event", b =>
                 {
-                    b.HasOne("INTERESTS.DAL.Entities.UserProfile", "UserProfile")
+                    b.HasOne("INTEREST.DAL.Entities.UserProfile", "UserProfile")
                         .WithMany("Events")
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.Photo", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.Message", b =>
                 {
-                    b.HasOne("INTERESTS.DAL.Entities.Event", "Event")
+                    b.HasOne("INTEREST.DAL.Entities.Event", "Event")
+                        .WithMany("Messages")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("INTEREST.DAL.Entities.StatusMessage", "StatusMessage")
+                        .WithMany("Messages")
+                        .HasForeignKey("StatusMessageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("INTEREST.DAL.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.HasOne("INTEREST.DAL.Entities.UserProfile")
+                        .WithMany("Messages")
+                        .HasForeignKey("UserProfileId");
+                });
+
+            modelBuilder.Entity("INTEREST.DAL.Entities.Photo", b =>
+                {
+                    b.HasOne("INTEREST.DAL.Entities.Event", "Event")
                         .WithMany("Photos")
                         .HasForeignKey("EventId1");
 
-                    b.HasOne("INTERESTS.DAL.Entities.UserProfile", "UserProfile")
+                    b.HasOne("INTEREST.DAL.Entities.UserProfile", "UserProfile")
                         .WithMany("Photos")
                         .HasForeignKey("UserProfileId");
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.UserCategory", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.UserCategory", b =>
                 {
-                    b.HasOne("INTERESTS.DAL.Entities.Category", "Category")
+                    b.HasOne("INTEREST.DAL.Entities.Category", "Category")
                         .WithMany("UserCategories")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("INTERESTS.DAL.Entities.UserProfile", "UserProfile")
+                    b.HasOne("INTEREST.DAL.Entities.UserProfile", "UserProfile")
                         .WithMany("UserCategories")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("INTERESTS.DAL.Entities.UserProfile", b =>
+            modelBuilder.Entity("INTEREST.DAL.Entities.UserProfile", b =>
                 {
-                    b.HasOne("INTERESTS.DAL.Entities.User", "User")
+                    b.HasOne("INTEREST.DAL.Entities.User", "User")
                         .WithOne("UserProfile")
-                        .HasForeignKey("INTERESTS.DAL.Entities.UserProfile", "Id")
+                        .HasForeignKey("INTEREST.DAL.Entities.UserProfile", "Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -364,7 +459,7 @@ namespace INTEREST.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("INTERESTS.DAL.Entities.User")
+                    b.HasOne("INTEREST.DAL.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -372,7 +467,7 @@ namespace INTEREST.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("INTERESTS.DAL.Entities.User")
+                    b.HasOne("INTEREST.DAL.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -385,7 +480,7 @@ namespace INTEREST.DAL.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("INTERESTS.DAL.Entities.User")
+                    b.HasOne("INTEREST.DAL.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -393,7 +488,7 @@ namespace INTEREST.DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("INTERESTS.DAL.Entities.User")
+                    b.HasOne("INTEREST.DAL.Entities.User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

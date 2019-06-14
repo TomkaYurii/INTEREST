@@ -1,5 +1,3 @@
-using System;
-
 namespace INTEREST.WEB.Models
 {
     public class ErrorViewModel

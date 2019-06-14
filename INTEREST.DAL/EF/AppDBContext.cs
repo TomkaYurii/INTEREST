@@ -1,10 +1,11 @@
-﻿using INTERESTS.DAL.Entities;
+﻿using INTEREST.DAL.Entities;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace INTERESTS.DAL.EF
+namespace INTEREST.DAL.EF
 {
     public class AppDBContext : IdentityDbContext<User>
     {
@@ -12,6 +13,8 @@ namespace INTERESTS.DAL.EF
         public DbSet<Category> Categories { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<StatusMessage> StatusMessages { get; set; }
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
@@ -30,6 +33,12 @@ namespace INTERESTS.DAL.EF
                     NormalizedName = "User".ToUpper()
                 }
             );
+            modelBuilder.Entity<StatusMessage>().HasData(
+                new StatusMessage() { Id = 1, StatusMessageText = "Message is created" },
+                new StatusMessage() { Id = 2, StatusMessageText = "Message is edited" },
+                new StatusMessage() { Id = 3, StatusMessageText = "Message is deleted" },
+                new StatusMessage() { Id = 4, StatusMessageText = "Message is deleted by admin" }
+                );;
 
             modelBuilder.Entity<UserCategory>()
                 .HasKey(uc => new { uc.UserId, uc.CategoryId });
@@ -52,13 +61,6 @@ namespace INTERESTS.DAL.EF
                 .HasOne(ce => ce.Event)
                 .WithMany(c => c.CategoryEvents)
                 .HasForeignKey(ce => ce.EventId);
-
-            //modelBuilder
-            //    .Entity<UserProfile>()
-            //    .Property(p => p.Gender)
-            //    .HasConversion(
-            //        v => v.ToString(),
-            //        v => (Genders)Enum.Parse(typeof(Genders), v));
         }
     }
 }
