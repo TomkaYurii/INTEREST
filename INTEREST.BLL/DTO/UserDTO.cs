@@ -12,6 +12,7 @@ namespace INTEREST.BLL.DTO
         public string Password { get; set; }
         public string UserName { get; set; }
         public string Phone { get; set; }
+
         //UserProfile entity
         public string Id { get; set; }
         public DateTime Birthday { get; set; }

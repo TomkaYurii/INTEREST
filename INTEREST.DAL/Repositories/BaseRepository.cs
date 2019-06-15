@@ -9,57 +9,62 @@ namespace INTEREST.DAL.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        protected readonly AppDBContext Database;
-        protected readonly DbSet<T> entities;
+        protected readonly AppDBContext _context;
+        protected readonly DbSet<T> _entities;
 
         public BaseRepository(AppDBContext context)
         {
-            Database = context;
-            entities = context.Set<T>();
+            _context = context;
+            _entities = context.Set<T>();
         }
 
-
-        public void Add(T entity)
-        {
-            if (entity == null)
-            {
-                throw new NotImplementedException();
-            }
-            entities.Add(entity);
-            //return entity;
-        }
-
-        public void Delete(T entity)
-        {
-            if (entity == null)
-            {
-                throw new NotImplementedException();
-            }
-            entities.Remove(entity);
-            //return entity;
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-            return entities.ToList();
-        }
+        public IQueryable<T> GetAll() => _entities;
 
         public T GetById(int id)
         {
-            return entities.Find(id);
+            return _entities.Find(id);
+        }
+
+        public T Create(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            _entities.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public T Update(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public bool Delete(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            if (_entities.Contains(entity))
+            {
+                _entities.Remove(entity);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public void Save()
         {
-            Database.SaveChanges();
-        }
-
-        public void Update(T entity)
-        {
-            if (entity == null)
-                throw new NotImplementedException();
-            entities.Update(entity);
-           // return entity;
+            _context.SaveChanges();
         }
     }
 }

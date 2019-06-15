@@ -19,6 +19,9 @@ namespace INTEREST.DAL.Repositories
         private IEventRepository _eventRepository;
         private IMessageRepository _messageRepository;
         private ICategoryRepository _categoryRepository;
+        private ICountryRepository _countryRepository;
+        private ICityRepository _cityRepository;
+        private IPhotoRepository _photoRepository;
 
         public UnitOfWork(AppDBContext context,
                                   UserManager<User> userManager,
@@ -32,14 +35,22 @@ namespace INTEREST.DAL.Repositories
             SignInManager = signInManager;
         }
 
+
         public IUserProfileRepository UserProfileRepository =>
-                 _userProfileRepository ?? (_userProfileRepository = new UserProfileRepository(db));
+            _userProfileRepository ?? (_userProfileRepository = new UserProfileRepository(db));
         public ICategoryRepository CategoryRepository =>
-                _categoryRepository ?? (_categoryRepository = new CategoryRepository(db));
+            _categoryRepository ?? (_categoryRepository = new CategoryRepository(db));
         public IEventRepository EventRepository =>
-                _eventRepository ?? (_eventRepository = new EventRepository(db));
+            _eventRepository ?? (_eventRepository = new EventRepository(db));
         public IMessageRepository MessageRepository =>
-                _messageRepository ?? (_messageRepository = new MessageRepository(db));
+            _messageRepository ?? (_messageRepository = new MessageRepository(db));
+        public ICountryRepository CountryRepository =>
+            _countryRepository ?? (_countryRepository = new CountryRepository(db));
+        public ICityRepository CityRepository =>
+            _cityRepository ?? (_cityRepository = new CityRepository(db));
+        public IPhotoRepository PhotoRepository =>
+            _photoRepository ?? (_photoRepository = new PhotoRepository(db));
+
 
         public void Dispose()
         {
@@ -58,7 +69,7 @@ namespace INTEREST.DAL.Repositories
                     UserManager.Dispose();
                     RoleManager.Dispose();
                     UserProfileRepository.Dispose();
-                    CategoryRepository.Dispose();
+                    //CategoryRepository.Dispose();
                     EventRepository.Dispose();
                     MessageRepository.Dispose();
                 }

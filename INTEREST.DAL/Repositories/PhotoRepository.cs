@@ -7,9 +7,9 @@ using System.Text;
 
 namespace INTEREST.DAL.Repositories
 {
-    public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
+    public class PhotoRepository : BaseRepository<Photo>, IPhotoRepository
     {
-        public CategoryRepository(AppDBContext context) : base(context)
+        public PhotoRepository(AppDBContext context) : base(context)
         {
         }
     }

@@ -10,6 +10,8 @@ namespace INTEREST.DAL.Entities
         [Key]
         [ForeignKey("User")]
         public string Id { get; set; }
+        public User User { get; set; }
+
 
         public String Location { get; set; }
         public DateTime Birthday { get; set; }
@@ -19,8 +21,6 @@ namespace INTEREST.DAL.Entities
         public IList<UserCategory> UserCategories { get; set; }
         public IList<Event> Events { get; set; }
         public IList<Photo> Photos { get; set; }
-
-        public User User { get; set; }
 
         public bool Online { get; set; }
         public System.DateTime TimeLogin { get; set; }

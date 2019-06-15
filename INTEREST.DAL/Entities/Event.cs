@@ -15,6 +15,7 @@ namespace INTEREST.DAL.Entities
 
         public string UserId { get; set; }
         public UserProfile UserProfile { get; set; }
+
         public IList<Photo> Photos { get; set; }
         public IList<CategoryEvent> CategoryEvents { get; set; }
         public ICollection<Message> Messages { get; set; }

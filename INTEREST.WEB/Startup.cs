@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using INTEREST.BLL.Interfaces;
 using INTEREST.BLL.Services;
 using INTEREST.DAL.EF;
@@ -51,6 +52,7 @@ namespace INTEREST.WEB
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = true;
                 options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -63,17 +65,19 @@ namespace INTEREST.WEB
                 options.User.RequireUniqueEmail = false;
             });
 
+            services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            //REPOSITORIES
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUserProfileService, UserProfileService>();
-
+            //DI REPOSITORIES
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IEventRepository, EventRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();
-            //UNIT_OF_WORKS
+            //DI SERVICES
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserProfileService, UserProfileService>();
+            services.AddTransient<IEventService, EventService>();
+            //DI UNIT_OF_WORK
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
@@ -87,7 +91,6 @@ namespace INTEREST.WEB
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 

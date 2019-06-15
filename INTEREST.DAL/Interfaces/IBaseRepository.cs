@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace INTEREST.DAL.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
+        IQueryable<T> GetAll();
         T GetById(int id);
-        IEnumerable<T> GetAll();
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        T Create(T entity);
+        T Update(T entity);
+        bool Delete(T entity);
 
         void Save();
     }

@@ -11,7 +11,10 @@ namespace INTEREST.DAL.Interfaces
         SignInManager<User> SignInManager { get; }
         RoleManager<IdentityRole> RoleManager { get; }
         IUserProfileRepository UserProfileRepository { get; }
+        IPhotoRepository PhotoRepository { get; }
         ICategoryRepository CategoryRepository { get; }
+        ICountryRepository CountryRepository { get; }
+        ICityRepository CityRepository { get; }
         IEventRepository EventRepository { get; }
         IMessageRepository MessageRepository { get; }
         Task SaveAsync();

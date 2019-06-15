@@ -12,15 +12,18 @@ namespace INTEREST.BLL.Services
     public class EventService : IEventService
     {
         IUnitOfWork Database { get; set; }
+        private readonly IMapper _mapper;
 
-        public EventService(IUnitOfWork uow)
+
+        public EventService(IUnitOfWork uow, IMapper mapper)
         {
             Database = uow;
+            _mapper = mapper;
         }
 
         public void CreateEvent(CreateEventDTO createEventDTO)
         {
-            var Event = Mapper.Map<Event>(createEventDTO);
+            var Event = _mapper.Map<Event>(createEventDTO);
             Database.EventRepository.CreateEvent(Event);
         }
     }

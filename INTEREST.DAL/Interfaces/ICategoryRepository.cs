@@ -3,7 +3,7 @@ using System;
 
 namespace INTEREST.DAL.Interfaces
 {
-    public interface ICategoryRepository : IDisposable
+    public interface ICategoryRepository : IBaseRepository<Category>
     {
     }
 }
