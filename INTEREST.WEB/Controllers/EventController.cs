@@ -38,28 +38,28 @@ namespace INTEREST.WEB.Controllers
             return View();
         }
 
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public async Task<IActionResult> CreateEvent(CreateEventViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                Regex regex = new Regex(@"\r\n");
-                model.EventText = regex.Replace(model.EventText, "");
-                model.EventText = model.EventText.Trim();
+        //[Authorize]
+        //[ValidateAntiForgeryToken]
+        //[HttpPost]
+        //public async Task<IActionResult> CreateEvent(CreateEventViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        Regex regex = new Regex(@"\r\n");
+        //        model.EventText = regex.Replace(model.EventText, "");
+        //        model.EventText = model.EventText.Trim();
 
-                UserProfileDTO userprofile = await _userProfileService.FindUserProfileByUserName(User.Identity.Name);
-                model.UserId = userprofile.GetUser.Id;
+        //        UserProfileDTO userprofile = await _userProfileService.FindUserProfileByUserName(User.Identity.Name);
+        //        model.UserId = userprofile.GetUser.Id;
     
 
-                var createEventDto = _mapper.Map<CreateEventDTO>(model);
-                _eventService.CreateEvent(createEventDto);
+        //        var createEventDto = _mapper.Map<CreateEventDTO>(model);
+        //        _eventService.CreateEvent(createEventDto);
 
-                return RedirectToAction("CreateEvent");
-            }
-            return View(model);
-        }
+        //        return RedirectToAction("CreateEvent");
+        //    }
+        //    return View(model);
+        //}
 
 
         //[Authorize]
@@ -80,6 +80,13 @@ namespace INTEREST.WEB.Controllers
         //    return HttpNotFound();
         //}
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteEvent(int id)
+        //{
+        //    EventService.DeleteEvent(id);
+        //    return RedirectToAction("Index");
+        //}
 
 
 

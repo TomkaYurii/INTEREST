@@ -12,7 +12,7 @@ namespace INTEREST.BLL.DTO
 
         public string EventText { get; set; }
 
-        // Time of message creation (edition, deletion).
+        // Time of message creation/edition
         public DateTime EventTime { get; set; }
     }
 }

@@ -15,8 +15,7 @@ namespace INTEREST.DAL.EF
         public DbSet<Event> Events { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<StatusMessage> StatusMessages { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<Location> Locations { get; set; }
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {

@@ -13,7 +13,7 @@ namespace INTEREST.DAL.Entities
         public User User { get; set; }
 
 
-        public String Location { get; set; }
+        public Location Location { get; set; }
         public DateTime Birthday { get; set; }
         public String Gender { get; set; }
         public String Avatar { get; set; }

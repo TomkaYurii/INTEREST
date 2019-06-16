@@ -19,8 +19,7 @@ namespace INTEREST.DAL.Repositories
         private IEventRepository _eventRepository;
         private IMessageRepository _messageRepository;
         private ICategoryRepository _categoryRepository;
-        private ICountryRepository _countryRepository;
-        private ICityRepository _cityRepository;
+        private ILocationRepository _locationRepository;
         private IPhotoRepository _photoRepository;
 
         public UnitOfWork(AppDBContext context,
@@ -44,10 +43,8 @@ namespace INTEREST.DAL.Repositories
             _eventRepository ?? (_eventRepository = new EventRepository(db));
         public IMessageRepository MessageRepository =>
             _messageRepository ?? (_messageRepository = new MessageRepository(db));
-        public ICountryRepository CountryRepository =>
-            _countryRepository ?? (_countryRepository = new CountryRepository(db));
-        public ICityRepository CityRepository =>
-            _cityRepository ?? (_cityRepository = new CityRepository(db));
+        public ILocationRepository LocationRepository =>
+            _locationRepository ?? (_locationRepository = new LocationRepository(db));
         public IPhotoRepository PhotoRepository =>
             _photoRepository ?? (_photoRepository = new PhotoRepository(db));
 
@@ -68,7 +65,7 @@ namespace INTEREST.DAL.Repositories
                 {
                     UserManager.Dispose();
                     RoleManager.Dispose();
-                    UserProfileRepository.Dispose();
+                    //UserProfileRepository.Dispose();
                     //CategoryRepository.Dispose();
                     EventRepository.Dispose();
                     MessageRepository.Dispose();

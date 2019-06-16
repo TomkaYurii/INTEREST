@@ -70,6 +70,7 @@ namespace INTEREST.WEB
 
             //DI REPOSITORIES
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            services.AddTransient<ILocationRepository, LocationRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IEventRepository, EventRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();

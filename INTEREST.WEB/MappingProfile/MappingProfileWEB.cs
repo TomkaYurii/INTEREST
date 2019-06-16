@@ -12,11 +12,13 @@ namespace INTEREST.WEB.MappingProfiles
     {
         public MappingProfileWEB()
         {
-            CreateMap<CreateEventViewModel, CreateEventDTO>();
+            //message
             CreateMap<CreateMessageViewModel, CreateMessageDTO>();
             CreateMap<DeleteMessageViewModel, DeleteMessageDTO>();
             CreateMap<EditMessageViewModel, EditMessageDTO>();
             CreateMap<MessageViewModel, MessageDTO>();
+            //event
+            CreateMap<CreateEventViewModel, CreateEventDTO>();
         }
     }
 }

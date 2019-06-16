@@ -13,8 +13,7 @@ namespace INTEREST.DAL.Interfaces
         IUserProfileRepository UserProfileRepository { get; }
         IPhotoRepository PhotoRepository { get; }
         ICategoryRepository CategoryRepository { get; }
-        ICountryRepository CountryRepository { get; }
-        ICityRepository CityRepository { get; }
+        ILocationRepository LocationRepository { get; }
         IEventRepository EventRepository { get; }
         IMessageRepository MessageRepository { get; }
         Task SaveAsync();

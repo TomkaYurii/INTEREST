@@ -18,14 +18,42 @@ namespace INTEREST.BLL.Services
             this.Database = uow;
         }
 
-        public async Task<UserProfileDTO> FindUserProfileByUserName(string UserName)
+        public List<UserProfileDTO> Users()
         {
-            User user = Database.UserProfileRepository.FindByUserName(UserName);
-            UserProfileDTO userprofile = new UserProfileDTO()
+            var profiles = Database.UserProfileRepository.GetAll();
+            var responce = new List<UserProfileDTO>();
+
+            foreach (var p in profiles)
             {
-                GetUser = user
+                responce.Add(new UserProfileDTO
+                {
+                    UserName = p.User.UserName,
+                    Email = p.User.Email
+                    //PhoneNumber = p.User.PhoneNumber,
+                    //Birthday = p.Birthday,
+                    //City = p.City.Name,
+                    //Country = p.City.Country.Name
+                });
+            }
+
+            return responce;
+        }
+
+        public UserProfileDTO GetProfile(User u)
+        {
+            //var p = Database.UserProfileRepository.GetById(u.UserProfileId);
+
+            return new UserProfileDTO
+            {
+                UserName = u.UserName,
+                Email = u.Email,
+                PhoneNumber = u.PhoneNumber
+
+                //Birthday = p.Birthday,
+                //City = p.Location.City,
+                //Country = p.Location.Country,
+                //Gender = p.Gender
             };
-            return userprofile;
         }
 
         public void Dispose()

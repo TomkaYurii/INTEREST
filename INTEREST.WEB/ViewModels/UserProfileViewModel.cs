@@ -14,7 +14,7 @@ namespace INTEREST.WEB.ViewModels
         public string Phone { get; set; }
         public string Avatar { get; set; }
         public string Gender { get; set; }
-        public string Location { get; set; }
-        public List<Event> Events { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
     }
 }

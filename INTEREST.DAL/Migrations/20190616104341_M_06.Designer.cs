@@ -4,14 +4,16 @@ using INTEREST.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace INTEREST.DAL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190616104341_M_06")]
+    partial class M_06
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,6 +47,36 @@ namespace INTEREST.DAL.Migrations
                     b.ToTable("CategoryEvent");
                 });
 
+            modelBuilder.Entity("INTEREST.DAL.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CountryId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("INTEREST.DAL.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
             modelBuilder.Entity("INTEREST.DAL.Entities.Event", b =>
                 {
                     b.Property<int>("Id")
@@ -57,7 +89,7 @@ namespace INTEREST.DAL.Migrations
 
                     b.Property<DateTime>("EventTime");
 
-                    b.Property<int?>("LocationId");
+                    b.Property<string>("Location");
 
                     b.Property<string>("UserId");
 
@@ -65,26 +97,9 @@ namespace INTEREST.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
-
                     b.HasIndex("UserProfileId");
 
                     b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("INTEREST.DAL.Entities.Location", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("City");
-
-                    b.Property<string>("Country");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("INTEREST.DAL.Entities.Message", b =>
@@ -252,9 +267,11 @@ namespace INTEREST.DAL.Migrations
 
                     b.Property<DateTime>("Birthday");
 
-                    b.Property<string>("Gender");
+                    b.Property<int?>("CityId");
 
-                    b.Property<int?>("LocationId");
+                    b.Property<string>("Country");
+
+                    b.Property<string>("Gender");
 
                     b.Property<bool>("Online");
 
@@ -262,7 +279,7 @@ namespace INTEREST.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("CityId");
 
                     b.ToTable("UserProfiles");
                 });
@@ -293,15 +310,15 @@ namespace INTEREST.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9b32e84f-9073-4aeb-abb5-ae7cc08268b4",
-                            ConcurrencyStamp = "0bb03cd5-0da4-4662-a923-4d1283dba770",
+                            Id = "b752cbed-795b-43b7-81be-a5725821c200",
+                            ConcurrencyStamp = "7eafdc2e-bcc5-4584-887a-7a2dfdbd43d7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "47084481-0c6c-4f50-bf30-9740d2913272",
-                            ConcurrencyStamp = "ecd3c777-947d-49e0-86d1-8f8cfa740530",
+                            Id = "03f87cd9-c00e-498f-afd4-3dfef0adef52",
+                            ConcurrencyStamp = "85f7c8dd-7d67-4cd1-b5ae-2fb2785bd134",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -406,12 +423,16 @@ namespace INTEREST.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("INTEREST.DAL.Entities.City", b =>
+                {
+                    b.HasOne("INTEREST.DAL.Entities.Country", "Country")
+                        .WithMany("Cities")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("INTEREST.DAL.Entities.Event", b =>
                 {
-                    b.HasOne("INTEREST.DAL.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
                     b.HasOne("INTEREST.DAL.Entities.UserProfile", "UserProfile")
                         .WithMany("Events")
                         .HasForeignKey("UserProfileId");
@@ -464,14 +485,14 @@ namespace INTEREST.DAL.Migrations
 
             modelBuilder.Entity("INTEREST.DAL.Entities.UserProfile", b =>
                 {
+                    b.HasOne("INTEREST.DAL.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
                     b.HasOne("INTEREST.DAL.Entities.User", "User")
                         .WithOne("UserProfile")
                         .HasForeignKey("INTEREST.DAL.Entities.UserProfile", "Id")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("INTEREST.DAL.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

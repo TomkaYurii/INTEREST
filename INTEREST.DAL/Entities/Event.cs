@@ -11,7 +11,7 @@ namespace INTEREST.DAL.Entities
         public string EventName { get; set; }
         public string EventText { get; set; }
         public DateTime EventTime { get; set; }
-        public string Location { get; set; }
+        public Location Location { get; set; }
 
         public string UserId { get; set; }
         public UserProfile UserProfile { get; set; }

@@ -4,14 +4,16 @@ using INTEREST.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace INTEREST.DAL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190616131144_M_07")]
+    partial class M_07
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,15 +59,13 @@ namespace INTEREST.DAL.Migrations
 
                     b.Property<DateTime>("EventTime");
 
-                    b.Property<int?>("LocationId");
+                    b.Property<string>("Location");
 
                     b.Property<string>("UserId");
 
                     b.Property<string>("UserProfileId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LocationId");
 
                     b.HasIndex("UserProfileId");
 
@@ -84,7 +84,7 @@ namespace INTEREST.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Location");
                 });
 
             modelBuilder.Entity("INTEREST.DAL.Entities.Message", b =>
@@ -293,15 +293,15 @@ namespace INTEREST.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9b32e84f-9073-4aeb-abb5-ae7cc08268b4",
-                            ConcurrencyStamp = "0bb03cd5-0da4-4662-a923-4d1283dba770",
+                            Id = "fd8a90cf-bb02-495b-bf13-d763c0d91b2e",
+                            ConcurrencyStamp = "b98ce494-33f6-4999-a5dd-2a5e852a9d38",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "47084481-0c6c-4f50-bf30-9740d2913272",
-                            ConcurrencyStamp = "ecd3c777-947d-49e0-86d1-8f8cfa740530",
+                            Id = "42b06971-1aae-415e-9d31-81cd97db2641",
+                            ConcurrencyStamp = "61284b0e-ac62-4bf2-b12d-5768cbac1efc",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -408,10 +408,6 @@ namespace INTEREST.DAL.Migrations
 
             modelBuilder.Entity("INTEREST.DAL.Entities.Event", b =>
                 {
-                    b.HasOne("INTEREST.DAL.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
-
                     b.HasOne("INTEREST.DAL.Entities.UserProfile", "UserProfile")
                         .WithMany("Events")
                         .HasForeignKey("UserProfileId");

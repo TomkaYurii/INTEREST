@@ -5,7 +5,7 @@ using System.Text;
 
 namespace INTEREST.BLL.Interfaces
 {
-    public interface IEventService
+    public interface IEventService : IDisposable
     {
         void CreateEvent(CreateEventDTO createEventDTO);
     }

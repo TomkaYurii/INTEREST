@@ -37,14 +37,14 @@
                             <ul class="navbar-nav flex-grow-1">
 
                                 <li>
-                                    @if (User.IsInRole("admin"))
+                                    @if (User.IsInRole("Admin"))
                                     {
                                         <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">AdminPage</a>
                                     }
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="UserProfile">Profile</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserProfile" asp-action="UserProfile">Profile</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Events</a>

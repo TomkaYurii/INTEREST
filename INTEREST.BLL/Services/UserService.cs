@@ -21,42 +21,63 @@ namespace INTEREST.BLL.Services
             Database = uow;
         }
 
-        public async Task<OperationDetails> Create(UserDTO userDto)
+        //CREATE USER
+        public async Task<OperationDetails> CreateAsync(UserDTO userDTO)
         {
-            User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+            User user = await Database.UserManager.FindByEmailAsync(userDTO.Email);
             if (user == null)
             {
-                // create User
-                user = new User { Email = userDto.Email, UserName = userDto.UserName, PhoneNumber = userDto.Phone };
-                var result = await Database.UserManager.CreateAsync(user, userDto.Password);
+                user = await Database.UserManager.FindByNameAsync(userDTO.UserName);
+                if (user != null)
+                    return new OperationDetails(false, "Username is being use", "");
+                user = Database.UserManager.Users.FirstOrDefault(x => x.PhoneNumber == userDTO.Phone);
+                if (user != null)
+                    return new OperationDetails(false, "Phone number is being use", "");
+                user = new User
+                {
+                    Email = userDTO.Email,
+                    UserName = userDTO.UserName,
+                    PhoneNumber = userDTO.Phone
+                };
+                var result = await Database.UserManager.CreateAsync(user, userDTO.Password);
                 if (result.Errors.Count() > 0)
-                    return new OperationDetails(false, result.Errors.FirstOrDefault().ToString(), "");
-                // create Role
-                await Database.UserManager.AddToRoleAsync(user, userDto.Role);
+                    return new OperationDetails(false, result.Errors.FirstOrDefault().Description, "");
+                // add role
+                await Database.UserManager.AddToRoleAsync(user, userDTO.Role);
                 // create UserProfile
-                UserProfile clientProfile = new UserProfile { Id = user.Id, Birthday = userDto.Birthday, Gender = userDto.Gender, Location = userDto.Location };
-                Database.UserProfileRepository.Create(clientProfile);
+                Location location = Database.LocationRepository.FindClone(userDTO.Location);
+                if (location == null)
+                {
+                    location = userDTO.Location;
+                    Database.LocationRepository.Create(userDTO.Location);
+                }
+                UserProfile userProfile = new UserProfile
+                {
+                    Id = user.Id,
+                    Birthday = userDTO.Birthday,
+                    Gender = userDTO.Gender,
+                    Location = location
+                };
+                Database.UserProfileRepository.Create(userProfile);
                 await Database.SaveAsync();
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                return new OperationDetails(true, "Registration successfully completed", "");
             }
             else
             {
-                return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
+                return new OperationDetails(false, "User with this login already exists", "Email");
             }
         }
 
-        public async Task<bool> SignIn(UserDTO userDto)
+        //AUTENTIFICATION
+        public async Task<bool> SignInAsync(UserDTO userDto)
         {
-            // Find User    
             var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
-            var username = user.UserName;
-            var auth = await Database.SignInManager.PasswordSignInAsync(username, userDto.Password, false, lockoutOnFailure: false);
-            // Auteentification 
+            var auth = await Database.SignInManager.PasswordSignInAsync(user.UserName, userDto.Password, false, lockoutOnFailure: false);
             return auth.Succeeded;
         }
 
-        // DataBase Initialization
-        public async Task SetInitialData(UserDTO adminDto, List<string> roles)
+        // DATABASE INITIALIZATION
+        public async Task SetInitialDataAsync(UserDTO adminDto, List<string> roles)
         {
             foreach (string roleName in roles)
             {
@@ -67,17 +88,17 @@ namespace INTEREST.BLL.Services
                     await Database.RoleManager.CreateAsync(role);
                 }
             }
-            await Create(adminDto);
+            await CreateAsync(adminDto);
         }
 
-
+        //GET CURRENT USER
         public async Task<User> GetCurrentUserAsync(HttpContext context)
         {
             return await Database.UserManager.GetUserAsync(context.User);
         }
 
-
-        public async Task SignOut()
+        // SIGN OUT
+        public async Task SignOutAsync()
         {
             await Database.SignInManager.SignOutAsync();
         }

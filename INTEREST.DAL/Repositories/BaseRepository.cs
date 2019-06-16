@@ -10,19 +10,22 @@ namespace INTEREST.DAL.Repositories
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly AppDBContext _context;
-        protected readonly DbSet<T> _entities;
+        protected readonly DbSet<T> entity;
 
         public BaseRepository(AppDBContext context)
         {
             _context = context;
-            _entities = context.Set<T>();
+            entity = context.Set<T>();
         }
 
-        public IQueryable<T> GetAll() => _entities;
+        public IEnumerable<T> GetAll()
+        {
+            return entity.ToList();
+        }
 
         public T GetById(int id)
         {
-            return _entities.Find(id);
+            return entity.Find(id);
         }
 
         public T Create(T entity)
@@ -31,7 +34,7 @@ namespace INTEREST.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            _entities.Add(entity);
+            this.entity.Add(entity);
             _context.SaveChanges();
             return entity;
         }
@@ -53,9 +56,9 @@ namespace INTEREST.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            if (_entities.Contains(entity))
+            if (this.entity.Contains(entity))
             {
-                _entities.Remove(entity);
+                this.entity.Remove(entity);
                 _context.SaveChanges();
                 return true;
             }

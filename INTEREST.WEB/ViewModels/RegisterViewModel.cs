@@ -10,9 +10,7 @@ namespace INTEREST.WEB.ViewModels
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        [Required]
-        public string UserName { get; set; }
-        [Required]
+
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
@@ -20,20 +18,21 @@ namespace INTEREST.WEB.ViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public string UserName { get; set; }
         [Required]
         [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
-
         [Required]
         [DataType(DataType.Date)]
         public DateTime Birthday { get; set; }
-        [Required]
-        [Display(Name = "Location")]
-        public string Location { get; set; }
 
+        [Display(Name = "Country")]
+        public string Country { get; set; }
+        [Display(Name = "City")]
+        public string City_state { get; set; }
 
-
-        [Required]
         [Display(Name = "Gender")]
         public string Gender { get; set; }
 
