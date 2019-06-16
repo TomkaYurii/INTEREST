@@ -13,7 +13,7 @@ namespace INTEREST.BLL.Interfaces
     {
         Task<OperationDetails> CreateAsync(UserDTO userDto);
         Task<bool> SignInAsync(UserDTO userDto);
-        Task SetInitialDataAsync(UserDTO adminDto, List<string> roles);
+        Task AdminCreateAsync(UserDTO adminDto);
         Task<User> GetCurrentUserAsync(HttpContext context);
         Task SignOutAsync();
     }

@@ -1,8 +1,9 @@
-﻿namespace INTEREST.DAL.Entities
+﻿using INTEREST.DAL.EF;
+
+namespace INTEREST.DAL.Entities
 {
-    public class Photo
-        {
-            public int Id { get; set; }
+    public class Photo : BaseEntity
+    {
             public string URL { get; set; }
 
             public UserProfile UserProfile { get; set; }

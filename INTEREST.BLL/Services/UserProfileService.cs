@@ -2,10 +2,9 @@
 using INTEREST.BLL.Interfaces;
 using INTEREST.DAL.Interfaces;
 using INTEREST.DAL.Entities;
-using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace INTEREST.BLL.Services
 {
@@ -18,41 +17,48 @@ namespace INTEREST.BLL.Services
             this.Database = uow;
         }
 
-        public List<UserProfileDTO> Users()
+        //GET ALL USERS
+        public List<UserProfileDTO> GetUsers()
         {
-            var profiles = Database.UserProfileRepository.GetAll();
-            var responce = new List<UserProfileDTO>();
+            var profiles = Database.UserProfileRepository.GetAll()
+                .Include(p => p.User)
+                .Include(p => p.Location)
+                .ToList();
+
+            var result = new List<UserProfileDTO>();
 
             foreach (var p in profiles)
             {
-                responce.Add(new UserProfileDTO
+                result.Add(new UserProfileDTO
                 {
                     UserName = p.User.UserName,
-                    Email = p.User.Email
-                    //PhoneNumber = p.User.PhoneNumber,
-                    //Birthday = p.Birthday,
-                    //City = p.City.Name,
-                    //Country = p.City.Country.Name
+                    Email = p.User.Email,
+                    PhoneNumber = p.User.PhoneNumber,
+                    Birthday = p.Birthday,
+                    Gender = p.Gender,
+                    Country = p.Location.Country,
+                    City = p.Location.City
+                    //AvatarUrl = p.Avatar?.Url
                 });
             }
 
-            return responce;
+            return result;
         }
 
-        public UserProfileDTO GetProfile(User u)
+        //GET ONE USER INFORMATION
+        public UserProfileDTO GetProfile(User user)
         {
-            //var p = Database.UserProfileRepository.GetById(u.UserProfileId);
+            var profile = Database.UserProfileRepository.GetById(user.ProfileId);
 
             return new UserProfileDTO
             {
-                UserName = u.UserName,
-                Email = u.Email,
-                PhoneNumber = u.PhoneNumber
-
-                //Birthday = p.Birthday,
-                //City = p.Location.City,
-                //Country = p.Location.Country,
-                //Gender = p.Gender
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                //Birthday = profile.Birthday,
+                //City = profile.Location.City,
+                //Country = profile.Location.Country,
+                //Gender = profile.Gender
             };
         }
 

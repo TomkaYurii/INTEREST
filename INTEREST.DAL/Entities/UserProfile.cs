@@ -1,17 +1,17 @@
-﻿using System;
+﻿using INTEREST.DAL.EF;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace INTEREST.DAL.Entities
 {
-    public class UserProfile
+    public class UserProfile : BaseEntity
     {
         [Key]
         [ForeignKey("User")]
-        public string Id { get; set; }
-        public User User { get; set; }
-
+        public string UserId { get; set; }
+        public virtual User User { get; set; }
 
         public Location Location { get; set; }
         public DateTime Birthday { get; set; }
@@ -24,7 +24,5 @@ namespace INTEREST.DAL.Entities
 
         public bool Online { get; set; }
         public System.DateTime TimeLogin { get; set; }
-        public ICollection<Message> Messages { get; set; }
-
     }
 }

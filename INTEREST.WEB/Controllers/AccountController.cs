@@ -62,7 +62,6 @@ namespace INTEREST.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO
@@ -93,15 +92,14 @@ namespace INTEREST.WEB.Controllers
 
         private async Task SetInitialDataAsync()
         {
-            await userService.SetInitialDataAsync(new UserDTO
+            await userService.AdminCreateAsync(new UserDTO
             {
                 Email = "tomka.yuriy@gmail.com",
                 UserName = "Tomka",
                 Password = "K7k1e9gof8r",
                 Role = "admin",
-            }, new List<string> { "user", "admin" });
+            });
         }
-
 
         //LOGOUT
         public async Task<IActionResult> Logout()

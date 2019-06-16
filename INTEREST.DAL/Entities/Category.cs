@@ -1,12 +1,10 @@
-﻿using System;
+﻿using INTEREST.DAL.EF;
 using System.Collections.Generic;
-using System.Text;
 
 namespace INTEREST.DAL.Entities
 {
-    public class Category
+    public class Category : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public IList<UserCategory> UserCategories { get; set; }
         public IList<CategoryEvent> CategoryEvents { get; set; }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using INTEREST.DAL.EF;
 
 namespace INTEREST.DAL.Entities
 {
-    public class Location
+    public class Location : BaseEntity
     {
-        public int Id { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
     }

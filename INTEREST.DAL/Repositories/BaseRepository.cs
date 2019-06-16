@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace INTEREST.DAL.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         protected readonly AppDBContext _context;
         protected readonly DbSet<T> entity;
@@ -18,15 +18,9 @@ namespace INTEREST.DAL.Repositories
             entity = context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
-        {
-            return entity.ToList();
-        }
+        public IQueryable<T> GetAll() => entity;
 
-        public T GetById(int id)
-        {
-            return entity.Find(id);
-        }
+        public T GetById(int id) => entity.SingleOrDefault(e => e.Id == id);
 
         public T Create(T entity)
         {

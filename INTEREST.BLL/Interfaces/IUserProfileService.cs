@@ -9,8 +9,7 @@ namespace INTEREST.BLL.Interfaces
 {
     public interface IUserProfileService : IDisposable
     {
-        //Task<UserProfileDTO> FindUserProfileByUserName(string UserName);
-        //List<UserProfileDTO> GetUsers();
+        List<UserProfileDTO> GetUsers();
         UserProfileDTO GetProfile(User u);
     }
 }

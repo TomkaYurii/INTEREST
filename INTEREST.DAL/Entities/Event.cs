@@ -1,13 +1,11 @@
-﻿using INTEREST.DAL.Entities;
+﻿using INTEREST.DAL.EF;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace INTEREST.DAL.Entities
 {
-    public class Event
+    public class Event : BaseEntity
     {
-        public int Id { get; set; }
         public string EventName { get; set; }
         public string EventText { get; set; }
         public DateTime EventTime { get; set; }
