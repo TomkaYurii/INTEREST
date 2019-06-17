@@ -20,7 +20,7 @@ namespace INTEREST.DAL.Repositories
         public IEnumerable<Message> GetAllMessages(int id, ref int pageNumber, int pageSize, out int totalPages)
         {
             var selection = db.Messages.Where(i => i.EventId == id).OrderBy(o => o.InternalId)
-                .Include(src => src.User)
+                .Include(src => src.UserProfileId)
                 .Include(src => src.StatusMessage)
                 .ToList();
 
@@ -60,10 +60,10 @@ namespace INTEREST.DAL.Repositories
                 return false;
 
             // DeleteMessageConfirm.
-            if (message.UserId != null && message.UserId != mesCurrent.UserId)
+            if (message.UserProfileId != null && message.UserProfileId != mesCurrent.UserProfileId)
                 return false;
 
-            if (message.UserId == null)
+            if (message.UserProfileId == null)
                 mesCurrent.StatusMessageId = 4;
             else
                 mesCurrent.StatusMessageId = 3;
@@ -89,7 +89,7 @@ namespace INTEREST.DAL.Repositories
         {
             Message mesCurrent = db.Messages.FirstOrDefault(x => x.InternalId == message.InternalId && x.EventId == message.EventId);
 
-            if (mesCurrent == null || mesCurrent.StatusMessageId == 3 || mesCurrent.StatusMessageId == 4 || mesCurrent.UserId != message.UserId)
+            if (mesCurrent == null || mesCurrent.StatusMessageId == 3 || mesCurrent.StatusMessageId == 4 || mesCurrent.UserProfileId != message.UserProfileId)
                 return "Error (Click button \"Cancel\" to reload the page.)";
 
             if (message.MessageText == mesCurrent.MessageText)

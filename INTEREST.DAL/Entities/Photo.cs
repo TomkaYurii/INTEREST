@@ -6,9 +6,11 @@ namespace INTEREST.DAL.Entities
     {
             public string URL { get; set; }
 
+            public int? UserProfileId { get; set; }
             public UserProfile UserProfile { get; set; }
-            public string UserId { get; set; }
+
+            public int EventId { get; set; }
             public Event Event { get; set; }
-            public string EventId { get; set; }
+
         }
     }

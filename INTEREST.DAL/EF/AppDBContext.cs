@@ -46,11 +46,11 @@ namespace INTEREST.DAL.EF
             
             // User-Category
             modelBuilder.Entity<UserCategory>()
-                .HasKey(uc => new { uc.UserId, uc.CategoryId });
+                .HasKey(uc => new { uc.UserProfileId, uc.CategoryId });
             modelBuilder.Entity<UserCategory>()
                 .HasOne(uc => uc.UserProfile)
                 .WithMany(u => u.UserCategories)
-                .HasForeignKey(uc => uc.UserId);
+                .HasForeignKey(uc => uc.UserProfileId);
             modelBuilder.Entity<UserCategory>()
                 .HasOne(uc => uc.Category)
                 .WithMany(c => c.UserCategories)

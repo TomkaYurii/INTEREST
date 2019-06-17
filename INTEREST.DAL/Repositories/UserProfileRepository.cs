@@ -25,6 +25,7 @@ namespace INTEREST.DAL.Repositories
         {
             User user = _context.Users.FirstOrDefault(x => x.UserName == UserName);
             user.UserProfile = _context.UserProfiles.FirstOrDefault(x => x.UserId == user.Id);
+            user.UserProfile.Location = _context.Locations.FirstOrDefault(x => x.UserProfileId == user.ProfileId);
             return user;
         }
     }

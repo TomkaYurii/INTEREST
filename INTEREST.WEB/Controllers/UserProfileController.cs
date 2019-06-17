@@ -25,19 +25,18 @@ namespace INTEREST.WEB.Controllers
 
         public async Task<IActionResult> UserProfile()
         {
-            UserProfileDTO profile = await userProfileService.FindProfileByUserName(User.Identity.Name);
-
-            UserProfileViewModel viewModel = new UserProfileViewModel
+            User currentUser = await userService.GetCurrentUserAsync(HttpContext);
+            var profile = userProfileService.GetProfile(currentUser);
+            var viewModel = new UserProfileViewModel
             {
-                UserName = profile.GetUser.UserName,
-                Email = profile.GetUser.Email,
-                Phone = profile.GetUser.PhoneNumber,
-                Country = profile.GetUser.UserProfile.Location.Country,
-                //City = profile.GetUser.UserProfile.Location.City,
-                Age = DateTime.Today.Year - profile.GetUser.UserProfile.Birthday.Year,
-                Gender = profile.GetUser.UserProfile.Gender
+                UserName = profile.UserName,
+                Email = profile.Email,
+                Phone = profile.PhoneNumber,
+                Country = profile.Country,
+                City = profile.City,
+                Age = DateTime.Today.Year - profile.Birthday.Year,
+                Gender = profile.Gender
             };
-
             return View(viewModel);
         }
     }

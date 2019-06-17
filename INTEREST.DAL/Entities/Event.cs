@@ -11,7 +11,7 @@ namespace INTEREST.DAL.Entities
         public DateTime EventTime { get; set; }
         public Location Location { get; set; }
 
-        public string UserId { get; set; }
+        public int? UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
 
         public IList<Photo> Photos { get; set; }

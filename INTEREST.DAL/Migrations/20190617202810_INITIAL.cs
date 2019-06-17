@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace INTEREST.DAL.Migrations
 {
-    public partial class _01 : Migration
+    public partial class INITIAL : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,20 +59,6 @@ namespace INTEREST.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Locations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Country = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,8 +184,9 @@ namespace INTEREST.DAL.Migrations
                 name: "UserProfiles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
                     Birthday = table.Column<DateTime>(nullable: false),
                     Gender = table.Column<string>(nullable: true),
                     Avatar = table.Column<string>(nullable: true),
@@ -208,17 +195,56 @@ namespace INTEREST.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserProfiles", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_UserProfiles_Locations_Id",
-                        column: x => x.Id,
-                        principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserProfiles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Country = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    UserProfileId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Locations_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserCategory",
+                columns: table => new
+                {
+                    UserProfileId = table.Column<int>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserCategory", x => new { x.UserProfileId, x.CategoryId });
+                    table.ForeignKey(
+                        name: "FK_UserCategory_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserCategory_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "UserProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -233,7 +259,7 @@ namespace INTEREST.DAL.Migrations
                     EventText = table.Column<string>(nullable: true),
                     EventTime = table.Column<DateTime>(nullable: false),
                     LocationId = table.Column<int>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    UserProfileId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -245,35 +271,11 @@ namespace INTEREST.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Events_UserProfiles_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Events_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
                         principalTable: "UserProfiles",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserCategory",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserCategory", x => new { x.UserId, x.CategoryId });
-                    table.ForeignKey(
-                        name: "FK_UserCategory_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserCategory_UserProfiles_UserId",
-                        column: x => x.UserId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -307,7 +309,7 @@ namespace INTEREST.DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     InternalId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
+                    UserProfileId = table.Column<int>(nullable: true),
                     EventId = table.Column<int>(nullable: false),
                     MessageText = table.Column<string>(nullable: true),
                     StatusMessageId = table.Column<int>(nullable: false),
@@ -329,9 +331,9 @@ namespace INTEREST.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Messages_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
+                        principalTable: "UserProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -343,24 +345,23 @@ namespace INTEREST.DAL.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     URL = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
-                    EventId1 = table.Column<int>(nullable: true),
-                    EventId = table.Column<string>(nullable: true)
+                    UserProfileId = table.Column<int>(nullable: true),
+                    EventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photos_Events_EventId1",
-                        column: x => x.EventId1,
+                        name: "FK_Photos_Events_EventId",
+                        column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Photos_UserProfiles_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Photos_UserProfiles_UserProfileId",
+                        column: x => x.UserProfileId,
                         principalTable: "UserProfiles",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -369,8 +370,8 @@ namespace INTEREST.DAL.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "b6c56eec-daa0-492d-9294-fad2725e84d0", "3444c2d3-6f70-4d94-aa5f-9ede6656ce64", "Admin", "ADMIN" },
-                    { "20958e93-c900-4445-b7e7-824d3bd670c4", "3758b706-eb66-4ffb-80b7-9d36b7fd1255", "User", "USER" }
+                    { "f6960fb4-d15d-48c6-a5ba-357b06cb81e8", "d205ad39-d488-40c7-a6e5-a9f282b81f0e", "Admin", "ADMIN" },
+                    { "920dc5ea-45a0-450d-8279-052405a80962", "33a25cd0-c0ab-47db-9281-f73e9696fff3", "User", "USER" }
                 });
 
             migrationBuilder.InsertData(
@@ -434,9 +435,16 @@ namespace INTEREST.DAL.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_UserId",
+                name: "IX_Events_UserProfileId",
                 table: "Events",
-                column: "UserId");
+                column: "UserProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Locations_UserProfileId",
+                table: "Locations",
+                column: "UserProfileId",
+                unique: true,
+                filter: "[UserProfileId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_EventId",
@@ -449,19 +457,19 @@ namespace INTEREST.DAL.Migrations
                 column: "StatusMessageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_UserId",
+                name: "IX_Messages_UserProfileId",
                 table: "Messages",
-                column: "UserId");
+                column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_EventId1",
+                name: "IX_Photos_EventId",
                 table: "Photos",
-                column: "EventId1");
+                column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_UserId",
+                name: "IX_Photos_UserProfileId",
                 table: "Photos",
-                column: "UserId");
+                column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserCategory_CategoryId",
@@ -469,9 +477,11 @@ namespace INTEREST.DAL.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserProfiles_Id",
+                name: "IX_UserProfiles_UserId",
                 table: "UserProfiles",
-                column: "Id");
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -516,10 +526,10 @@ namespace INTEREST.DAL.Migrations
                 name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "UserProfiles");
+                name: "Locations");
 
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using INTEREST.DAL.EF;
+using System;
 
 
 namespace INTEREST.DAL.Entities
 {
-    public class Message
+    public class Message : BaseEntity
     {
-        public int Id { get; set; }
         public int InternalId { get; set; }
 
-        public string UserId { get; set; }
-        public User User { get; set; }
+        public int? UserProfileId { get; set; }
+        public UserProfile UserProfile { get; set; }
 
         public int EventId { get; set; }
         public Event Event { get; set; }

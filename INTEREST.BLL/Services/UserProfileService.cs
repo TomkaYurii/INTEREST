@@ -45,31 +45,22 @@ namespace INTEREST.BLL.Services
             return result;
         }
 
-        //GET ONE USER INFORMATION
-        //public UserProfileDTO GetProfile(User user)
-        //{
-        //    var profile = Database.UserProfileRepository.GetById(user.ProfileId);
-
-        //    return new UserProfileDTO
-        //    {
-        //        UserName = user.UserName,
-        //        Email = user.Email,
-        //        PhoneNumber = user.PhoneNumber,
-        //        //Birthday = profile.Birthday,
-        //        //City = profile.Location.City,
-        //        //Country = profile.Location.Country,
-        //        //Gender = profile.Gender
-        //    };
-        //}
-
-        public async Task<UserProfileDTO> FindProfileByUserName(string UserName)
+        //GET INFO ABOUT 1 user
+        public UserProfileDTO GetProfile(User user)
         {
-            User user = Database.UserProfileRepository.FindByUserName(UserName);
+            var profile = Database.UserProfileRepository.GetById(user.ProfileId);
+            var location = Database.LocationRepository.GetById(profile.Id);
 
-            UserProfileDTO profile = new UserProfileDTO() {
-                GetUser = user
+            return new UserProfileDTO
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Birthday = profile.Birthday,
+                City = location.City,
+                Country = location.Country,
+                Gender = profile.Gender
             };
-            return profile;
         }
 
         public void Dispose()
