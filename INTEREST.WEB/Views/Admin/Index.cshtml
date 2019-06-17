@@ -1,8 +1,29 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Admin Index</h2>
-
+<h2>РОБОТА ІЗ КОРИСТУВАЧАМИ</h2>
+<h2>-----------------------</h2>
+<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Users">All Users</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="CreateUser">Create New User</a>
+        </li>
+    </ul>
+</div>
+<h2>РОБОТА ІЗ РОЛЯМИ</h2>
+<h2>-----------------------</h2>
+<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Roles">Roles List</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="CreateRole">Create New Role</a>
+        </li>
+    </ul>
+</div>
+<h2>-----------------------</h2>

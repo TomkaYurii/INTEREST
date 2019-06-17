@@ -10,6 +10,8 @@ namespace INTEREST.BLL.Interfaces
     public interface IUserProfileService : IDisposable
     {
         List<UserProfileDTO> GetUsers();
-        UserProfileDTO GetProfile(User u);
+        //UserProfileDTO GetProfile(User u);
+
+        Task<UserProfileDTO> FindProfileByUserName(string UserName);
     }
 }

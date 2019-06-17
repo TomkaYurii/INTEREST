@@ -16,6 +16,14 @@ html {
   html {
     font-size: 16px;
   }
+  .field-label-responsive {
+    padding-top: .5rem;
+    text-align: right;
+  }
+}
+
+.form-horizontal {
+    vertical-align: middle;
 }
 
 .border-top {

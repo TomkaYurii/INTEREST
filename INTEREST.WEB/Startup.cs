@@ -77,6 +77,7 @@ namespace INTEREST.WEB
             //DI SERVICES
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserProfileService, UserProfileService>();
+            services.AddTransient<IUserRoleService, UserRoleService>();
             services.AddTransient<IEventService, EventService>();
             //DI UNIT_OF_WORK
             services.AddTransient<IUnitOfWork, UnitOfWork>();

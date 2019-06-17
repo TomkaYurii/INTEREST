@@ -4,59 +4,155 @@
 @{
     ViewData["Title"] = "UserProfile";
 }
-<h2>ПРОФАЙЛ</h2>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Country)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Country)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-    </dl>
+
+<hr>
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-10"><h1>@Html.DisplayFor(model => model.UserName)</h1></div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-3">
+
+            <div class="text-center">
+                <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                <hr>
+                <h6>Upload avatar...</h6>
+                <input type="file" class="text-center center-block file-upload">
+            </div>
+            <hr>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Last Logged <i class="fa fa-link fa-1x"></i></div>
+                <div class="panel-body">Today at 2:18 pm</div>
+            </div>
+            <hr>
+
+            <ul class="list-group">
+                <li class="list-group-item text-muted">Personal Menu<i class="fa fa-dashboard fa-1x"></i></li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>My Frinds</strong></span> 125</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>My Events</strong></span> 13</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>My Messages</strong></span> 37</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+            </ul>
+
+        </div><!--/col-3-->
+
+        <div class="col-sm-9">
+            <form class="form" action="##" method="post" id="registrationForm">
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h6> @Html.DisplayNameFor(model => model.UserName) </h6>
+                        <input asp-for="UserName" class="form-control" placeholder="enter your username name if any" required autofocus />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h6>@Html.DisplayNameFor(model => model.Email)</h6>
+                        <input asp-for="Email" class="form-control" placeholder="enter your e-mail if any" required autofocus />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h6>@Html.DisplayNameFor(model => model.Phone)</h6>
+                        <input asp-for="Phone" class="form-control" placeholder="enter your phone if any" required autofocus />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h6>@Html.DisplayNameFor(model => model.Age)</h6>
+                        <input asp-for="Age" class="form-control" placeholder="enter your age if any" required autofocus />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h6>@Html.DisplayNameFor(model => model.Country)</h6>
+                        <input asp-for="Country" class="form-control" placeholder="enter your country if any" required autofocus />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h6>@Html.DisplayNameFor(model => model.City)</h6>
+                        <input asp-for="City" class="form-control" placeholder="enter your city if any" required autofocus />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <h6>@Html.DisplayNameFor(model => model.Gender)</h6>
+                        <input asp-for="Gender" class="form-control" placeholder="enter your gender if any" required autofocus />
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <br>
+                        <button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save </button>
+                        <button class="btn btn-lg btn-danger" type="reset"><i class="glyphicon glyphicon-repeat"></i> Edit </button>
+                    </div>
+                </div>
+            </form>
+
+        </div><!--/col-9-->
+    </div><!--/row-->
 </div>
+
+
 @*<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>*@
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+
+            </dt>
+            <dd>
+                
+            </dd>
+            <dt>
+                
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt>
+                
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+            <dt>
+                x
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Age)
+            </dd>
+            <dt>
+                
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Country)
+            </dd>
+            <dt>
+                
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.City)
+            </dd>
+            <dt>
+                
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Gender)
+            </dd>
+        </dl>
+    </div>*@
+
 
 
 

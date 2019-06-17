@@ -5,6 +5,7 @@ using INTEREST.DAL.Entities;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace INTEREST.BLL.Services
 {
@@ -41,25 +42,34 @@ namespace INTEREST.BLL.Services
                     //AvatarUrl = p.Avatar?.Url
                 });
             }
-
             return result;
         }
 
         //GET ONE USER INFORMATION
-        public UserProfileDTO GetProfile(User user)
-        {
-            var profile = Database.UserProfileRepository.GetById(user.ProfileId);
+        //public UserProfileDTO GetProfile(User user)
+        //{
+        //    var profile = Database.UserProfileRepository.GetById(user.ProfileId);
 
-            return new UserProfileDTO
-            {
-                UserName = user.UserName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                //Birthday = profile.Birthday,
-                //City = profile.Location.City,
-                //Country = profile.Location.Country,
-                //Gender = profile.Gender
+        //    return new UserProfileDTO
+        //    {
+        //        UserName = user.UserName,
+        //        Email = user.Email,
+        //        PhoneNumber = user.PhoneNumber,
+        //        //Birthday = profile.Birthday,
+        //        //City = profile.Location.City,
+        //        //Country = profile.Location.Country,
+        //        //Gender = profile.Gender
+        //    };
+        //}
+
+        public async Task<UserProfileDTO> FindProfileByUserName(string UserName)
+        {
+            User user = Database.UserProfileRepository.FindByUserName(UserName);
+
+            UserProfileDTO profile = new UserProfileDTO() {
+                GetUser = user
             };
+            return profile;
         }
 
         public void Dispose()

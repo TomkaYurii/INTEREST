@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "View";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>Users</h2>
@@ -59,7 +58,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Gender)
             </td>
-            <td> Mark as Admin | Delete </td>
+            <td>
+                <div class="form-group row">
+                <form asp-action="EditRole" asp-route-id="" method="post">
+                    <button type="submit" class="btn btn-sm btn-warning">
+                        EditRole
+                    </button>
+                </form>
+                <form asp-action="DeleteUser" asp-route-id="" method="post">
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Delete
+                    </button>
+                </form>
+                </div>
+            </td>
         </tr>
         }
     </tbody>
