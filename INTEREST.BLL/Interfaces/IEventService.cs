@@ -7,6 +7,5 @@ namespace INTEREST.BLL.Interfaces
 {
     public interface IEventService : IDisposable
     {
-        void CreateEvent(CreateEventDTO createEventDTO);
     }
 }

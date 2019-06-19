@@ -14,10 +14,11 @@ namespace INTEREST.BLL.DTO
         public string Phone { get; set; }
 
         //UserProfile entity
-        public string Id { get; set; }
+        public string UserId { get; set; }
         public DateTime Birthday { get; set; }
         public Location Location { get; set; }
         public String Gender { get; set; }
+        public Photo Avatar { get; set; }
 
         public string Role { get; set; }
     }

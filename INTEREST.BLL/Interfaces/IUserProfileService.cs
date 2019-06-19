@@ -2,6 +2,7 @@
 using INTEREST.DAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace INTEREST.BLL.Interfaces
 {
@@ -9,5 +10,12 @@ namespace INTEREST.BLL.Interfaces
     {
         List<UserProfileDTO> GetUsers();
         UserProfileDTO GetProfile(User u);
+        Task AddAvatar(string url, UserProfile userProfile);
+
+
+        UserProfile GetProfileByName(User user);
+
+        //UserProfile FindById(string id);
+        //UserProfileDTO FindProfileByUserName(string UserName);
     }
 }

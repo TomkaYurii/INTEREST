@@ -43,20 +43,20 @@ namespace INTEREST.DAL.EF
                 new StatusMessage() { Id = 3, StatusMessageText = "Message is deleted" },
                 new StatusMessage() { Id = 4, StatusMessageText = "Message is deleted by admin" }
                 );
-            
+
             // User-Category
-            modelBuilder.Entity<UserCategory>()
+            modelBuilder.Entity<UserProfileCategory>()
                 .HasKey(uc => new { uc.UserProfileId, uc.CategoryId });
-            modelBuilder.Entity<UserCategory>()
+            modelBuilder.Entity<UserProfileCategory>()
                 .HasOne(uc => uc.UserProfile)
-                .WithMany(u => u.UserCategories)
+                .WithMany(u => u.UserProfileCategories)
                 .HasForeignKey(uc => uc.UserProfileId);
-            modelBuilder.Entity<UserCategory>()
+            modelBuilder.Entity<UserProfileCategory>()
                 .HasOne(uc => uc.Category)
-                .WithMany(c => c.UserCategories)
+                .WithMany(c => c.UserProfileCategories)
                 .HasForeignKey(uc => uc.CategoryId);
 
-            // Category-Event
+            //// Category-Event
             modelBuilder.Entity<CategoryEvent>()
                 .HasKey(ce => new { ce.CategoryId, ce.EventId });
             modelBuilder.Entity<CategoryEvent>()

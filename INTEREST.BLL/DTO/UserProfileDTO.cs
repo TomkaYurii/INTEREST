@@ -15,5 +15,9 @@ namespace INTEREST.BLL.DTO
         public string Country { get; set; }
         public string City { get; set; }
         public string AvatarUrl { get; set; }
+        public User GetUser { get; internal set; }
+
+        //public User GetUser { get; set; }
+        //public List<Event> Events { get; set; }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using INTEREST.DAL.EF;
 using INTEREST.DAL.Entities;
 using INTEREST.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace INTEREST.DAL.Repositories
 {
@@ -11,6 +9,12 @@ namespace INTEREST.DAL.Repositories
     {
         public PhotoRepository(AppDBContext context) : base(context)
         {
+
+        }
+
+        public Photo FindClone(string url)
+        {
+            return context.Photos.FirstOrDefault(x => x.URL == url);
         }
     }
 }

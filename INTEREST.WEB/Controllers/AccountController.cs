@@ -73,6 +73,10 @@ namespace INTEREST.WEB.Controllers
                     Birthday = model.Birthday,
                     Gender = model.Gender,
                     Phone = model.Phone,
+                    Avatar = new Photo
+                                {
+                                    URL = "Default",
+                                },
                     Location = new Location()
                                 {
                                     Country = model.Country,
@@ -97,7 +101,7 @@ namespace INTEREST.WEB.Controllers
                 Email = "tomka.yuriy@gmail.com",
                 UserName = "Tomka",
                 Password = "K7k1e9gof8r",
-                Role = "admin",
+                Role = "admin"
             });
         }
 

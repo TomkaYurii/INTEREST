@@ -1,0 +1,36 @@
+﻿@using INTEREST.DAL.Entities
+@model List<Category>
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<link href="~/css/CheckBox.css" rel="stylesheet" />
+<h2>Categories</h2>
+
+<form asp-action="AddCategory" asp-controller="Admin" method="post">
+    <input type="text" name="title" value="" />
+    <input type="submit" name="submit" value="Add" />
+</form>
+
+<ul class="ks-cboxtags">
+    @foreach (var item in Model)
+    {
+        @*<li>
+            <input type="checkbox" id="checkbox @item.Id" value="@item.Name">
+            <label for="checkbox @item.Id">@item.Name</label>
+        </li>*@
+
+
+        <tr>
+            <td>@item.Name</td>
+            <td>
+                <form asp-action="DeleteCategory" asp-route-id="@item.Id" method="post">
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+    }
+</ul>

@@ -9,7 +9,6 @@ namespace INTEREST.DAL.Entities
         public string Country { get; set; }
         public string City { get; set; }
 
-        public int? UserProfileId { get; set; }
-        public UserProfile UserProfile { get; set; }
+        //public virtual UserProfile UserProfile { get; set; }
     }
 }

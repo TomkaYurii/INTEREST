@@ -65,10 +65,6 @@ namespace INTEREST.DAL.Repositories
                 {
                     UserManager.Dispose();
                     RoleManager.Dispose();
-                    //UserProfileRepository.Dispose();
-                    //CategoryRepository.Dispose();
-                    EventRepository.Dispose();
-                    MessageRepository.Dispose();
                 }
                 this.disposed = true;
             }

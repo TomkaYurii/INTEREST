@@ -7,5 +7,6 @@ namespace INTEREST.DAL.Interfaces
 {
     public interface IPhotoRepository : IBaseRepository<Photo>
     {
+
     }
 }

@@ -71,13 +71,15 @@ namespace INTEREST.WEB
             //DI REPOSITORIES
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<ILocationRepository, LocationRepository>();
+            services.AddTransient<IPhotoRepository, PhotoRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IEventRepository, EventRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();
             //DI SERVICES
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserProfileService, UserProfileService>();
-            services.AddTransient<IUserRoleService, UserRoleService>();
+            services.AddTransient<IRolesService, RolesService>();
+            services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IEventService, EventService>();
             //DI UNIT_OF_WORK
             services.AddTransient<IUnitOfWork, UnitOfWork>();

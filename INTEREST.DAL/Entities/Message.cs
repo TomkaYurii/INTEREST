@@ -8,17 +8,17 @@ namespace INTEREST.DAL.Entities
     {
         public int InternalId { get; set; }
 
-        public int? UserProfileId { get; set; }
-        public UserProfile UserProfile { get; set; }
+        //public int UserProfileId { get; set; }
+        //public virtual UserProfile UserProfile { get; set; }
 
         public int EventId { get; set; }
-        public Event Event { get; set; }
+        public virtual Event Event { get; set; }
 
         public string MessageText { get; set; }
+        public virtual DateTime MessageTime { get; set; }
 
         public int StatusMessageId { get; set; }
-        public StatusMessage StatusMessage { get; set; }
-        public DateTime MessageTime { get; set; }
+        public virtual StatusMessage StatusMessage { get; set; }
     }
 }
 

@@ -12,13 +12,18 @@ namespace INTEREST.WEB.Controllers
     public class AdminController : Controller
     {
         public IUserService UserService { get; set; }
-        public IUserRoleService UserRoleService { get; set; }
+        public IRolesService UserRoleService { get; set; }
+        public ICategoryService CategoryService { get; set; }
         public IUserProfileService ProfileService { get; set; }
 
-        public AdminController(IUserService userService, IUserRoleService userRoleService, IUserProfileService userProfileService)
+        public AdminController(IUserService userService, 
+            IRolesService userRoleService, 
+            ICategoryService categoryService,
+            IUserProfileService userProfileService)
         {
             UserService = userService;
             UserRoleService = userRoleService;
+            CategoryService = categoryService;
             ProfileService = userProfileService;
         }
 
@@ -57,6 +62,28 @@ namespace INTEREST.WEB.Controllers
             return View(ProfileService.GetUsers());
         }
 
+        // WORK WITH CATEGORIES
+        public IActionResult Categories()
+        {
+            return View(CategoryService.Categories());
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult AddCategory(string title)
+        {
+            CategoryService.AddCategoryAsync(title);
+            return RedirectToAction("Categories", "Admin");
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteCategory(int id)
+        {
+            CategoryService.DeleteCategoryAsync(id);
+            return RedirectToAction("Categories", "Admin");
+        }
 
 
     }

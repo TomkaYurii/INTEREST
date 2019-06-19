@@ -10,7 +10,7 @@ namespace INTEREST.WEB.ViewModels
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-
+        [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
@@ -32,7 +32,6 @@ namespace INTEREST.WEB.ViewModels
         public string Country { get; set; }
         [Display(Name = "City")]
         public string City_state { get; set; }
-
         [Display(Name = "Gender")]
         public string Gender { get; set; }
 

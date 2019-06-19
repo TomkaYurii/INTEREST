@@ -9,23 +9,14 @@ namespace INTEREST.DAL.Repositories
     {
         public UserProfileRepository(AppDBContext context) : base(context)
         {
-        }
-
-        //public void Create(UserProfile userProfile)
-        //{
-        //    _context.UserProfiles.Add(userProfile);
-        //    _context.SaveChanges();
-        //}
-
-        public UserProfile FindByUserId(string id)
-        {
-            return _context.UserProfiles.FirstOrDefault(x => x.UserId == id);
+           
         }
         public User FindByUserName(string UserName)
         {
-            User user = _context.Users.FirstOrDefault(x => x.UserName == UserName);
-            user.UserProfile = _context.UserProfiles.FirstOrDefault(x => x.UserId == user.Id);
-            user.UserProfile.Location = _context.Locations.FirstOrDefault(x => x.UserProfileId == user.ProfileId);
+            User user = context.Users.FirstOrDefault(x => x.UserName == UserName);
+            user.UserProfile = context.UserProfiles.FirstOrDefault(x => x.UserId == user.Id);
+            user.UserProfile.Avatar = context.Photos.FirstOrDefault(x => x.Id == user.UserProfile.PhotoId);
+            user.UserProfile.Location = context.Locations.FirstOrDefault(x => x.Id == user.UserProfile.LocationId);
             return user;
         }
     }

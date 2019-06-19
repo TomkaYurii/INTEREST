@@ -21,22 +21,6 @@ namespace INTEREST.BLL.Services
             _mapper = mapper;
         }
 
-        //public IEnumerable<DTOThemeViewModel> GetAllThemes()
-        //{
-        //    return Mapper.Map<IEnumerable<Theme>, IEnumerable<DTOThemeViewModel>>(Database.Themes.GetAllThemes());
-        //}
-
-        public void CreateEvent(CreateEventDTO createEventDTO)
-        {
-            var Event = _mapper.Map<Event>(createEventDTO);
-            Database.EventRepository.CreateEvent(Event);
-        }
-
-        public void DeleteEvent(int id)
-        {
-            Database.EventRepository.DeleteEvent(id);
-        }
-
         public void Dispose()
         {
             Database.Dispose();

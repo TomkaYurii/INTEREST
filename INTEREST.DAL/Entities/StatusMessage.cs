@@ -11,6 +11,6 @@ namespace INTEREST.DAL.Entities
         // 4 - Message removed by admin.
 
         public string StatusMessageText { get; set; }
-        public ICollection<Message> Messages { get; set; }
+        public virtual IEnumerable<Message> Messages { get; set; }
     }
 }

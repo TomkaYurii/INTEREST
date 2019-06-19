@@ -24,56 +24,73 @@ namespace INTEREST.BLL.Services
         //CREATE USER
         public async Task<OperationDetails> CreateAsync(UserDTO userDTO)
         {
-            if (await Database.UserManager.FindByEmailAsync(userDTO.Email) != null)
+            User user = await Database.UserManager.FindByEmailAsync(userDTO.Email);
+            if (user == null)
             {
-                return new OperationDetails(false, "User with this e-mail already exists", "Email");
-            }
-            User user = new User
-            {
-                Email = userDTO.Email,
-                UserName = userDTO.UserName,
-                PhoneNumber = userDTO.Phone
-            };
-            var result = await Database.UserManager.CreateAsync(user, userDTO.Password);
+                // Add User
+                user = await Database.UserManager.FindByNameAsync(userDTO.UserName);
+                if (user != null)
+                    return new OperationDetails(false, "Username is being use", "");
+                user = Database.UserManager.Users.FirstOrDefault(x => x.PhoneNumber == userDTO.Phone);
+                if (user != null)
+                    return new OperationDetails(false, "Phone number is being use", "");
+                user = new User
+                {
+                    Email = userDTO.Email,
+                    UserName = userDTO.UserName,
+                    PhoneNumber = userDTO.Phone
+                };
+                var result = await Database.UserManager.CreateAsync(user, userDTO.Password);
+                if (result.Errors.Count() > 0)
+                    return new OperationDetails(false, result.Errors.FirstOrDefault().Description, "");
+                // Add Role
+                await Database.UserManager.AddToRoleAsync(user, userDTO.Role);
+                // Create location
+                Location location = Database.LocationRepository.FindClone(userDTO.Location);
+                if (location == null)
+                {
+                    location = userDTO.Location;
+                    Database.LocationRepository.Create(userDTO.Location);
+                }
+                // Create Default Avatar
+                Database.PhotoRepository.Create(userDTO.Avatar);
 
-            if (result.Errors.Count() > 0)
-            {
-                return new OperationDetails(false, result.Errors.FirstOrDefault().ToString(), "");
-            }
-            // Add role
-            await Database.UserManager.AddToRoleAsync(user, userDTO.Role);
-            // Create UserProfile
-            Location location = Database.LocationRepository.FindClone(userDTO.Location);
-            if (location == null)
-            {
-                location = userDTO.Location;
-                Database.LocationRepository.Create(userDTO.Location);
-            }
-            UserProfile userProfile = new UserProfile
-            {
-                UserId = user.Id,
-                Birthday = userDTO.Birthday,
-                Gender = userDTO.Gender,
-                Location = location
-            };
-            Database.UserProfileRepository.Create(userProfile);
-            user.ProfileId = userProfile.Id;
+                UserProfile userProfile = new UserProfile
+                {
+                    UserId = user.Id,
+                    Birthday = userDTO.Birthday,
+                    Gender = userDTO.Gender,
+                    Location = location,
+                    Avatar = userDTO.Avatar,
+                };
+                Database.UserProfileRepository.Create(userProfile);
 
-            result = await Database.UserManager.UpdateAsync(user);
-            if (result.Errors.Count() > 0)
-            {
-                return new OperationDetails(false, result.Errors.FirstOrDefault().ToString(), "");
-            }
+                user.ProfileId = userProfile.Id;
+                result = await Database.UserManager.UpdateAsync(user);
 
-            await Database.SaveAsync();
-            return new OperationDetails(true, "Registration successfully completed", "");
+                await Database.SaveAsync();
+                return new OperationDetails(true, "Registration is sucsessfuly complited", "");
+            }
+            else
+            {
+                return new OperationDetails(false, "User with such login is exist", "Email");
+            }
         }
 
         //AUTENTIFICATION
         public async Task<bool> SignInAsync(UserDTO userDto)
-        {
-            var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
-            var auth = await Database.SignInManager.PasswordSignInAsync(user.UserName, userDto.Password, false, lockoutOnFailure: false);
+        {    
+            var userName = userDto.Email;
+            if (userName.IndexOf('@') > -1)
+            {
+                var user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+                userName = user.UserName;
+            }
+            var auth = await Database.SignInManager.PasswordSignInAsync(
+                userName,
+                userDto.Password,
+                false,
+                lockoutOnFailure: false);
             return auth.Succeeded;
         }
 

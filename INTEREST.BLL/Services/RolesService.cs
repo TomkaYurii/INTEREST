@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace INTEREST.BLL.Services
 {
-    public class UserRoleService : IUserRoleService
+    public class RolesService : IRolesService
     {
         private IUnitOfWork Database { get; set; }
-        public UserRoleService(IUnitOfWork uow)
+        public RolesService(IUnitOfWork uow)
         {
             Database = uow;
         }
@@ -40,12 +40,10 @@ namespace INTEREST.BLL.Services
                await Database.RoleManager.DeleteAsync(role);
             }
         }
-
-
+        
         public void Dispose()
         {
             Database.Dispose();
         }
-
     }
 }

@@ -8,6 +8,6 @@ namespace INTEREST.DAL.Entities
     public class User : IdentityUser
     {
         public int ProfileId { get; set; }
-        public UserProfile UserProfile { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
     }
 }

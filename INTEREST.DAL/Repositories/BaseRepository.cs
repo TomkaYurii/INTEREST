@@ -2,20 +2,20 @@
 using INTEREST.DAL.EF;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using INTEREST.DAL.Entities;
 
 namespace INTEREST.DAL.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        protected readonly AppDBContext _context;
+        protected readonly AppDBContext context;
         protected readonly DbSet<T> entity;
 
-        public BaseRepository(AppDBContext context)
+        public BaseRepository(AppDBContext _context)
         {
-            _context = context;
-            entity = context.Set<T>();
+            context = _context;
+            entity = _context.Set<T>();
         }
 
         public IQueryable<T> GetAll() => entity;
@@ -29,7 +29,7 @@ namespace INTEREST.DAL.Repositories
                 throw new ArgumentNullException(nameof(entity));
             }
             this.entity.Add(entity);
-            _context.SaveChanges();
+            context.SaveChanges();
             return entity;
         }
 
@@ -39,8 +39,8 @@ namespace INTEREST.DAL.Repositories
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
+            context.Entry(entity).State = EntityState.Modified;
+            context.SaveChanges();
             return entity;
         }
 
@@ -53,7 +53,7 @@ namespace INTEREST.DAL.Repositories
             if (this.entity.Contains(entity))
             {
                 this.entity.Remove(entity);
-                _context.SaveChanges();
+                context.SaveChanges();
                 return true;
             }
             return false;
@@ -61,7 +61,7 @@ namespace INTEREST.DAL.Repositories
 
         public void Save()
         {
-            _context.SaveChanges();
+            context.SaveChanges();
         }
     }
 }

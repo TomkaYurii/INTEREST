@@ -3,10 +3,8 @@ using System;
 
 namespace INTEREST.DAL.Interfaces
 {
-    public interface IEventRepository : IDisposable
+    public interface IEventRepository :  IBaseRepository<Event>
     {
-        void CreateEvent(Event _event);
 
-        void DeleteEvent(int id);
     }
 }
