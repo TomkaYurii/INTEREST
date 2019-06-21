@@ -11,10 +11,5 @@ namespace INTEREST.DAL.Repositories
         {
 
         }
-
-        public Photo FindClone(string url)
-        {
-            return context.Photos.FirstOrDefault(x => x.URL == url);
-        }
     }
 }

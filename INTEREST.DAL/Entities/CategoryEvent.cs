@@ -4,7 +4,7 @@ using System.Text;
 
 namespace INTEREST.DAL.Entities
 {
-    public class CategoryEvent
+    public class CategoryEvent : BaseEntity
     {
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }

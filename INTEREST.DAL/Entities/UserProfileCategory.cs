@@ -1,6 +1,6 @@
 ﻿namespace INTEREST.DAL.Entities
 {
-    public class UserProfileCategory
+    public class UserProfileCategory : BaseEntity
     {
         public int UserProfileId { get; set; }
         public virtual UserProfile UserProfile { get; set; }

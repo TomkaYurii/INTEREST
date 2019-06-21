@@ -1,4 +1,6 @@
-﻿using INTEREST.BLL.Interfaces;
+﻿using INTEREST.BLL.Infrastructure;
+using INTEREST.BLL.Interfaces;
+using INTEREST.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +16,7 @@ namespace INTEREST.WEB.Controllers
         public IUserService UserService { get; set; }
         public IRolesService UserRoleService { get; set; }
         public ICategoryService CategoryService { get; set; }
-        public IUserProfileService ProfileService { get; set; }
+        public IUserProfileService UserProfileService { get; set; }
 
         public AdminController(IUserService userService, 
             IRolesService userRoleService, 
@@ -24,9 +26,11 @@ namespace INTEREST.WEB.Controllers
             UserService = userService;
             UserRoleService = userRoleService;
             CategoryService = categoryService;
-            ProfileService = userProfileService;
+            UserProfileService = userProfileService;
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             return View();
@@ -42,10 +46,10 @@ namespace INTEREST.WEB.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create(string name)
+        public async Task<IActionResult> AddRole(string name)
         {
             await UserRoleService.CreateRole(name);
-            return View(name);
+            return RedirectToAction("Roles");
         }
 
         [HttpPost]
@@ -53,16 +57,34 @@ namespace INTEREST.WEB.Controllers
         public async Task<IActionResult> DeleteRole(string id)
         {
             await UserRoleService.DeleteRole(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Roles");
         }
 
         // WORK WITH USERS
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Users()
         {
-            return View(ProfileService.GetUsers());
+            return View(UserProfileService.GetUsers());
         }
 
+        //[HttpPost]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<ActionResult> DeleteUser(string userId)
+        //{
+        //    await UserProfileService.DeleteUser(userId);
+        //    return RedirectToAction("Users", "Admin");
+        //}
+
+        //[HttpGet]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<ActionResult> EditUser(string userId)
+        //{
+        //    return RedirectToAction("UserProfile", "UserProfile");
+        //}
+
         // WORK WITH CATEGORIES
+        [HttpGet]
         public IActionResult Categories()
         {
             return View(CategoryService.Categories());
@@ -76,7 +98,6 @@ namespace INTEREST.WEB.Controllers
             return RedirectToAction("Categories", "Admin");
         }
 
-
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteCategory(int id)
@@ -84,7 +105,5 @@ namespace INTEREST.WEB.Controllers
             CategoryService.DeleteCategoryAsync(id);
             return RedirectToAction("Categories", "Admin");
         }
-
-
     }
 }

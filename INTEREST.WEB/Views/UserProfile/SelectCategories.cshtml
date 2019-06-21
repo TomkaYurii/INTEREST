@@ -1,0 +1,20 @@
+﻿@using INTEREST.WEB.ViewModels
+@model SelectCategoriesViewModel
+@{
+    ViewData["Title"] = "Select Categories";
+}
+
+<link href="~/css/CheckBox.css" rel="stylesheet" />
+@using (Html.BeginForm("SelectCategories", "UserProfile"))
+{
+    <ul class="ks-cboxtags">
+        @foreach (var item in Model.Categories)
+        {
+            <li>
+                <input name="SelectedCategories" type="checkbox" id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text> checked</text> } value="@item.Name">
+                <label for="@item.Id">@item.Name</label>
+            </li>
+        }
+    </ul>
+    <input type="submit" name="Submit" value="Choose" />
+}

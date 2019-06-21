@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using INTEREST.BLL.Infrastructure;
+using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace INTEREST.BLL.Services
 {
@@ -27,6 +30,7 @@ namespace INTEREST.BLL.Services
             var profiles = Database.UserProfileRepository.GetAll()
                 .Include(p => p.User)
                 .Include(p => p.Location)
+                .Include(p => p.Avatar)
                 .ToList();
 
             var result = new List<UserProfileDTO>();
@@ -35,6 +39,7 @@ namespace INTEREST.BLL.Services
             {
                 result.Add(new UserProfileDTO
                 {
+                    UserId = p.User.Id,
                     UserName = p.User.UserName,
                     Email = p.User.Email,
                     PhoneNumber = p.User.PhoneNumber,
@@ -48,51 +53,52 @@ namespace INTEREST.BLL.Services
             return result;
         }
 
-        // GET INFO ABOUT 1 user by name
-        //public UserProfileDTO FindProfileByUserName(string UserName)
-        //{
-        //    User user = Database.UserProfileRepository.FindByUserName(UserName);
-        //    UserProfileDTO profile = new UserProfileDTO()
-        //    {
-        //        GetUser = user
-        //    };
-        //    return profile;
-        //}
-
-        //GET INFO ABOUT 1 user
-        public UserProfileDTO GetProfile(User user)
+        //GET ALL INFO ABOUT 1 user
+        public UserProfileDTO GetProfile(string user)
         {
-            var profile = Database.UserProfileRepository.GetById(user.ProfileId);
-            var location = Database.LocationRepository.GetById(profile.LocationId.Value);
-            var avatar = Database.PhotoRepository.GetById(profile.PhotoId.Value);
+            var profile = Database.UserProfileRepository.FindByUserName(user);
 
             return new UserProfileDTO
             {
-                UserName = user.UserName,
-                Email = user.Email,
-
-                PhoneNumber = user.PhoneNumber,
-                Birthday = profile.Birthday,
-                City = location?.City,
-                Country = location?.Country,
-                Gender = profile.Gender,
-                AvatarUrl = avatar?.URL
+                UserId = profile.Id,
+                UserName = profile.UserName,
+                Email = profile.Email,
+                PhoneNumber = profile.PhoneNumber,
+                Birthday = profile.UserProfile.Birthday,
+                City = profile.UserProfile?.Location?.City,
+                Country = profile.UserProfile?.Location?.Country,
+                Gender = profile.UserProfile.Gender,
+                AvatarUrl = profile.UserProfile?.Avatar?.URL
             };
         }
 
-
-
-
-
-        public UserProfile GetProfileByName(User user)
+        //Get User by name
+        public User GetUserByName(string user)
         {
-            return Database.UserProfileRepository.GetById(user.ProfileId);
+            return Database.UserProfileRepository.FindByUserName(user);
         }
 
+        ////Get User by id
+        //public async Task<User> GetUserById(string id)
+        //{
+        //   User user = await Database.UserManager.FindByIdAsync(id);
 
+        //   return user;
+        //}
 
+        //Delete User by id
+        public async Task<OperationDetails> DeleteUser(string id)
+        {
+            User user = await Database.UserManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                IdentityResult result = await Database.UserManager.DeleteAsync(user);
+                return new OperationDetails(result.Succeeded, result.Errors.FirstOrDefault().Description, "");
+            }
+            return new OperationDetails(false, "User is not found", "");
+        }
 
-
+        // Add Photo of Avatar
         public async Task AddAvatar(string url, UserProfile userProfile)
         {
             if (userProfile.Avatar.URL != "Default")
@@ -112,6 +118,38 @@ namespace INTEREST.BLL.Services
             }
             await Database.SaveAsync();
         }
+
+        ////Edit Information About User
+        //public async Task<OperationDetails> EditProfile(EditProfileDTO model)
+        //{
+        //    UserProfile profile = Database.UserProfileRepository..FindById(model.Id);
+
+        //    User user = await Database.UserManager.FindByIdAsync(model.Id);
+
+
+        //    if (model.UserName != null)
+        //    {
+        //        User clone = await Database.UserManager.FindByEmailAsync(model.UserName);
+        //        if (model.UserName != user.UserName && clone != null)
+        //            return new OperationDetails(false, "Username is being use", "");
+        //        user.UserName = model.UserName;
+        //    }
+
+
+        //    if (model.City != null)
+        //    {
+        //        if (Database.LocationRepository.FindClone(model.Location) == null)
+        //        {
+        //            Location l = Database.LocationRepository.Add(model.Location);
+        //            profile.Location = l;
+        //        }
+        //    }
+
+
+        //    profile.Birthday = DateTime.Today.Year - model.Age;
+        //    await Database.SaveAsync();
+        //    return new OperationDetails(true, "Ok", "");
+        //}
 
         public void Dispose()
         {

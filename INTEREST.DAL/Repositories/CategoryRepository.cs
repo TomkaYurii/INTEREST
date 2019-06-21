@@ -14,19 +14,22 @@ namespace INTEREST.DAL.Repositories
         {
         }
 
-        //public List<Category> CategoriesByUser(string id)
-        //{
-        //    List<Category> categories = new List<Category>();
-        //    foreach (var item in context..UserProfileCategories.Where(x => x.UserId == id))
-        //    {
-        //        categories.Add(context.Categories.FirstOrDefault(x => x.Id == item.CategoryId));
-        //    }
-        //    return categories;
-        //}
-
         public Category GetByTitle(string title)
         {
             return context.Categories.FirstOrDefault(x => x.Name == title);
         }
+
+        public List<Category> UserCategories(string userName)
+        {
+            List<Category> categories = new List<Category>();
+            User user = context.Users.FirstOrDefault(x => x.UserName == userName);
+            categories = context.Categories.Where(c => c.UserProfileCategories
+                                .Any(e => e.UserProfileId == user.ProfileId))
+                                .ToList();
+            return categories;
+        }
+
+
+
     }
 }

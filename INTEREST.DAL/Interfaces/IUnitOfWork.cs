@@ -15,6 +15,8 @@ namespace INTEREST.DAL.Interfaces
         ICategoryRepository CategoryRepository { get; }
         ILocationRepository LocationRepository { get; }
         IEventRepository EventRepository { get; }
+        ICategoryEventRepository CategoryEventRepository { get; }
+        IUserProfileCategoryRepository UserProfileCategoryRepository { get; }
         IMessageRepository MessageRepository { get; }
         Task SaveAsync();
     }

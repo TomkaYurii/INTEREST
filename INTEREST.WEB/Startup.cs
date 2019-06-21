@@ -65,7 +65,7 @@ namespace INTEREST.WEB
                 options.User.RequireUniqueEmail = false;
             });
 
-            services.AddAutoMapper();
+            //services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //DI REPOSITORIES
@@ -75,6 +75,8 @@ namespace INTEREST.WEB
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IEventRepository, EventRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<ICategoryEventRepository, CategoryEventRepository>();
+            services.AddTransient<IUserProfileCategoryRepository, UserProfileCategoryRepository>();
             //DI SERVICES
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserProfileService, UserProfileService>();

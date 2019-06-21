@@ -16,6 +16,8 @@ namespace INTEREST.DAL.EF
         public DbSet<Message> Messages { get; set; }
         public DbSet<StatusMessage> StatusMessages { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<UserProfileCategory> UserProfileCategories { get; set; }
+        public DbSet<CategoryEvent> CategoryEvents { get; set; }
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {

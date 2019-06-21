@@ -10,7 +10,7 @@ namespace INTEREST.DAL.Repositories
     public class EventRepository : BaseRepository<Event>, IEventRepository
     {
         public EventRepository(AppDBContext context) : base(context)
-    {
+        {
+        }
     }
-}
 }

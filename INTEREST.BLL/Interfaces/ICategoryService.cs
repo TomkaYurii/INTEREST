@@ -1,4 +1,5 @@
-﻿using INTEREST.BLL.Infrastructure;
+﻿using INTEREST.BLL.DTO;
+using INTEREST.BLL.Infrastructure;
 using INTEREST.DAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,7 @@ namespace INTEREST.BLL.Interfaces
         Task<OperationDetails> AddCategoryAsync(string title);
         Task<OperationDetails> DeleteCategoryAsync(int id);
 
-        //IEnumerable<Category> GetAll();
-        //Category Get(int id);
-        //Task<OperationDetails> CreateAsync(Category categoty);
-        //Task<OperationDetails> EditAsync(Category categoty);
-        //Task<OperationDetails> DeleteAsync(int id);
+        List<Category> CategoriesOfUser(string profileID);
+        Task<OperationDetails> AddCategoriesToUser(UserCategoryDTO model);
     }
 }

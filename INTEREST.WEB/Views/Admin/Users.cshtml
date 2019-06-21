@@ -60,16 +60,21 @@
             </td>
             <td>
                 <div class="form-group row">
-                <form asp-action="EditRole" asp-route-id="" method="post">
-                    <button type="submit" class="btn btn-sm btn-warning">
-                        EditRole
-                    </button>
-                </form>
-                <form asp-action="DeleteUser" asp-route-id="" method="post">
-                    <button type="submit" class="btn btn-sm btn-danger">
-                        Delete
-                    </button>
-                </form>
+                    <form asp-action="EditRole" asp-route-id="" method="post">
+                        <button type="submit" class="btn btn-sm btn-warning">
+                            EditRole
+                        </button>
+                    </form>
+                    <form asp-controller="UserProfile" asp-action="UserProfile" asp-route-id="@item.UserId" method="get">
+                        <button type="submit" class="btn btn-sm btn-warning">
+                            EditUser
+                        </button>
+                    </form>
+                    <form asp-controller="Admin" asp-action="DeleteUser" asp-route-id="@item.UserId" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            Delete
+                        </button>
+                    </form>
                 </div>
             </td>
         </tr>

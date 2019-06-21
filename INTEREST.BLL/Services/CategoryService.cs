@@ -1,4 +1,5 @@
-﻿using INTEREST.BLL.Infrastructure;
+﻿using INTEREST.BLL.DTO;
+using INTEREST.BLL.Infrastructure;
 using INTEREST.BLL.Interfaces;
 using INTEREST.DAL.Entities;
 using INTEREST.DAL.Interfaces;
@@ -23,6 +24,11 @@ namespace INTEREST.BLL.Services
 
         public async Task<OperationDetails> AddCategoryAsync(string title)
         {
+            foreach (var item in Database.CategoryRepository.GetAll())
+            {
+                if (item.Name == title)
+                    return new OperationDetails(false, "We have this category", ""); ;
+            }
 
             Database.CategoryRepository.Create(new Category() { Name = title });
 
@@ -48,32 +54,31 @@ namespace INTEREST.BLL.Services
         }
 
 
-        //
 
-        //public Category Get(int id) => Database.CategoryRepository.GetById(id);
+        public List<Category> CategoriesOfUser(string UserName)
+        {
+            return Database.CategoryRepository.UserCategories(UserName);
+        }
 
+        public async Task<OperationDetails> AddCategoriesToUser(UserCategoryDTO model)
+        {
+            foreach (var item in Database.UserProfileCategoryRepository.GetAll())
+            {
+                if (item.UserProfileId == model.Id)
+                    Database.UserProfileCategoryRepository.Delete(item);
+            }
 
-        //public async Task<OperationDetails> EditAsync(Category categoty)
-        //{
-        //    if (categoty.Id == 0)
-        //    {
-        //        return new OperationDetails(false, "Id field is '0'", "");
-        //    }
-
-        //    Category oldCategory = Database.CategoryRepository.GetById(categoty.Id);
-        //    if (oldCategory == null)
-        //    {
-        //        return new OperationDetails(false, "Not found", "");
-        //    }
-
-        //    oldCategory.Name = categoty.Name;
-
-        //    await Database.SaveAsync();
-
-        //    return new OperationDetails(true, "", "");
-        //}
-
-
+            foreach (var item in model.Categories)
+            {
+                Database.UserProfileCategoryRepository.Create(new UserProfileCategory
+                {
+                    Category = Database.CategoryRepository.GetByTitle(item),
+                    UserProfile = Database.UserProfileRepository.GetById(model.Id)
+                }); ;
+                await Database.SaveAsync();
+            }
+            return new OperationDetails(true, "Ok", "");
+        }
 
         public void Dispose()
         {

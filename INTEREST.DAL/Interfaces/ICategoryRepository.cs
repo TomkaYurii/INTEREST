@@ -6,5 +6,8 @@ namespace INTEREST.DAL.Interfaces
 {
     public interface ICategoryRepository : IBaseRepository<Category>
     {
+        Category GetByTitle(string title);
+        List<Category> UserCategories(string userName);
+
     }
 }

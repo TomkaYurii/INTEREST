@@ -27,9 +27,8 @@ namespace INTEREST.BLL.Services
         {
             if (!string.IsNullOrEmpty(role))
             {
-               await Database.RoleManager.CreateAsync(new IdentityRole(role));
+                await Database.RoleManager.CreateAsync(new IdentityRole(role));
             }
-            
         }
 
         public async Task DeleteRole(string id)
