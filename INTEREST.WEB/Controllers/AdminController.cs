@@ -68,20 +68,20 @@ namespace INTEREST.WEB.Controllers
             return View(UserProfileService.GetUsers());
         }
 
-        //[HttpPost]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<ActionResult> DeleteUser(string userId)
-        //{
-        //    await UserProfileService.DeleteUser(userId);
-        //    return RedirectToAction("Users", "Admin");
-        //}
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> DeleteUser(string userId)
+        {
+            await UserProfileService.DeleteUser(userId);
+            return RedirectToAction("Users", "Admin");
+        }
 
-        //[HttpGet]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<ActionResult> EditUser(string userId)
-        //{
-        //    return RedirectToAction("UserProfile", "UserProfile");
-        //}
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> EditUser(string userId)
+        {
+            return RedirectToAction("UserProfile", "UserProfile");
+        }
 
         // WORK WITH CATEGORIES
         [HttpGet]

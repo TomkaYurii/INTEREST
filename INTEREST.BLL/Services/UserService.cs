@@ -115,6 +115,17 @@ namespace INTEREST.BLL.Services
             await Database.SignInManager.SignOutAsync();
         }
 
+        // DELETE USER
+        public async Task DeleteUser(string name)
+        {
+            User user = await Database.UserManager.FindByNameAsync(name);
+            if (user != null)
+            {
+                await Database.UserManager.DeleteAsync(user);
+            }
+            await Database.SaveAsync();
+        }
+
         public void Dispose()
         {
             Database.Dispose();

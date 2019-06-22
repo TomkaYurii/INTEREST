@@ -34,21 +34,29 @@ namespace INTEREST.WEB.Controllers
             userProfileService = _userProfileService;
         }
 
+        //USER PROFILE
         public async Task<IActionResult> UserProfile(string userId)
         {
-            UserProfileDTO profile = new UserProfileDTO();
-            if (User.IsInRole("Admin"))
+            //UserProfileDTO profile = new UserProfileDTO();
+            //if (User.IsInRole("Admin"))
+            //{
+            //    User user = await userProfileService.GetUserById(userId);
+            //    profile = userProfileService.GetProfile(user.UserName);
+            //}
+            //else
+            //{
+                var profile = userProfileService.GetProfile(User.Identity.Name);
+            //}
+
+            List<string> user_categories = new List<string>();
+            foreach (var item in categoryService.CategoriesOfUser(profile.UserName))
             {
-                //User username = await userProfileService.GetUserById(userId);
-                //profile = userProfileService.GetProfile(username.UserName);
-            }
-            else
-            {
-                profile = userProfileService.GetProfile(User.Identity.Name);
+                user_categories.Add(item.Name);
             }
 
-            var viewModel = new UserProfileViewModel
+            var userProfileViewModel = new UserProfileViewModel
             {
+                UserId = profile.UserId,
                 UserName = profile.UserName,
                 Email = profile.Email,
                 Phone = profile.PhoneNumber,
@@ -56,11 +64,56 @@ namespace INTEREST.WEB.Controllers
                 City = profile.City,
                 Age = DateTime.Today.Year - profile.Birthday.Year,
                 Gender = profile.Gender,
-                Avatar = profile.AvatarUrl
+                Avatar = profile.AvatarUrl,
+                UserCategories = user_categories
             };
-            return View(viewModel);
+            return View(userProfileViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> EditProfile(string userId)
+        {
+            var profile = userProfileService.GetProfile(User.Identity.Name);
+
+            var editUserProfileViewModel = new EditUserProfileViewModel
+            {
+                UserId = profile.UserId,
+                UserName = profile.UserName,
+                Email = profile.Email,
+                Phone = profile.PhoneNumber,
+                Country = profile.Country,
+                City = profile.City,
+                Birthday = profile.Birthday
+            };
+            return View(editUserProfileViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditUserProfileViewModel model)
+        {
+            var user = userProfileService.GetUserByName(User.Identity.Name);
+            var userProfileDTO = new UserProfileDTO
+            {
+                UserId = user.Id,
+                UserName = model.UserName,
+                Email = model.Email,
+                PhoneNumber = model.Phone,
+                Country = model.Country,
+                City = model.City,
+                Birthday = model.Birthday,
+            };
+            await userProfileService.EditProfile(userProfileDTO);
+            return RedirectToAction("UserProfile", "UserProfile");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteProfile()
+        {
+            await userService.DeleteUser(User.Identity.Name);
+            return RedirectToAction("Register", "Account");
+        }
+
+        // AVATAR
         [HttpPost]
         public async Task<IActionResult> AddAvatar(IFormFile formFile)
         {
@@ -76,8 +129,9 @@ namespace INTEREST.WEB.Controllers
             }
             return RedirectToAction("UserProfile", "UserProfile");
         }
+        
 
-
+        //CATEGORIES OF USER
         [HttpGet]
         public IActionResult SelectCategories(string id)
         {
@@ -91,7 +145,7 @@ namespace INTEREST.WEB.Controllers
                 SelectedCategories = selected_categories,
                 Categories = categoryService.Categories()
             };
-            return View();
+            return View(selectCategoriesViewModel);
         }
 
         [HttpPost]
@@ -103,10 +157,9 @@ namespace INTEREST.WEB.Controllers
                 Categories = model.SelectedCategories,
                 Id = user.ProfileId
             };
-            OperationDetails result = await categoryService.AddCategoriesToUser(userCategoryDTO);
+            await categoryService.AddCategoriesToUser(userCategoryDTO);
 
-            return RedirectToAction("Index", "Profile");
+            return RedirectToAction("UserProfile");
         }
-
     }
 }

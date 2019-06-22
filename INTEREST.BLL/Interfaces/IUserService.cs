@@ -15,6 +15,7 @@ namespace INTEREST.BLL.Interfaces
         Task<bool> SignInAsync(UserDTO userDto);
         Task AdminCreateAsync(UserDTO adminDto);
         Task<User> GetCurrentUserAsync(HttpContext context);
+        Task DeleteUser(string name);
         Task SignOutAsync();
     }
 }

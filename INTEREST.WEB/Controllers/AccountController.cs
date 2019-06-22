@@ -62,6 +62,7 @@ namespace INTEREST.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO
@@ -101,12 +102,25 @@ namespace INTEREST.WEB.Controllers
                 Email = "tomka.yuriy@gmail.com",
                 UserName = "Tomka",
                 Password = "K7k1e9gof8r",
-                Role = "admin"
+                Role = "admin",
+                Birthday = DateTime.Now,
+                Phone = "0957692191",
+                Gender = "male",
+                Avatar = new Photo
+                {
+                    URL = "Default",
+                },
+                Location = new Location()
+                {
+                    Country = "Ukraine",
+                    City = "Chernivtsi"
+                }
+
             });
         }
 
-        //LOGOUT
-        public async Task<IActionResult> Logout()
+    //LOGOUT
+    public async Task<IActionResult> Logout()
         {
             await userService.SignOutAsync();
             return RedirectToAction("Index", "Home");

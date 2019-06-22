@@ -53,11 +53,10 @@ namespace INTEREST.BLL.Services
             return result;
         }
 
-        //GET ALL INFO ABOUT 1 user
+        //GET ALL INFO ABOUT 1 user by NAME
         public UserProfileDTO GetProfile(string user)
         {
-            var profile = Database.UserProfileRepository.FindByUserName(user);
-
+            User profile = Database.UserProfileRepository.FindByUserName(user);
             return new UserProfileDTO
             {
                 UserId = profile.Id,
@@ -72,30 +71,62 @@ namespace INTEREST.BLL.Services
             };
         }
 
-        //Get User by name
+        //Get User by NAME
         public User GetUserByName(string user)
         {
             return Database.UserProfileRepository.FindByUserName(user);
         }
 
-        ////Get User by id
-        //public async Task<User> GetUserById(string id)
-        //{
-        //   User user = await Database.UserManager.FindByIdAsync(id);
-
-        //   return user;
-        //}
-
-        //Delete User by id
-        public async Task<OperationDetails> DeleteUser(string id)
+        ////Get User by USERID
+        public async Task<User> GetUserById(string id)
         {
             User user = await Database.UserManager.FindByIdAsync(id);
-            if (user != null)
-            {
-                IdentityResult result = await Database.UserManager.DeleteAsync(user);
-                return new OperationDetails(result.Succeeded, result.Errors.FirstOrDefault().Description, "");
-            }
+
+            return user;
+        }
+
+        //Delete User by USERID
+        public async Task<OperationDetails> DeleteUser(string id)
+        {
+            await Database.UserManager.FindByIdAsync(id);
             return new OperationDetails(false, "User is not found", "");
+        }
+
+        //Edit User
+        public async Task<OperationDetails> EditProfile(UserProfileDTO model)
+        {
+            User user = await Database.UserManager.FindByIdAsync(model.UserId);
+            UserProfile profile = Database.UserProfileRepository.GetById(user.ProfileId);
+
+            if (model.UserName != null)
+            {
+                User clone = await Database.UserManager.FindByNameAsync(model.UserName);
+                if (model.UserName != user.UserName && clone != null)
+                    return new OperationDetails(false, "Username is being use", "");
+                user.UserName = model.UserName;
+            }
+            if (model.Email != null)
+            {
+                User clone = await Database.UserManager.FindByEmailAsync(model.Email);
+                if (model.Email != user.Email && clone != null)
+                    return new OperationDetails(false, "Username is being use", "");
+                user.Email = model.Email;
+            }
+
+            user.PhoneNumber = model.PhoneNumber;
+            profile.Birthday = model.Birthday; 
+
+            if (model.Country != null && model.City != null)
+            {
+                Location location = new Location { City = model.City, Country = model.Country };
+                if (Database.LocationRepository.FindClone(location) == null)
+                {
+                    Location newlocation = Database.LocationRepository.Create(location);
+                    profile.Location = newlocation;
+                }
+            }
+            await Database.SaveAsync();
+            return new OperationDetails(true, "Ok", "");
         }
 
         // Add Photo of Avatar
@@ -118,38 +149,6 @@ namespace INTEREST.BLL.Services
             }
             await Database.SaveAsync();
         }
-
-        ////Edit Information About User
-        //public async Task<OperationDetails> EditProfile(EditProfileDTO model)
-        //{
-        //    UserProfile profile = Database.UserProfileRepository..FindById(model.Id);
-
-        //    User user = await Database.UserManager.FindByIdAsync(model.Id);
-
-
-        //    if (model.UserName != null)
-        //    {
-        //        User clone = await Database.UserManager.FindByEmailAsync(model.UserName);
-        //        if (model.UserName != user.UserName && clone != null)
-        //            return new OperationDetails(false, "Username is being use", "");
-        //        user.UserName = model.UserName;
-        //    }
-
-
-        //    if (model.City != null)
-        //    {
-        //        if (Database.LocationRepository.FindClone(model.Location) == null)
-        //        {
-        //            Location l = Database.LocationRepository.Add(model.Location);
-        //            profile.Location = l;
-        //        }
-        //    }
-
-
-        //    profile.Birthday = DateTime.Today.Year - model.Age;
-        //    await Database.SaveAsync();
-        //    return new OperationDetails(true, "Ok", "");
-        //}
 
         public void Dispose()
         {

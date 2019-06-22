@@ -10,10 +10,6 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-sm-10"><h1>@Html.DisplayFor(model => model.UserName)</h1></div>
-    </div>
-
-    <div class="row">
         <div class="col-sm-3">
 
             <div class="text-center">
@@ -24,22 +20,25 @@
                 }
                 else
                 {
-                    <img src="@Model.Avatar" class="avatar img-circle img-thumbnail" alt="avatar" />
+                    <img src="@Model.Avatar" class="rounded-circle" alt="avatar" />
                 }
 
                 <hr>
-                <h6>Change avatar</h6>
+
+                <h4>@Html.DisplayFor(model => model.UserName)</h4>
                 <form asp-action="AddAvatar" asp-controller="UserProfile" method="post" enctype="multipart/form-data">
                     <input type="file" name="formFile" value="Select" />
                     <input type="submit" name="submit" value="Save" />
                 </form>
             </div>
+
             <hr>
 
             <div class="panel panel-default">
                 <div class="panel-heading">Last Logged <i class="fa fa-link fa-1x"></i></div>
                 <div class="panel-body">Today at 2:18 pm</div>
             </div>
+
             <hr>
 
             <ul class="list-group">
@@ -53,74 +52,94 @@
         </div><!--/col-3-->
 
         <div class="col-sm-9">
-            <form class="form" action="##" method="post" id="registrationForm">
-                <div class="form-group">
-                    <div class="col-xs-6">
-                        <h6> @Html.DisplayNameFor(model => model.UserName) </h6>
-                        <input asp-for="UserName" class="form-control" placeholder="enter your username name if any" required autofocus />
-                    </div>
+            <div class="text-center">
+                <h4> Your Personal Info </h4>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <h6> @Html.DisplayNameFor(model => model.UserName) </h6>
+                    <input disabled asp-for="UserName" class="form-control" placeholder="enter your username name if any" required autofocus />
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <div class="col-xs-6">
-                        <h6>@Html.DisplayNameFor(model => model.Email)</h6>
-                        <input asp-for="Email" class="form-control" placeholder="enter your e-mail if any" required autofocus />
-                    </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <h6>@Html.DisplayNameFor(model => model.Email)</h6>
+                    <input disabled asp-for="Email" class="form-control" placeholder="enter your e-mail if any" required autofocus />
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <div class="col-xs-6">
-                        <h6>@Html.DisplayNameFor(model => model.Phone)</h6>
-                        <input asp-for="Phone" class="form-control" placeholder="enter your phone if any" required autofocus />
-                    </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <h6>@Html.DisplayNameFor(model => model.Phone)</h6>
+                    <input disabled asp-for="Phone" class="form-control" placeholder="enter your phone if any" required autofocus />
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <div class="col-xs-6">
-                        <h6>@Html.DisplayNameFor(model => model.Age)</h6>
-                        <input asp-for="Age" class="form-control" placeholder="enter your age if any" required autofocus />
-                    </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <h6>@Html.DisplayNameFor(model => model.Age)</h6>
+                    <input disabled asp-for="Age" class="form-control" placeholder="enter your age if any" required autofocus />
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <div class="col-xs-6">
-                        <h6>@Html.DisplayNameFor(model => model.Country)</h6>
-                        <input asp-for="Country" class="form-control" placeholder="enter your country if any" required autofocus />
-                    </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <h6>@Html.DisplayNameFor(model => model.Country)</h6>
+                    <input disabled asp-for="Country" class="form-control" placeholder="enter your country if any" required autofocus />
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <div class="col-xs-6">
-                        <h6>@Html.DisplayNameFor(model => model.City)</h6>
-                        <input asp-for="City" class="form-control" placeholder="enter your city if any" required autofocus />
-                    </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <h6>@Html.DisplayNameFor(model => model.City)</h6>
+                    <input disabled asp-for="City" class="form-control" placeholder="enter your city if any" required autofocus />
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <div class="col-xs-6">
-                        <h6>@Html.DisplayNameFor(model => model.Gender)</h6>
-                        <input asp-for="Gender" class="form-control" placeholder="enter your gender if any" required autofocus />
-                    </div>
+            <div class="form-group">
+                <div class="col-xs-6">
+                    <h6>@Html.DisplayNameFor(model => model.Gender)</h6>
+                    <input disabled asp-for="Gender" class="form-control" placeholder="enter your gender if any" required autofocus />
                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <form asp-controller="UserProfile" asp-action="EditProfile" method="get">
+                        <button type="submit" class="btn btn-sm btn-warning">
+                            Edit Your Profile
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <hr>
+
+            <div class="text-center">
+                <h4> Your Favourite Categories </h4>
+            </div>
+
+            <div class="text-center">
+                @foreach (var item in Model.UserCategories)
+                {
+                    <button type="button" class="btn btn-primary disabled" aria-pressed="true">@item</button>
+                }
+            </div
+>
+                <form asp-controller="UserProfile" asp-action="SelectCategories" method="get">
+                    <button type="submit" class="btn btn-sm btn-warning">
+                        Select Favorite Categories
+                    </button>
+                </form>
+
                 <hr>
-                <div class="form-group">
-                    <div class="col-xs-12">
-                        <br>
-                        @*<button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save </button>
-                    <button class="btn btn-lg btn-danger" type="reset"><i class="glyphicon glyphicon-repeat"></i> Edit </button>*@
 
-                        @*@Html.ActionLink("Edit", "Edit", "Profile", new { id = Model.Id })*@
-                    </div>
-                </div>
-            </form>
-            
-            <form asp-controller="UserProfile" asp-action="SelectCategories" method="get">
-                <button type="submit" class="btn btn-sm btn-warning">
-                    Select Favorite Categories
-                </button>
-            </form>
+                <form asp-controller="UserProfile" asp-action="DeleteProfile" method="post">
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        Delete Account
+                    </button>
+                </form>
 
-        </div><!--/col-9-->
+            </div><!--/col-9-->
     </div><!--/row-->
 </div>
 

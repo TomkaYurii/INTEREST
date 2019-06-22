@@ -6,6 +6,7 @@ using INTEREST.WEB.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace INTEREST.WEB.Controllers
         IEventService _eventService;
         IUserService _userService;
         IUserProfileService _userProfileService;
+        ICategoryService _categoryService;
 
 
         private readonly IMapper _mapper;
@@ -23,83 +25,45 @@ namespace INTEREST.WEB.Controllers
         public EventController(IEventService eventService, 
                                 IUserService userService,
                                 IUserProfileService userProfileService,
-                                IMapper mapper)
+                                ICategoryService categoryService)
         {
             _eventService = eventService;
+            _categoryService = categoryService;
             _userService = userService;
             _userProfileService = userProfileService;
-            _mapper = mapper;
         }
 
         [Authorize]
         [HttpGet]
-        public ActionResult CreateEvent()
+        public IActionResult CreateEvent()
         {
-            return View();
+            EventViewModel eventVewModel = new EventViewModel
+            {
+                Categories = _categoryService.Categories(),
+                SelectedCategories = new List<string>()
+            };
+            return View(eventVewModel);
         }
 
-        //[Authorize]
-        //[ValidateAntiForgeryToken]
-        //[HttpPost]
-        //public async Task<IActionResult> CreateEvent(CreateEventViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        Regex regex = new Regex(@"\r\n");
-        //        model.EventText = regex.Replace(model.EventText, "");
-        //        model.EventText = model.EventText.Trim();
-
-        //        UserProfileDTO userprofile = await _userProfileService.FindUserProfileByUserName(User.Identity.Name);
-        //        model.UserId = userprofile.GetUser.Id;
-    
-
-        //        var createEventDto = _mapper.Map<CreateEventDTO>(model);
-        //        _eventService.CreateEvent(createEventDto);
-
-        //        return RedirectToAction("CreateEvent");
-        //    }
-        //    return View(model);
-        //}
-
-
-        //[Authorize]
-        //[ValidateAntiForgeryToken]
-        //[HttpPost]
-        //public ActionResult CreateMessage(CreateMessageViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        model.MessageText = RegularMessage(model.MessageText);
-        //        model.UserId = User.Identity.GetUserId();
-        //        var createMessageDto = Mapper.Map<DTOCreateMessageViewModel>(model);
-        //        if (!MessageService.CreateMessage(createMessageDto))
-        //            return HttpNotFound();
-
-        //        return RedirectToAction("ReadMessages", new { id = model.IdTheme, page = model.Page });
-        //    }
-        //    return HttpNotFound();
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteEvent(int id)
-        //{
-        //    EventService.DeleteEvent(id);
-        //    return RedirectToAction("Index");
-        //}
-
-
-
-
-
-
-        private string RegularMessage(string messageText)
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CreateEvent(EventViewModel model)
         {
-            Regex regex = new Regex(@"(\s)*$", RegexOptions.Multiline);
-            messageText = regex.Replace(messageText, "");
-            regex = new Regex(@"^(\s)*", RegexOptions.Multiline);
-            messageText = regex.Replace(messageText, "");
-            return messageText;
+            UserProfileDTO userProfileDTO = _userProfileService.GetProfile(User.Identity.Name);
+            EventDTO eventDTO = new EventDTO
+            {
+                EventName = model.Title,
+                EventText = model.Description,
+                DateFrom = model.DateFrom,
+                DateTo = model.DateTo,
+                City = model.city_state,
+                Country = model.country,
+                Categories = model.SelectedCategories,
+                Photo = model.formFile,
+                UserId = userProfileDTO.UserId
+            };
+            await _eventService.CreateEvent(eventDTO);
+            return RedirectToAction("Events", "Event");
         }
 
 

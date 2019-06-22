@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace INTEREST.DAL.Entities
 {
@@ -8,7 +9,8 @@ namespace INTEREST.DAL.Entities
         public string UserId { get; set; }
         public virtual User User { get; set; }
 
-
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Birthday { get; set; }
         public String Gender { get; set; }
         

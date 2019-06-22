@@ -28,8 +28,5 @@ namespace INTEREST.DAL.Repositories
                                 .ToList();
             return categories;
         }
-
-
-
     }
 }

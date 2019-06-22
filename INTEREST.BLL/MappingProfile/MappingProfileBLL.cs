@@ -12,13 +12,13 @@ namespace INTEREST.BLL.MappingProfile
         public MappingProfileBLL()
         {
             //message
-            CreateMap<CreateEventDTO,Event>();
-            CreateMap<CreateMessageDTO, Message>();
-            CreateMap<DeleteMessageDTO, Message>();
-            CreateMap<EditMessageDTO, Message>();
-            CreateMap<MessageDTO, Message>();
+            //CreateMap<CreateEventDTO,Event>();
+            //CreateMap<CreateMessageDTO, Message>();
+            //CreateMap<DeleteMessageDTO, Message>();
+            //CreateMap<EditMessageDTO, Message>();
+            //CreateMap<MessageDTO, Message>();
             //event
-            CreateMap<EventDTO, Event>();
+            //CreateMap<EventDTO, Event>();
         }
     }
 }

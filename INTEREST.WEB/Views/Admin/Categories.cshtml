@@ -18,6 +18,23 @@
 <hr>
 
 <h4>List of Categories</h4>
+
+@{ int i = 0; }
+
+@*<div class = "container">
+    <div class = "column">
+        @foreach (var item in Model)
+        {
+            if (i > 0 && i % 10 == 0)
+            {
+                @: </div> <div class = "column">
+            }
+            <div>@item</div>
+            i++;
+        }
+</div>*@
+
+
 <table class="table">
     @foreach (var item in Model)
     {

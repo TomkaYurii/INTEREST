@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using INTEREST.DAL.Entities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,16 +11,28 @@ namespace INTEREST.WEB.ViewModels
 {
     public class EventViewModel
     {
-        [HiddenInput]
-        public int Id { get; set; }
+        [Required]
+        public string Title { get; set; }
+        [Required]
+        public string Description { get; set; }
 
-        [Display(Name = "UserName")]
-        public string UserName { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required]
+        public DateTime DateFrom { get; set; }
 
-        [Display(Name = "Event")]
-        public string EventText { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime DateTo { get; set; }
+        [Required]
+        public string country { get; set; }
+        [Required]
+        public string city_state { get; set; }
 
-        [Display(Name = "Date of creation")]
-        public DateTime EventTime { get; set; }
+        public IFormFile formFile { get; set; }
+
+        public List<string> SelectedCategories { get; set; }
+        public List<Category> Categories { get; set; }
+
+        public string OwnerId { get; set; }
     }
 }

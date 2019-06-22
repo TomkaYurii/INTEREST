@@ -1,0 +1,55 @@
+﻿@model INTEREST.WEB.ViewModels.EditUserProfileViewModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+    <form asp-controller="UserProfile" asp-action="EditProfile" method="post">
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h6> @Html.DisplayNameFor(model => model.UserName) </h6>
+                <input asp-for="UserName" class="form-control" placeholder="edit profile if any" required autofocus />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h6>@Html.DisplayNameFor(model => model.Email)</h6>
+                <input asp-for="Email" class="form-control" placeholder="enter your e-mail if any" required autofocus />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h6>@Html.DisplayNameFor(model => model.Phone)</h6>
+                <input asp-for="Phone" class="form-control" placeholder="enter your phone if any" required autofocus />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h6>@Html.DisplayNameFor(model => model.Birthday)</h6>
+                <input asp-for="Birthday" class="form-control"  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h6>@Html.DisplayNameFor(model => model.Country)</h6>
+                <input asp-for="Country" class="form-control" placeholder="enter your country if any" required autofocus />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-6">
+                <h6>@Html.DisplayNameFor(model => model.City)</h6>
+                <input asp-for="City" class="form-control" placeholder="enter your city if any" required autofocus />
+            </div>
+        </div>
+
+        <hr>
+
+        <button type="submit" class="btn btn-sm btn-warning">
+            Save changes to profile
+        </button>
+
+    </form>

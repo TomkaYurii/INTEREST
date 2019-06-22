@@ -14,7 +14,8 @@ namespace INTEREST.BLL.Interfaces
         Task AddAvatar(string url, UserProfile userProfile);
 
         User GetUserByName(string user);
-        //Task<User> GetUserById(string id);
+        Task<User> GetUserById(string id);
+        Task<OperationDetails> EditProfile(UserProfileDTO model);
         Task<OperationDetails> DeleteUser(string id);
     }
 }

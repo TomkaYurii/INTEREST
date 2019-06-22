@@ -22,6 +22,7 @@ namespace INTEREST.BLL.Services
         
         public List<Category> Categories() => Database.CategoryRepository.GetAll().ToList();
 
+        
         public async Task<OperationDetails> AddCategoryAsync(string title)
         {
             foreach (var item in Database.CategoryRepository.GetAll())
@@ -74,11 +75,12 @@ namespace INTEREST.BLL.Services
                 {
                     Category = Database.CategoryRepository.GetByTitle(item),
                     UserProfile = Database.UserProfileRepository.GetById(model.Id)
-                }); ;
+                }); 
                 await Database.SaveAsync();
             }
             return new OperationDetails(true, "Ok", "");
         }
+
 
         public void Dispose()
         {
