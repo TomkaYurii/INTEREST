@@ -16,7 +16,7 @@
                 @if (Model.Avatar == "Default")
 
                 {
-                    <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                    <img  width="200px" height="200px" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
                 }
                 else
                 {
@@ -26,10 +26,18 @@
                 <hr>
 
                 <h4>@Html.DisplayFor(model => model.UserName)</h4>
+
                 <form asp-action="AddAvatar" asp-controller="UserProfile" method="post" enctype="multipart/form-data">
-                    <input type="file" name="formFile" value="Select" />
-                    <input type="submit" name="submit" value="Save" />
+                    <label class="btn btn-primary" for="my-file-selector">
+                        <input id="my-file-selector" name="formFile" type="file" class="d-none">
+                        Select your avatar
+                    </label>
+                    <label class="btn btn-warning" for="my-save">
+                        <input id="my-save" type="submit" class="btn btn-warning d-none" name="submit" >
+                        Save
+                    </label>
                 </form>
+
             </div>
 
             <hr>
@@ -123,23 +131,26 @@
                 {
                     <button type="button" class="btn btn-primary disabled" aria-pressed="true">@item</button>
                 }
-            </div
->
-                <form asp-controller="UserProfile" asp-action="SelectCategories" method="get">
-                    <button type="submit" class="btn btn-sm btn-warning">
-                        Select Favorite Categories
-                    </button>
-                </form>
+            </div>
+            <form asp-controller="UserProfile" asp-action="SelectCategories" method="get">
+                <button type="submit" class="btn btn-sm btn-warning">
+                    Select Favorite Categories
+                </button>
+            </form>
 
-                <hr>
+            <hr>
 
-                <form asp-controller="UserProfile" asp-action="DeleteProfile" method="post">
-                    <button type="submit" class="btn btn-sm btn-danger">
-                        Delete Account
-                    </button>
-                </form>
+            <form asp-controller="UserProfile" asp-action="DeleteProfile" method="post">
+                <button type="submit" class="btn btn-sm btn-danger">
+                    Delete Account
+                </button>
+            </form>
 
-            </div><!--/col-9-->
+            @Html.ActionLink("Create Event", "CreateEvent", "Event")
+
+
+
+        </div><!--/col-9-->
     </div><!--/row-->
 </div>
 

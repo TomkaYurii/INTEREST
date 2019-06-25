@@ -12,5 +12,20 @@ namespace INTEREST.DAL.Repositories
         public EventRepository(AppDBContext context) : base(context)
         {
         }
+
+        public Event GetEverythingAboutEvent(int id)
+        {
+            Event evnt = context.Events
+                .Include (l => l.Location)
+                .Include (u => u.UserProfile)
+                .Include (p => p.Photo)
+                .FirstOrDefault(e => e.Id == id);
+            return evnt;
+        }
+
+        public List<Event> UserEvents(int userProfile_id)
+        {
+            return context.Events.Where(x => x.UserProfileId == userProfile_id).ToList();
+        }
     }
 }

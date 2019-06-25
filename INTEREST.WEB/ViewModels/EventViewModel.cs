@@ -28,11 +28,14 @@ namespace INTEREST.WEB.ViewModels
         [Required]
         public string city_state { get; set; }
 
+
         public IFormFile formFile { get; set; }
+
 
         public List<string> SelectedCategories { get; set; }
         public List<Category> Categories { get; set; }
 
         public string OwnerId { get; set; }
+        public string URL { get; set; }
     }
 }

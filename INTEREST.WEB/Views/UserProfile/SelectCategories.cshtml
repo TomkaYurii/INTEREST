@@ -7,14 +7,20 @@
 <link href="~/css/CheckBox.css" rel="stylesheet" />
 @using (Html.BeginForm("SelectCategories", "UserProfile"))
 {
-    <ul class="ks-cboxtags">
+    <ul class="list-group list-group-flush">
         @foreach (var item in Model.Categories)
         {
-            <li>
-                <input name="SelectedCategories" type="checkbox" id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text> checked</text> } value="@item.Name">
-                <label for="@item.Id">@item.Name</label>
-            </li>
+        <li class="list-group-item">
+            <div class="custom-control custom-checkbox">
+                <input name="SelectedCategories" type="checkbox" class="custom-control-input" 
+                       id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text> checked </text> } value="@item.Name">
+                <label class="custom-control-label" for="@item.Id">@item.Name</label>
+            </div>
+        </li>
         }
     </ul>
-    <input type="submit" name="Submit" value="Choose" />
+    <br>
+    <button type="submit" class="btn btn-sm btn-warning">
+        Select Your Categories
+    </button>
 }

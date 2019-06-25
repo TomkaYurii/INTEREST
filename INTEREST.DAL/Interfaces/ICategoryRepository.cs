@@ -9,5 +9,7 @@ namespace INTEREST.DAL.Interfaces
         Category GetByTitle(string title);
         List<Category> UserCategories(string userName);
 
+        List<Category> EventCategories(int id);
+
     }
 }

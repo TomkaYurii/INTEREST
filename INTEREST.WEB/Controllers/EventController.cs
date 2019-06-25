@@ -18,9 +18,10 @@ namespace INTEREST.WEB.Controllers
         IUserService _userService;
         IUserProfileService _userProfileService;
         ICategoryService _categoryService;
-
-
+        
         private readonly IMapper _mapper;
+
+        // create event
 
         public EventController(IEventService eventService, 
                                 IUserService userService,
@@ -33,6 +34,16 @@ namespace INTEREST.WEB.Controllers
             _userProfileService = userProfileService;
         }
 
+
+        // List of Events
+        [HttpGet]
+        public IActionResult Events()
+        {
+            var model = _eventService.GetAllEvents();
+            return View(model);
+        }
+
+        // Create event
         [Authorize]
         [HttpGet]
         public IActionResult CreateEvent()
@@ -63,10 +74,32 @@ namespace INTEREST.WEB.Controllers
                 UserId = userProfileDTO.UserId
             };
             await _eventService.CreateEvent(eventDTO);
-            return RedirectToAction("Events", "Event");
+            return RedirectToAction("UserProfile", "UserProfile");
         }
 
+        // Edit Event
+        public async Task<IActionResult> EditEvent(int event_id=13)
+        {
+            EventInfoDTO evntDTO = _eventService.GetEventInformation(event_id);
 
+            List<string> selected_categories = new List<string>();
+
+
+            EventViewModel eventViewModel = new EventViewModel
+            {
+                Title = evntDTO.EventName,
+                Description = evntDTO.EventText,
+                DateFrom = evntDTO.DateFrom,
+                DateTo = evntDTO.DateTo,
+                country = evntDTO.Country,
+                city_state = evntDTO.City,
+                URL = evntDTO.URL,
+                Categories = _categoryService.Categories(),
+                SelectedCategories = evntDTO.SelectedCategories
+            };
+
+            return View(eventViewModel);
+        }
 
     }
 }

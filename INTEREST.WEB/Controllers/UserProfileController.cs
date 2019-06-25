@@ -110,7 +110,7 @@ namespace INTEREST.WEB.Controllers
         public async Task<IActionResult> DeleteProfile()
         {
             await userService.DeleteUser(User.Identity.Name);
-            return RedirectToAction("Register", "Account");
+            return RedirectToAction("Logout", "Account");
         }
 
         // AVATAR

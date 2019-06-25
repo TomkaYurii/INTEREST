@@ -28,5 +28,15 @@ namespace INTEREST.DAL.Repositories
                                 .ToList();
             return categories;
         }
+
+        public List<Category> EventCategories(int id)
+        {
+            List<Category> categories = new List<Category>();
+            categories = context.Categories.Where(c => c.CategoryEvents
+                                .Any(e => e.EventId == id))
+                                .ToList();
+            return categories;
+        }
+
     }
 }

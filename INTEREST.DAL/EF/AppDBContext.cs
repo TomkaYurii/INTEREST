@@ -28,6 +28,13 @@ namespace INTEREST.DAL.EF
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder
+            .Entity<User>()
+            .HasOne(u => u.UserProfile)
+            .WithOne(p => p.User)
+            .HasForeignKey<UserProfile>(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
             // Admin Role
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole() { Name = "Admin", NormalizedName = "Admin".ToUpper() },

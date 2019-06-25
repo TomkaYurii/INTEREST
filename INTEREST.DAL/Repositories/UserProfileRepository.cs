@@ -12,6 +12,11 @@ namespace INTEREST.DAL.Repositories
            
         }
 
+        public User FindByUserProfileId(int UserProfileId)
+        {
+            return context.Users.FirstOrDefault(x => x.ProfileId == UserProfileId);
+        }
+
         public User FindByUserName(string UserName)
         {
             User user = context.Users.FirstOrDefault(x => x.UserName == UserName);
