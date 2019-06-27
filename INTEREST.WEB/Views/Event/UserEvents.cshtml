@@ -52,15 +52,14 @@
 
                 @if (item.UserName == User.Identity.Name || User.IsInRole("Admin"))
                 {
-                    <a asp-action="DeleteEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> DELETE </a>
-                    <a asp-action="EditEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> EDIT </a>
+                    <a asp-action="DeleteEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> DELETE EVENT </a>
                 }
 
-                    <a asp-action="JoinToEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> JOIN TO EVENT </a>
+                <a asp-action="EditEvent" asp-controller="Event" asp-route-event_id="@item.EventId">EDIT EVENT</a>
 
 
             </article>
         </div>
-     }
+    }
 
 </section>

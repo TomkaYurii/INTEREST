@@ -80,11 +80,66 @@ namespace INTEREST.BLL.Services
             return new OperationDetails(true, "Ok", "");
         }
 
+        // Update event
+        public async Task<OperationDetails> UpdateEvent(EventDTO evntDTO)
+        {
+            var evnt = Database.EventRepository.GetById(evntDTO.EventId);
+            evnt.EventName = evntDTO.EventName;
+            evnt.EventText = evntDTO.EventText;
+            evnt.DateFrom = evntDTO.DateFrom;
+            evnt.DateTo = evntDTO.DateTo;
+
+            Location location = new Location
+            {
+                City = evntDTO.City,
+                Country = evntDTO.Country
+            };
+            Location loc = Database.LocationRepository.FindClone(location);
+            if (loc == null)
+            {
+                loc = Database.LocationRepository.Create(location);
+                evnt.Location = loc;
+            }
+            else
+            {
+                evnt.Location = location;
+            }
+
+            //foreach (var item in evntDTO.Categories)
+            //{
+            //    Database.CategoryEventRepository.Create(new CategoryEvent
+            //    {
+            //        Event = evnt,
+            //        Category = Database.CategoryRepository.GetByTitle(item)
+            //    });
+            //}
+
+            Database.EventRepository.Update(evnt);
+
+            //add photo
+            //if (evntDTO.Photo != null)
+            //{
+            //    string path = "/files/" + evntDTO.Photo.FileName;
+            //    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+            //    {
+            //        await evntDTO.Photo.CopyToAsync(fileStream);
+            //    }
+
+            //    Photo photo = Database.PhotoRepository.Create(new Photo { URL = path });
+            //    evnt.Photo = photo;
+            //    Database.EventRepository.Update(evnt);
+            //}
+
+
+            await Database.SaveAsync();
+            return new OperationDetails(true, "Ok", "");
+        }
+
         // Get information about event
         public EventInfoDTO GetEventInformation (int event_id)
         {
             var evnt = Database.EventRepository.GetEverythingAboutEvent(event_id);
-            var usr = Database.UserProfileRepository.FindByUserProfileId(evnt.UserProfileId);
+            var usr = Database.UserProfileRepository.FindByUserProfileId(evnt.UserProfileId.Value);
 
             List<string> selected_categories = new List<string>();
             foreach (var x in Database.CategoryRepository.EventCategories(event_id))
@@ -94,6 +149,8 @@ namespace INTEREST.BLL.Services
 
             EventInfoDTO evntInfoDTO = new EventInfoDTO
             {
+                EventId = evnt.Id,
+                OwnerId = evnt.UserProfileId.Value,
                 UserName = usr.UserName,
                 EventName = evnt.EventName,
                 EventText = evnt.EventText,
@@ -107,7 +164,7 @@ namespace INTEREST.BLL.Services
             return evntInfoDTO;
         }
 
-        // List of Events
+        // List of All Events
         public List<EventInfoDTO> GetAllEvents()
         {
             List<EventInfoDTO> AllEvents = new List<EventInfoDTO>();
@@ -119,10 +176,32 @@ namespace INTEREST.BLL.Services
             return AllEvents;
         }
 
-        //Delete Event
+        // MyEvents
+        public List<EventInfoDTO> GetUserEvents(int user_id)
+        {
+            List<EventInfoDTO> UserEvents = new List<EventInfoDTO>();
+            foreach (var x in Database.EventRepository.UserEvents(user_id))
+            {
+                UserEvents.Add(GetEventInformation(x.Id));
+            }
+            return UserEvents;
+        }
+        
+        // Delete Event
         public void DeleteEvent(int event_id)
         {
             Database.EventRepository.Delete(Database.EventRepository.GetById(event_id));
+            Database.SaveAsync();
+        }
+
+
+        public void UserSubscribeOnEvent(int user_prof_id, int event_id)
+        {
+            Database.UserProfileEventRepository.Create(new UserProfileEvent
+                {
+                    EventId = event_id,
+                    UserProfileId = user_prof_id
+            });
             Database.SaveAsync();
         }
 

@@ -18,6 +18,7 @@ namespace INTEREST.DAL.EF
         public DbSet<Location> Locations { get; set; }
         public DbSet<UserProfileCategory> UserProfileCategories { get; set; }
         public DbSet<CategoryEvent> CategoryEvents { get; set; }
+        public DbSet<UserProfileEvent> UserProfileEvents { get; set; }
 
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
         {
@@ -53,6 +54,13 @@ namespace INTEREST.DAL.EF
                 new StatusMessage() { Id = 4, StatusMessageText = "Message is deleted by admin" }
                 );
 
+            // Event - UserProfile
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.UserProfile)
+                .WithMany(up => up.MyEvents)
+                .HasForeignKey(e => e.UserProfileId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             //User - Category
             modelBuilder.Entity<UserProfileCategory>()
                 .HasKey(uc => new { uc.UserProfileId, uc.CategoryId });
@@ -76,6 +84,18 @@ namespace INTEREST.DAL.EF
                 .HasOne(ce => ce.Event)
                 .WithMany(k => k.CategoryEvents)
                 .HasForeignKey(ce => ce.EventId);
+
+            // UserProfileEvents
+            modelBuilder.Entity<UserProfileEvent>()
+            .HasKey(uc => new { uc.UserProfileId, uc.EventId });
+            modelBuilder.Entity<UserProfileEvent>()
+                .HasOne(ue => ue.UserProfile)
+                .WithMany(u => u.UserProfileEvents)
+                .HasForeignKey(ue => ue.UserProfileId);
+            modelBuilder.Entity<UserProfileEvent>()
+                .HasOne(ue => ue.Event)
+                .WithMany(c => c.UserProfileEvents)
+                .HasForeignKey(ue => ue.EventId);
         }
     }
 }

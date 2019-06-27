@@ -11,7 +11,8 @@
     <div class="col-md-4">
 
 
-        <form asp-action="EditEvent">
+        <form asp-action="EditEvent" asp-controller="Event">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <img src="@Model.URL" width="450" height="250">
@@ -19,6 +20,11 @@
             <div class="form-group">
                 <input type="file" required name="formFile" class="form-control" />
             </div>
+
+            <div class="form-group">
+            <input type="hidden" asp-for="EventId" value="@Model.EventId" />
+             </div>
+
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" required class="form-control" />
@@ -71,9 +77,5 @@
 
         </form>
     </div> 
-</div>
-
-<div>
-    @*<a asp-action="Index">Back to List</a>*@
 </div>
 

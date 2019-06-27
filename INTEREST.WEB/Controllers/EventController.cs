@@ -21,8 +21,6 @@ namespace INTEREST.WEB.Controllers
         
         private readonly IMapper _mapper;
 
-        // create event
-
         public EventController(IEventService eventService, 
                                 IUserService userService,
                                 IUserProfileService userProfileService,
@@ -35,7 +33,7 @@ namespace INTEREST.WEB.Controllers
         }
 
 
-        // List of Events
+        // List of All Events
         [HttpGet]
         public IActionResult Events()
         {
@@ -77,16 +75,25 @@ namespace INTEREST.WEB.Controllers
             return RedirectToAction("UserProfile", "UserProfile");
         }
 
+        //User Events
+        [HttpGet]
+        public IActionResult UserEvents()
+        {
+            var user = _userProfileService.GetUserByName(User.Identity.Name);
+            var model = _eventService.GetUserEvents(user.ProfileId);
+            return View(model);
+        }
+
         // Edit Event
-        public async Task<IActionResult> EditEvent(int event_id=13)
+        [HttpGet]
+        public async Task<IActionResult> EditEvent(int event_id)
         {
             EventInfoDTO evntDTO = _eventService.GetEventInformation(event_id);
-
             List<string> selected_categories = new List<string>();
-
 
             EventViewModel eventViewModel = new EventViewModel
             {
+                EventId = evntDTO.EventId,
                 Title = evntDTO.EventName,
                 Description = evntDTO.EventText,
                 DateFrom = evntDTO.DateFrom,
@@ -97,9 +104,41 @@ namespace INTEREST.WEB.Controllers
                 Categories = _categoryService.Categories(),
                 SelectedCategories = evntDTO.SelectedCategories
             };
-
             return View(eventViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditEvent(EventViewModel model)
+        {
+            EventDTO eventDTO = new EventDTO
+            {
+                EventId = model.EventId,
+                EventName = model.Title,
+                EventText = model.Description,
+                DateFrom = model.DateFrom,
+                DateTo = model.DateTo,
+                City = model.city_state,
+                Country = model.country,
+                Categories = model.SelectedCategories,
+                Photo = model.formFile,
+            };
+            await _eventService.UpdateEvent(eventDTO);
+            return RedirectToAction("Events", "Event");
+        }
+
+        // Delete Event
+        public IActionResult DeleteEvent(int event_id)
+        {
+            _eventService.DeleteEvent(event_id);
+            return RedirectToAction("Events", "Event");
+        }
+
+        // Selecte Event
+        public async Task<IActionResult> JoinToEvent(int event_id)
+        {
+            var p = _userProfileService.GetUserByName(User.Identity.Name);
+            _eventService.UserSubscribeOnEvent(p.ProfileId, event_id);
+            return RedirectToAction("Events", "Event");
+        }
     }
 }

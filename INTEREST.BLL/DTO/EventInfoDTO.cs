@@ -6,11 +6,13 @@ namespace INTEREST.BLL.DTO
 {
     public class EventInfoDTO
     {
+        public int EventId { get; set; }
         public string UserName { get; set; }
         public string EventName { get; set; }
         public string EventText { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
+        public int OwnerId { get; set; }
 
         public List<string> Categories { get; set; }
         public List<string> SelectedCategories { get; set; }

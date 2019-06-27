@@ -8,6 +8,7 @@ namespace INTEREST.BLL.DTO
 {
     public class EventDTO
     {
+        public int EventId { get; set; }
         public string UserId { get; set; }
         public string EventName { get; set; }
         public string EventText { get; set; }
@@ -18,7 +19,6 @@ namespace INTEREST.BLL.DTO
 
         public string Country { get; set; }
         public string City { get; set; }
-        public int UserProfileId { get; set; }
         public IFormFile Photo { get; set; }
     }
 }

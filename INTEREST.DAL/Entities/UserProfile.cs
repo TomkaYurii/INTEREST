@@ -23,6 +23,10 @@ namespace INTEREST.DAL.Entities
 
 
         public virtual IEnumerable<UserProfileCategory> UserProfileCategories { get; set; }
+        public virtual IEnumerable<UserProfileEvent> UserProfileEvents { get; set; }
+
+
+        public virtual IEnumerable<Event> MyEvents { get; set; }
         public virtual IEnumerable<Message> Messages { get; set; }
 
 

@@ -11,6 +11,8 @@ namespace INTEREST.WEB.ViewModels
 {
     public class EventViewModel
     {
+        public int EventId { get; set; }
+
         [Required]
         public string Title { get; set; }
         [Required]

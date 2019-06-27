@@ -23,6 +23,7 @@ namespace INTEREST.DAL.Repositories
         private IPhotoRepository _photoRepository;
         private IUserProfileCategoryRepository _userProfileCategoryRepository;
         private ICategoryEventRepository _categoryEventRepository;
+        private IUserProfileEventRepository _userProfileEventRepository;
 
         public UnitOfWork(AppDBContext context,
                                   UserManager<User> userManager,
@@ -53,6 +54,8 @@ namespace INTEREST.DAL.Repositories
             _categoryEventRepository ?? (_categoryEventRepository = new CategoryEventRepository(db));
         public IUserProfileCategoryRepository UserProfileCategoryRepository =>
             _userProfileCategoryRepository ?? (_userProfileCategoryRepository = new UserProfileCategoryRepository(db));
+        public IUserProfileEventRepository UserProfileEventRepository =>
+            _userProfileEventRepository ?? (_userProfileEventRepository = new UserProfileEventRepository(db));
 
 
         public void Dispose()

@@ -52,7 +52,7 @@
             <ul class="list-group">
                 <li class="list-group-item text-muted">Personal Menu<i class="fa fa-dashboard fa-1x"></i></li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>My Frinds</strong></span> 125</li>
-                <li class="list-group-item text-right"><span class="pull-left"><strong>My Events</strong></span> 13</li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong> @Html.ActionLink("My Events", "UserEvents", "Event") </strong></span> 13 </li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>My Messages</strong></span> 37</li>
                 <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
             </ul>
@@ -146,7 +146,20 @@
                 </button>
             </form>
 
-            @Html.ActionLink("Create Event", "CreateEvent", "Event")
+
+
+            <hr>
+            <div class="text-center">
+                <h4> Your Events </h4>
+            </div>
+
+            <form asp-controller="Event" asp-action="CreateEvent" method="get">
+                <button type="submit" class="btn btn-sm btn-warning">
+                    Create Event
+                </button>
+            </form>
+
+
 
 
 

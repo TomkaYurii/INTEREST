@@ -77,6 +77,7 @@ namespace INTEREST.WEB
             services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<ICategoryEventRepository, CategoryEventRepository>();
             services.AddTransient<IUserProfileCategoryRepository, UserProfileCategoryRepository>();
+            services.AddTransient<IUserProfileEventRepository, UserProfileEventRepository>();
             //DI SERVICES
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserProfileService, UserProfileService>();
