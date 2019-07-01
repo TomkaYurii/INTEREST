@@ -14,7 +14,6 @@ namespace INTEREST.DAL.EF
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<StatusMessage> StatusMessages { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<UserProfileCategory> UserProfileCategories { get; set; }
         public DbSet<CategoryEvent> CategoryEvents { get; set; }
@@ -45,14 +44,6 @@ namespace INTEREST.DAL.EF
                     NormalizedName = "User".ToUpper()
                 }
             );
-
-            //Status of message
-            modelBuilder.Entity<StatusMessage>().HasData(
-                new StatusMessage() { Id = 1, StatusMessageText = "Message is created" },
-                new StatusMessage() { Id = 2, StatusMessageText = "Message is edited" },
-                new StatusMessage() { Id = 3, StatusMessageText = "Message is deleted" },
-                new StatusMessage() { Id = 4, StatusMessageText = "Message is deleted by admin" }
-                );
 
             // Event - UserProfile
             modelBuilder.Entity<Event>()

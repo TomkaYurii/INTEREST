@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using AutoMapper;
 using INTEREST.BLL.Interfaces;
 using INTEREST.BLL.Services;
@@ -6,6 +7,7 @@ using INTEREST.DAL.EF;
 using INTEREST.DAL.Entities;
 using INTEREST.DAL.Interfaces;
 using INTEREST.DAL.Repositories;
+using INTEREST.WEB.MappingProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -66,6 +68,8 @@ namespace INTEREST.WEB
             });
 
             //services.AddAutoMapper();
+            services.AddAutoMapper(typeof(MappingProfile).GetTypeInfo().Assembly);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //DI REPOSITORIES
@@ -84,6 +88,7 @@ namespace INTEREST.WEB
             services.AddTransient<IRolesService, RolesService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IMessageService, MessageService>();
             //DI UNIT_OF_WORK
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }

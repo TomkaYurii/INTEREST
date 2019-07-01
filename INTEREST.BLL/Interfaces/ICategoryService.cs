@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace INTEREST.BLL.Interfaces
 {
-    public interface ICategoryService : IDisposable
+    public interface ICategoryService
     {
         List<Category> Categories();
         Task<OperationDetails> AddCategoryAsync(string title);
         Task<OperationDetails> DeleteCategoryAsync(int id);
 
+        List<string> CategoriesOfEvent(int id);
         List<Category> CategoriesOfUser(string profileID);
         Task<OperationDetails> AddCategoriesToUser(UserCategoryDTO model);
     }

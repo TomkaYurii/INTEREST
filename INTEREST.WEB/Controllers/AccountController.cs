@@ -14,11 +14,11 @@ namespace INTEREST.WEB.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly IUserService userService;
+        private readonly IUserService _userService;
 
-        public AccountController (IUserService _userService)
+        public AccountController (IUserService userService)
         {
-            userService = _userService;
+            _userService = userService;
         }
 
         //AUTENTIFICATION
@@ -37,7 +37,7 @@ namespace INTEREST.WEB.Controllers
             {
                 UserDTO userDto = new UserDTO { Email = model.Email,
                                                 Password = model.Password };
-                bool auth = await userService.SignInAsync(userDto);
+                bool auth = await _userService.SignInAsync(userDto);
                 if (!auth)
                 {
                     ModelState.AddModelError("", "Wrong Login or Password!");
@@ -53,8 +53,10 @@ namespace INTEREST.WEB.Controllers
         //REGISTER
         public ActionResult Register()
         {
-            var model = new RegisterViewModel();
-            model.Gender = "Male";
+            var model = new RegisterViewModel
+            {
+                Gender = "Male"
+            };
             return View(model);
         }
 
@@ -85,7 +87,7 @@ namespace INTEREST.WEB.Controllers
                                 }
 
                 };
-                OperationDetails operationDetails = await userService.CreateAsync(userDto);
+                OperationDetails operationDetails = await _userService.CreateAsync(userDto);
                 if (operationDetails.Succedeed)
                     return RedirectToAction("Login", "Account");
                 else
@@ -97,7 +99,7 @@ namespace INTEREST.WEB.Controllers
 
         private async Task SetInitialDataAsync()
         {
-            await userService.AdminCreateAsync(new UserDTO
+            await _userService.AdminCreateAsync(new UserDTO
             {
                 Email = "tomka.yuriy@gmail.com",
                 UserName = "Tomka",
@@ -122,7 +124,7 @@ namespace INTEREST.WEB.Controllers
     //LOGOUT
     public async Task<IActionResult> Logout()
         {
-            await userService.SignOutAsync();
+            await _userService.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }

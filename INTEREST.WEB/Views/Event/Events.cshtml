@@ -1,66 +1,113 @@
-﻿@using INTEREST.BLL.DTO
-@model List<EventInfoDTO>
+﻿@*@using INTEREST.BLL.DTO*@
+@*@model List<EventInfoDTO>*@
+
+@using INTEREST.WEB.ViewModels
+@model IndexEventsViewModel
 @{
     ViewData["Title"] = "Events";
 }
 
-<link href="~/css/home_index.css" rel="stylesheet" type="text/css" />
+<link href="~/css/tiket.css" rel="stylesheet" type="text/css" />
 
-<section class="container">
+<div class="container-fluid">
+    <div class="row">
+        <form method="get">
+            <div class="form-inline">
+                <label class="control-label">Title:&nbsp;</label>
+                @Html.TextBox("title", Model.FilterEventsViewModel.SelectedTitle, htmlAttributes: new { @class = "form-control" })
+                <input type="submit" value="Find" class="btn btn-sm btn-primary" />
+            </div>
+        </form>
+    </div>
 
-    <h1>Events</h1>
+    <hr>
 
-    @foreach (var item in Model)
-    {
-        <div class="row">
-            <article class="card fl-left">
-
-
-                <section class="date">
-                    <time datetime="@item.DateFrom.Day feb">
-                        <span>@item.DateFrom.Day</span><span>@item.DateFrom.ToString("MMMM")</span>
-                    </time>
-                </section>
-
-
-                <section class="card-cont">
-                    <small>@item.UserName</small>
-                    <h3>@item.EventName</h3>
-
-                    <div class="even-date">
-                        <i class="fa fa-calendar"></i>
-                        <time>
-                            <span>@item.DateFrom.ToString("dddd") @item.DateFrom.Day @item.DateFrom.ToString("MMMM") @item.DateFrom.Year @item.DateFrom.Hour:@item.DateFrom.Minute to</span>
-                            <span>@item.DateTo.ToString("dddd") @item.DateTo.Day @item.DateTo.ToString("MMMM") @item.DateTo.Year @item.DateTo.Hour:@item.DateTo.Minute</span>
-                        </time>
-                    </div>
-
-                    <div class="even-info">
-                        <i class="fa fa-map-marker"></i>
-                        <p>
-                            @item.EventText
-                        </p>
-                    </div>
-
-                    <div class="image">
-                        <img width="250px" height="150px" src="@item.URL">
-                    </div>
-
-
-
-                </section>
-
-                @if (item.UserName == User.Identity.Name || User.IsInRole("Admin"))
-                {
-                    <a asp-action="DeleteEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> DELETE </a>
-                    <a asp-action="EditEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> EDIT </a>
-                }
-
-                    <a asp-action="JoinToEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> JOIN TO EVENT </a>
-
-
-            </article>
+    <div class="row">
+        <div class="col">
+            Sort by
         </div>
-     }
+        <div class="col">
+            <a asp-action="Events"
+               asp-route-sortOrder="@(Model.SortEventsViewModel.TitleSort)"
+               asp-route-title="@(Model.FilterEventsViewModel.SelectedTitle)">TITLE</a>
+        </div>
 
-</section>
+    </div>
+</div>
+
+
+<hr>
+
+@{int i = 0;}
+
+@foreach (var item in Model.Events)
+{
+    
+    <div class="blog-card alt">
+        <div class="meta">
+            <div class="photo" style="background-image: url(@item.Photo.URL)"></div>
+            <ul class="details">
+                <li class="author">@item.UserProfile.User.UserName</li>
+                <br>
+                <li class="date">START - @item.DateFrom.ToString("dddd") @item.DateFrom.Day @item.DateFrom.ToString("MMMM") @item.DateFrom.Year (@item.DateFrom.Hour:@item.DateFrom.Minute)</li>
+                <li class="date">FINISH - @item.DateTo.ToString("dddd") @item.DateTo.Day @item.DateTo.ToString("MMMM") @item.DateTo.Year (@item.DateTo.Hour:@item.DateTo.Minute)</li>
+                <li class="date">COUNTRY: @item.Location.Country </li>
+                <li class="date">CITY: @item.Location.City </li>
+                <br>
+                <li class="tags">
+                    <ul>
+                        @{ var sel_cats = @Model.Selected_Categories[i]; }
+                        @foreach (string cat in sel_cats)
+                        {
+                            <li>#@cat</li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="description">
+            <h1>@item.EventName</h1>
+            <h2>@item.UserProfile.User.UserName</h2>
+            <p>
+                @item.EventText
+            </p>
+            <p class="read-more">
+                @if (item.UserProfile.User.UserName == User.Identity.Name || User.IsInRole("Admin"))
+                {
+                    <a asp-action="DeleteEvent" asp-controller="Event" asp-route-event_id="@item.Id"> DELETE </a>
+                    <a asp-action="EditEvent" asp-controller="Event" asp-route-event_id="@item.Id"> EDIT </a>
+                }
+                <a asp-action="JoinToEvent" asp-controller="Event" asp-route-event_id="@item.Id"> JOIN TO EVENT </a>
+                <a asp-action="Messages" asp-controller="Message" asp-route-event_id="@item.Id" asp-route-page="1"> DISCUSS </a>
+
+            </p>
+        </div>
+    </div>
+    i++;
+}
+
+
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Events"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-title="@(Model.FilterEventsViewModel.SelectedTitle)"
+       asp-route-sortorder="@(Model.SortEventsViewModel.Current)"
+       class="btn btn-sm btn-primary">
+        Privious
+    </a>
+}
+    &nbsp;
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Events"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-title="@(Model.FilterEventsViewModel.SelectedTitle)"
+       asp-route-sortorder="@(Model.SortEventsViewModel.Current)"
+       class="btn btn-sm btn-primary">
+        Next
+    </a>
+}
+
+
+

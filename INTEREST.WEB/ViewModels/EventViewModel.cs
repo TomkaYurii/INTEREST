@@ -18,13 +18,11 @@ namespace INTEREST.WEB.ViewModels
         [Required]
         public string Description { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [Required]
         public DateTime DateFrom { get; set; }
-
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+        [Required]
         public DateTime DateTo { get; set; }
+
         [Required]
         public string country { get; set; }
         [Required]

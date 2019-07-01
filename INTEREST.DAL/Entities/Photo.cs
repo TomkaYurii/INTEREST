@@ -1,11 +1,12 @@
 ﻿using INTEREST.DAL.EF;
+using System.ComponentModel.DataAnnotations;
 
 namespace INTEREST.DAL.Entities
 {
-    public class Photo : BaseEntity
+    public class Photo
     {
-            public string URL { get; set; }
-            public virtual UserProfile UserProfile { get; set; }
-            public virtual Event Event { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public string URL { get; set; }
     }
  }

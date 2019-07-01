@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace INTEREST.BLL.Interfaces
 {
-    public interface IUserProfileService : IDisposable
+    public interface IUserProfileService
     {
-        List<UserProfileDTO> GetUsers();
-        UserProfileDTO GetProfile(string u);
+        Task<OperationDetails> EditProfile(UserProfileDTO model);
+        Task DeleteUser(string id);
         Task AddAvatar(string url, UserProfile userProfile);
 
+
+        List<UserProfileDTO> GetUsersAsync();
+        UserProfileDTO GetProfile(string u);
         User GetUserByName(string user);
-        Task<User> GetUserById(string id);
-        Task<OperationDetails> EditProfile(UserProfileDTO model);
-        Task<OperationDetails> DeleteUser(string id);
     }
 }

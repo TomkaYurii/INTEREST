@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace INTEREST.DAL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20190622113859_03")]
-    partial class _03
+    [Migration("20190627184156_01")]
+    partial class _01
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,8 +40,6 @@ namespace INTEREST.DAL.Migrations
 
                     b.Property<int>("EventId");
 
-                    b.Property<int>("Id");
-
                     b.HasKey("CategoryId", "EventId");
 
                     b.HasIndex("EventId");
@@ -65,20 +63,17 @@ namespace INTEREST.DAL.Migrations
 
                     b.Property<int>("LocationId");
 
-                    b.Property<int>("PhotoId");
+                    b.Property<int?>("PhotoId");
 
-                    b.Property<string>("UserProfileId");
-
-                    b.Property<int?>("UserProfileId1");
+                    b.Property<int?>("UserProfileId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("PhotoId")
-                        .IsUnique();
+                    b.HasIndex("PhotoId");
 
-                    b.HasIndex("UserProfileId1");
+                    b.HasIndex("UserProfileId");
 
                     b.ToTable("Events");
                 });
@@ -252,9 +247,7 @@ namespace INTEREST.DAL.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.HasIndex("PhotoId")
-                        .IsUnique()
-                        .HasFilter("[PhotoId] IS NOT NULL");
+                    b.HasIndex("PhotoId");
 
                     b.HasIndex("UserId")
                         .IsUnique()
@@ -269,13 +262,24 @@ namespace INTEREST.DAL.Migrations
 
                     b.Property<int>("CategoryId");
 
-                    b.Property<int>("Id");
-
                     b.HasKey("UserProfileId", "CategoryId");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("UserProfileCategories");
+                });
+
+            modelBuilder.Entity("INTEREST.DAL.Entities.UserProfileEvent", b =>
+                {
+                    b.Property<int>("UserProfileId");
+
+                    b.Property<int>("EventId");
+
+                    b.HasKey("UserProfileId", "EventId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("UserProfileEvents");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -304,15 +308,15 @@ namespace INTEREST.DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d42fb894-3ee4-4d16-a4fe-43c091974ded",
-                            ConcurrencyStamp = "c067caee-a5ab-4afe-ab25-e6892eabe85c",
+                            Id = "05d73051-8abf-45b6-bad3-11beda82a3f7",
+                            ConcurrencyStamp = "5e9f0451-bec7-4003-9dc9-d68269dd9ae5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ba212885-be4f-477b-b8db-193dfb2176ba",
-                            ConcurrencyStamp = "46999704-7dae-4cfe-9594-e3e61a74b9cc",
+                            Id = "1085104b-43ae-449a-ae9a-8509fb60a8b6",
+                            ConcurrencyStamp = "5faeb8ae-cbf0-43bf-bd91-19f7f69754ce",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -425,13 +429,13 @@ namespace INTEREST.DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("INTEREST.DAL.Entities.Photo", "Photo")
-                        .WithOne("Event")
-                        .HasForeignKey("INTEREST.DAL.Entities.Event", "PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
 
                     b.HasOne("INTEREST.DAL.Entities.UserProfile", "UserProfile")
-                        .WithMany()
-                        .HasForeignKey("UserProfileId1");
+                        .WithMany("MyEvents")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.SetNull);
                 });
 
             modelBuilder.Entity("INTEREST.DAL.Entities.Message", b =>
@@ -458,12 +462,13 @@ namespace INTEREST.DAL.Migrations
                         .HasForeignKey("LocationId");
 
                     b.HasOne("INTEREST.DAL.Entities.Photo", "Avatar")
-                        .WithOne("UserProfile")
-                        .HasForeignKey("INTEREST.DAL.Entities.UserProfile", "PhotoId");
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
 
                     b.HasOne("INTEREST.DAL.Entities.User", "User")
                         .WithOne("UserProfile")
-                        .HasForeignKey("INTEREST.DAL.Entities.UserProfile", "UserId");
+                        .HasForeignKey("INTEREST.DAL.Entities.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("INTEREST.DAL.Entities.UserProfileCategory", b =>
@@ -475,6 +480,19 @@ namespace INTEREST.DAL.Migrations
 
                     b.HasOne("INTEREST.DAL.Entities.UserProfile", "UserProfile")
                         .WithMany("UserProfileCategories")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("INTEREST.DAL.Entities.UserProfileEvent", b =>
+                {
+                    b.HasOne("INTEREST.DAL.Entities.Event", "Event")
+                        .WithMany("UserProfileEvents")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("INTEREST.DAL.Entities.UserProfile", "UserProfile")
+                        .WithMany("UserProfileEvents")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

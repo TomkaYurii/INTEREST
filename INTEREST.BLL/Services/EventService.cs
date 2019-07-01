@@ -7,13 +7,14 @@ using INTEREST.DAL.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace INTEREST.BLL.Services
 {
     public class EventService : IEventService
     {
-        IUnitOfWork Database { get; set; }
+        private IUnitOfWork Database { get; set; }
         private readonly IHostingEnvironment _appEnvironment;
 
         public EventService(IUnitOfWork uow,
@@ -165,15 +166,9 @@ namespace INTEREST.BLL.Services
         }
 
         // List of All Events
-        public List<EventInfoDTO> GetAllEvents()
+        public IQueryable<Event> GetAllEvents()
         {
-            List<EventInfoDTO> AllEvents = new List<EventInfoDTO>();
-            foreach (var x in Database.EventRepository.GetAll())
-            {
-                AllEvents.Add(GetEventInformation(x.Id));
-            }
-
-            return AllEvents;
+            return Database.EventRepository.GetAllEventsInfo();
         }
 
         // MyEvents
@@ -205,9 +200,7 @@ namespace INTEREST.BLL.Services
             Database.SaveAsync();
         }
 
-        public void Dispose()
-        {
-            Database.Dispose();
-        }
+
+
     }
 }

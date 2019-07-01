@@ -1,9 +1,8 @@
 ﻿using INTEREST.DAL.EF;
 using INTEREST.DAL.Entities;
 using INTEREST.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace INTEREST.DAL.Repositories
 {
@@ -11,6 +10,14 @@ namespace INTEREST.DAL.Repositories
     {
         public UserProfileEventRepository(AppDBContext context) : base(context)
         {
+        }
+
+        public IQueryable<UserProfileEvent> GetProfilesByEventId(int event_id)
+        {
+            return context.UserProfileEvents.Where(x => x.EventId == event_id)
+                .Include(x => x.Event)
+                .Include(x => x.UserProfile)
+                    .ThenInclude(u=>u.User);
         }
     }
 }

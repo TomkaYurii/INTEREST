@@ -4,62 +4,46 @@
     ViewData["Title"] = "Events";
 }
 
-<link href="~/css/home_index.css" rel="stylesheet" type="text/css" />
+<link href="~/css/tiket.css" rel="stylesheet" type="text/css" />
 
-<section class="container">
+@foreach (var item in Model)
+{
 
-    <h1>Events</h1>
-
-    @foreach (var item in Model)
-    {
-        <div class="row">
-            <article class="card fl-left">
-
-
-                <section class="date">
-                    <time datetime="@item.DateFrom.Day feb">
-                        <span>@item.DateFrom.Day</span><span>@item.DateFrom.ToString("MMMM")</span>
-                    </time>
-                </section>
-
-
-                <section class="card-cont">
-                    <small>@item.UserName</small>
-                    <h3>@item.EventName</h3>
-
-                    <div class="even-date">
-                        <i class="fa fa-calendar"></i>
-                        <time>
-                            <span>@item.DateFrom.ToString("dddd") @item.DateFrom.Day @item.DateFrom.ToString("MMMM") @item.DateFrom.Year @item.DateFrom.Hour:@item.DateFrom.Minute to</span>
-                            <span>@item.DateTo.ToString("dddd") @item.DateTo.Day @item.DateTo.ToString("MMMM") @item.DateTo.Year @item.DateTo.Hour:@item.DateTo.Minute</span>
-                        </time>
-                    </div>
-
-                    <div class="even-info">
-                        <i class="fa fa-map-marker"></i>
-                        <p>
-                            @item.EventText
-                        </p>
-                    </div>
-
-                    <div class="image">
-                        <img width="250px" height="150px" src="@item.URL">
-                    </div>
-
-
-
-                </section>
-
+    <div class="blog-card alt">
+        <div class="meta">
+            <div class="photo" style="background-image: url(@item.URL)"></div>
+            <ul class="details">
+                <li class="author">@item.UserName</li>
+                <br>
+                <li class="date">START - @item.DateFrom.ToString("dddd") @item.DateFrom.Day @item.DateFrom.ToString("MMMM") @item.DateFrom.Year (@item.DateFrom.Hour:@item.DateFrom.Minute)</li>
+                <li class="date">FINISH - @item.DateTo.ToString("dddd") @item.DateTo.Day @item.DateTo.ToString("MMMM") @item.DateTo.Year (@item.DateTo.Hour:@item.DateTo.Minute)</li>
+                <li class="date">COUNTRY: @item.Country </li>
+                <li class="date">CITY: @item.City </li>
+                <br>
+                <li class="tags">
+                    <ul>
+                        @foreach (var cat in item.SelectedCategories)
+                        {
+                            <li>#@cat</li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="description">
+            <h1>@item.EventName</h1>
+            <h2>@item.UserName</h2>
+            <p>
+                @item.EventText
+            </p>
+            <p class="read-more">
                 @if (item.UserName == User.Identity.Name || User.IsInRole("Admin"))
                 {
-                    <a asp-action="DeleteEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> DELETE EVENT </a>
+                    <a asp-action="DeleteEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> DELETE </a>
+                    <a asp-action="EditEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> EDIT </a>
                 }
-
-                <a asp-action="EditEvent" asp-controller="Event" asp-route-event_id="@item.EventId">EDIT EVENT</a>
-
-
-            </article>
+                <a asp-action="JoinToEvent" asp-controller="Event" asp-route-event_id="@item.EventId"> JOIN TO EVENT </a>
+            </p>
         </div>
-    }
-
-</section>
+    </div>
+}

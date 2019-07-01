@@ -4,8 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace INTEREST.DAL.Entities
 {
-    public class UserProfile : BaseEntity
+    public class UserProfile
     {
+        [Key]
+        public int Id { get; set; }
+
         public string UserId { get; set; }
         public virtual User User { get; set; }
 

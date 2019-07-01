@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace INTEREST.BLL.Interfaces
 {
-    public interface IRolesService : IDisposable
+    public interface IRolesService
     {
         List<IdentityRole> GetRoles();
         Task CreateRole(string role);

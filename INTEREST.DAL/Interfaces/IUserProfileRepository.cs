@@ -1,4 +1,5 @@
 ﻿using INTEREST.DAL.Entities;
+using System.Collections.Generic;
 
 namespace INTEREST.DAL.Interfaces
 {

@@ -2,6 +2,8 @@
 using INTEREST.DAL.EF;
 using INTEREST.DAL.Entities;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace INTEREST.DAL.Repositories
 {

@@ -5,13 +5,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace INTEREST.DAL.Entities
 {
-    public class Event : BaseEntity
+    public class Event
     {
+        [Key]
+        public int Id { get; set; }
+
         public string EventName { get; set; }
         public string EventText { get; set; }
 
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+
         public DateTime DateFrom { get; set; }
 
         [DataType(DataType.Date)]
@@ -30,7 +32,6 @@ namespace INTEREST.DAL.Entities
 
         public virtual IEnumerable<CategoryEvent> CategoryEvents { get; set; }
         public virtual IEnumerable<UserProfileEvent> UserProfileEvents { get; set; }
-
 
         public virtual IEnumerable<Message> Messages { get; set; }
     }

@@ -13,20 +13,17 @@ namespace INTEREST.WEB.Controllers
 {
     public class AdminController : Controller
     {
-        public IUserService UserService { get; set; }
-        public IRolesService UserRoleService { get; set; }
-        public ICategoryService CategoryService { get; set; }
-        public IUserProfileService UserProfileService { get; set; }
+        private readonly IRolesService _userRoleService;
+        private readonly ICategoryService _categoryService;
+        private readonly IUserProfileService _userProfileService;
 
-        public AdminController(IUserService userService, 
-            IRolesService userRoleService, 
+        public AdminController(IRolesService userRoleService, 
             ICategoryService categoryService,
             IUserProfileService userProfileService)
         {
-            UserService = userService;
-            UserRoleService = userRoleService;
-            CategoryService = categoryService;
-            UserProfileService = userProfileService;
+            _userRoleService = userRoleService;
+            _categoryService = categoryService;
+            _userProfileService = userProfileService;
         }
 
         [HttpGet]
@@ -41,14 +38,14 @@ namespace INTEREST.WEB.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Roles()
         {
-            return View(UserRoleService.GetRoles());
+            return View(_userRoleService.GetRoles());
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddRole(string name)
         {
-            await UserRoleService.CreateRole(name);
+            await _userRoleService.CreateRole(name);
             return RedirectToAction("Roles");
         }
 
@@ -56,7 +53,7 @@ namespace INTEREST.WEB.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteRole(string id)
         {
-            await UserRoleService.DeleteRole(id);
+            await _userRoleService.DeleteRole(id);
             return RedirectToAction("Roles");
         }
 
@@ -65,20 +62,20 @@ namespace INTEREST.WEB.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Users()
         {
-            return View(UserProfileService.GetUsers());
+            return View(_userProfileService.GetUsersAsync());
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> DeleteUser(string userId)
+        public async Task<ActionResult> DeleteUser(string email)
         {
-            await UserProfileService.DeleteUser(userId);
+            await _userProfileService.DeleteUser(email);
             return RedirectToAction("Users", "Admin");
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> EditUser(string userId)
+        public ActionResult EditUser(string userId)
         {
             return RedirectToAction("UserProfile", "UserProfile");
         }
@@ -87,14 +84,14 @@ namespace INTEREST.WEB.Controllers
         [HttpGet]
         public IActionResult Categories()
         {
-            return View(CategoryService.Categories());
+            return View(_categoryService.Categories());
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public IActionResult AddCategory(string title)
         {
-            CategoryService.AddCategoryAsync(title);
+            _categoryService.AddCategoryAsync(title);
             return RedirectToAction("Categories", "Admin");
         }
 
@@ -102,7 +99,7 @@ namespace INTEREST.WEB.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteCategory(int id)
         {
-            CategoryService.DeleteCategoryAsync(id);
+            _categoryService.DeleteCategoryAsync(id);
             return RedirectToAction("Categories", "Admin");
         }
     }

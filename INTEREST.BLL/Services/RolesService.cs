@@ -19,8 +19,7 @@ namespace INTEREST.BLL.Services
 
         public List<IdentityRole> GetRoles()
         {
-            var roles = Database.RoleManager.Roles.ToList();
-            return roles;
+            return Database.RoleManager.Roles.ToList();
         }
 
         public async Task CreateRole(string role)
@@ -38,11 +37,6 @@ namespace INTEREST.BLL.Services
             {
                await Database.RoleManager.DeleteAsync(role);
             }
-        }
-        
-        public void Dispose()
-        {
-            Database.Dispose();
         }
     }
 }

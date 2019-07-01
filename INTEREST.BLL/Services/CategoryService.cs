@@ -19,7 +19,6 @@ namespace INTEREST.BLL.Services
             Database = uow;
         }
 
-        
         public List<Category> Categories() => Database.CategoryRepository.GetAll().ToList();
 
         
@@ -37,7 +36,6 @@ namespace INTEREST.BLL.Services
 
             return new OperationDetails(true, "", "");
         }
-
         public async Task<OperationDetails> DeleteCategoryAsync(int id)
         {
             if (id == 0)
@@ -54,8 +52,15 @@ namespace INTEREST.BLL.Services
             return new OperationDetails(result, "Not found", "");
         }
 
-
-
+        public List<string> CategoriesOfEvent(int event_id)
+        {
+            List<string> selected_categories = new List<string>();
+            foreach (var x in Database.CategoryRepository.EventCategories(event_id))
+            {
+                selected_categories.Add(x.Name);
+            }
+            return selected_categories;
+        }
         public List<Category> CategoriesOfUser(string UserName)
         {
             return Database.CategoryRepository.UserCategories(UserName);
@@ -79,12 +84,6 @@ namespace INTEREST.BLL.Services
                 await Database.SaveAsync();
             }
             return new OperationDetails(true, "Ok", "");
-        }
-
-
-        public void Dispose()
-        {
-            Database.Dispose();
         }
     }
 }

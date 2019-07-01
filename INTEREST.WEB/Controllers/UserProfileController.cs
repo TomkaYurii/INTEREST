@@ -17,25 +17,25 @@ namespace INTEREST.WEB.Controllers
 {
     public class UserProfileController : Controller
     {
-        private readonly IUserService userService;
-        private readonly ICategoryService categoryService;
-        private readonly IUserProfileService userProfileService;
-        private readonly IHostingEnvironment appEnvironment;
+        private readonly IUserService _userService;
+        private readonly ICategoryService _categoryService;
+        private readonly IUserProfileService _userProfileService;
+        private readonly IHostingEnvironment _appEnvironment;
 
         public UserProfileController(
-            IHostingEnvironment _appEnvironment,
-            IUserService _userService,
-            ICategoryService _categoryService,
-            IUserProfileService _userProfileService)
+            IHostingEnvironment appEnvironment,
+            IUserService userService,
+            ICategoryService categoryService,
+            IUserProfileService userProfileService)
         {
-            appEnvironment = _appEnvironment;
-            userService = _userService;
-            categoryService = _categoryService;
-            userProfileService = _userProfileService;
+            _appEnvironment = appEnvironment;
+            _userService = userService;
+            _categoryService = categoryService;
+            _userProfileService = userProfileService;
         }
 
         //USER PROFILE
-        public async Task<IActionResult> UserProfile(string userId)
+        public IActionResult UserProfile(string userId)
         {
             //UserProfileDTO profile = new UserProfileDTO();
             //if (User.IsInRole("Admin"))
@@ -45,11 +45,11 @@ namespace INTEREST.WEB.Controllers
             //}
             //else
             //{
-                var profile = userProfileService.GetProfile(User.Identity.Name);
+                var profile = _userProfileService.GetProfile(User.Identity.Name);
             //}
 
             List<string> user_categories = new List<string>();
-            foreach (var item in categoryService.CategoriesOfUser(profile.UserName))
+            foreach (var item in _categoryService.CategoriesOfUser(profile.UserName))
             {
                 user_categories.Add(item.Name);
             }
@@ -71,9 +71,9 @@ namespace INTEREST.WEB.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditProfile(string userId)
+        public IActionResult EditProfile(string userId)
         {
-            var profile = userProfileService.GetProfile(User.Identity.Name);
+            var profile = _userProfileService.GetProfile(User.Identity.Name);
 
             var editUserProfileViewModel = new EditUserProfileViewModel
             {
@@ -91,7 +91,7 @@ namespace INTEREST.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> EditProfile(EditUserProfileViewModel model)
         {
-            var user = userProfileService.GetUserByName(User.Identity.Name);
+            var user = _userProfileService.GetUserByName(User.Identity.Name);
             var userProfileDTO = new UserProfileDTO
             {
                 UserId = user.Id,
@@ -102,14 +102,14 @@ namespace INTEREST.WEB.Controllers
                 City = model.City,
                 Birthday = model.Birthday,
             };
-            await userProfileService.EditProfile(userProfileDTO);
+            await _userProfileService.EditProfile(userProfileDTO);
             return RedirectToAction("UserProfile", "UserProfile");
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteProfile()
         {
-            await userService.DeleteUser(User.Identity.Name);
+            await _userService.DeleteUser(User.Identity.Name);
             return RedirectToAction("Logout", "Account");
         }
 
@@ -120,12 +120,12 @@ namespace INTEREST.WEB.Controllers
             if (formFile != null)
             {
                 string path = "/files/" + formFile.FileName;
-                using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                 {
                     await formFile.CopyToAsync(fileStream);
                 }
-                var profile = userProfileService.GetUserByName(User.Identity.Name);
-                await userProfileService.AddAvatar(path, profile.UserProfile);
+                var profile = _userProfileService.GetUserByName(User.Identity.Name);
+                await _userProfileService.AddAvatar(path, profile.UserProfile);
             }
             return RedirectToAction("UserProfile", "UserProfile");
         }
@@ -136,14 +136,14 @@ namespace INTEREST.WEB.Controllers
         public IActionResult SelectCategories(string id)
         {
             List<string> selected_categories = new List<string>();
-            foreach (var item in categoryService.CategoriesOfUser(User.Identity.Name))
+            foreach (var item in _categoryService.CategoriesOfUser(User.Identity.Name))
             {
                 selected_categories.Add(item.Name);
             }
             SelectCategoriesViewModel selectCategoriesViewModel = new SelectCategoriesViewModel
             {
                 SelectedCategories = selected_categories,
-                Categories = categoryService.Categories()
+                Categories = _categoryService.Categories()
             };
             return View(selectCategoriesViewModel);
         }
@@ -151,13 +151,13 @@ namespace INTEREST.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SelectCategories(SelectCategoriesViewModel model)
         {
-            User user = userProfileService.GetUserByName(User.Identity.Name);
+            User user = _userProfileService.GetUserByName(User.Identity.Name);
             UserCategoryDTO userCategoryDTO = new UserCategoryDTO
             {
                 Categories = model.SelectedCategories,
                 Id = user.ProfileId
             };
-            await categoryService.AddCategoriesToUser(userCategoryDTO);
+            await _categoryService.AddCategoriesToUser(userCategoryDTO);
 
             return RedirectToAction("UserProfile");
         }

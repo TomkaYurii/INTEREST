@@ -126,10 +126,5 @@ namespace INTEREST.BLL.Services
             await Database.SaveAsync();
         }
 
-        public void Dispose()
-        {
-            Database.Dispose();
-        }
-
     }
 }

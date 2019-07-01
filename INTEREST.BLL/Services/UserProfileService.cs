@@ -24,75 +24,8 @@ namespace INTEREST.BLL.Services
             _appEnvironment = hostingEnvironment;
         }
 
-        //GET ALL USERS
-        public List<UserProfileDTO> GetUsers()
-        {
-            var profiles = Database.UserProfileRepository.GetAll()
-                .Include(p => p.User)
-                .Include(p => p.Location)
-                .Include(p => p.Avatar)
-                .ToList();
 
-            var result = new List<UserProfileDTO>();
-
-            foreach (var p in profiles)
-            {
-                result.Add(new UserProfileDTO
-                {
-                    UserId = p.User.Id,
-                    UserName = p.User.UserName,
-                    Email = p.User.Email,
-                    PhoneNumber = p.User.PhoneNumber,
-                    Birthday = p.Birthday,
-                    Gender = p.Gender,
-                    Country = p.Location?.Country,
-                    City = p.Location?.City,
-                    AvatarUrl = p.Avatar?.URL
-                });
-            }
-            return result;
-        }
-
-        //GET ALL INFO ABOUT 1 user by NAME
-        public UserProfileDTO GetProfile(string user)
-        {
-            User profile = Database.UserProfileRepository.FindByUserName(user);
-            return new UserProfileDTO
-            {
-                UserId = profile.Id,
-                UserName = profile.UserName,
-                Email = profile.Email,
-                PhoneNumber = profile.PhoneNumber,
-                Birthday = profile.UserProfile.Birthday,
-                City = profile.UserProfile?.Location?.City,
-                Country = profile.UserProfile?.Location?.Country,
-                Gender = profile.UserProfile.Gender,
-                AvatarUrl = profile.UserProfile?.Avatar?.URL
-            };
-        }
-
-        //Get User by NAME
-        public User GetUserByName(string user)
-        {
-            return Database.UserProfileRepository.FindByUserName(user);
-        }
-
-        ////Get User by USERID
-        public async Task<User> GetUserById(string id)
-        {
-            User user = await Database.UserManager.FindByIdAsync(id);
-
-            return user;
-        }
-
-        //Delete User by USERID
-        public async Task<OperationDetails> DeleteUser(string id)
-        {
-            await Database.UserManager.FindByIdAsync(id);
-            return new OperationDetails(false, "User is not found", "");
-        }
-
-        //Edit User
+        // Edit User
         public async Task<OperationDetails> EditProfile(UserProfileDTO model)
         {
             User user = await Database.UserManager.FindByIdAsync(model.UserId);
@@ -129,6 +62,16 @@ namespace INTEREST.BLL.Services
             return new OperationDetails(true, "Ok", "");
         }
 
+        // Delete User by UserID
+        public async Task DeleteUser(string email)
+        {
+            var user = await Database.UserManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                await Database.UserManager.DeleteAsync(user);
+            }
+        }
+
         // Add Photo of Avatar
         public async Task AddAvatar(string url, UserProfile userProfile)
         {
@@ -150,9 +93,55 @@ namespace INTEREST.BLL.Services
             await Database.SaveAsync();
         }
 
-        public void Dispose()
+        //GET ALL INFO ABOUT 1 user by NAME
+        public UserProfileDTO GetProfile(string user_name)
         {
-            Database.Dispose();
+            User profile = Database.UserProfileRepository.FindByUserName(user_name);
+            return new UserProfileDTO
+            {
+                UserId = profile.Id,
+                UserName = profile.UserName,
+                Email = profile.Email,
+                PhoneNumber = profile.PhoneNumber,
+                Birthday = profile.UserProfile.Birthday,
+                City = profile.UserProfile?.Location?.City,
+                Country = profile.UserProfile?.Location?.Country,
+                Gender = profile.UserProfile.Gender,
+                AvatarUrl = profile.UserProfile?.Avatar?.URL
+            };
+        }
+
+        //GET ALL USERS
+        public List<UserProfileDTO> GetUsersAsync()
+        {
+            var profiles = Database.UserProfileRepository.GetAll()
+                .Include(p => p.User)
+                .Include(p => p.Location)
+                .Include(p => p.Avatar)
+                .ToList();
+            var result = new List<UserProfileDTO>();
+            foreach (var p in profiles)
+            {
+                result.Add(new UserProfileDTO
+                {
+                    UserId = p.UserId,
+                    UserName = p.User.UserName,
+                    Email = p.User.Email,
+                    PhoneNumber = p.User.PhoneNumber,
+                    Birthday = p.Birthday,
+                    Gender = p.Gender,
+                    Country = p.Location?.Country,
+                    City = p.Location?.City,
+                    AvatarUrl = p.Avatar?.URL
+                });
+            }
+            return result;
+        }
+
+        //Get all user info by NAME
+        public User GetUserByName(string user)
+        {
+            return Database.UserProfileRepository.FindByUserName(user);
         }
     }
 }

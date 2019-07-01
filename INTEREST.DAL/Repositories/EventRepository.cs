@@ -12,6 +12,16 @@ namespace INTEREST.DAL.Repositories
         public EventRepository(AppDBContext context) : base(context)
         {
         }
+        
+        public IQueryable<Event> GetAllEventsInfo()
+        {
+            var evnt = context.Events
+                .Include(l => l.Location)
+                .Include(u => u.UserProfile)
+                    .ThenInclude(u => u.User)
+                .Include(p => p.Photo);
+            return evnt;
+        }
 
         public Event GetEverythingAboutEvent(int id)
         {

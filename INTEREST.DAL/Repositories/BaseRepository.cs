@@ -7,7 +7,7 @@ using INTEREST.DAL.Entities;
 
 namespace INTEREST.DAL.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly AppDBContext context;
         protected readonly DbSet<T> entity;
@@ -20,7 +20,10 @@ namespace INTEREST.DAL.Repositories
 
         public IQueryable<T> GetAll() => entity;
 
-        public T GetById(int id) => entity.SingleOrDefault(e => e.Id == id);
+        public T GetById(int id)
+        {
+            return entity.Find(id);
+        }
 
         public T Create(T entity)
         {

@@ -7,9 +7,8 @@
 <script type="text/javascript" src="~/js/city_state.js"></script>
 
 <link href="~/css/CheckBox.css" rel="stylesheet" />
-<h2>AddEvent</h2>
+<h2>Create Event</h2>
 
-<h4>EventModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -30,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateTo" class="control-label"></label>
-                <input asp-for="DateTo" value="" class="form-control" />
+                <input asp-for="DateTo" value="" required class="form-control" />
                 <span asp-validation-for="DateTo" class="text-danger"></span>
             </div>
             <div class="form-group">

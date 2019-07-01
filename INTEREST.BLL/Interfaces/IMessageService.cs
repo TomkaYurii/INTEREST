@@ -1,11 +1,15 @@
 ﻿using INTEREST.BLL.DTO;
+using INTEREST.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace INTEREST.BLL.Interfaces
 {
-    public interface IMessageService : IDisposable
+    public interface IMessageService
     {
+        bool CreateMessage(CreateMessageDTO createMessageDTO);
+        List<MessageDTO> GetAllMessages(int id);
     }
 }

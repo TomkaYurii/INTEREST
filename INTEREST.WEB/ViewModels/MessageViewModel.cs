@@ -11,17 +11,10 @@ namespace INTEREST.WEB.ViewModels
 
         public string UserName { get; set; }
 
-        public string UserId { get; set; }
-
-        public bool Online { get; set; }
-
         public string MessageText { get; set; }
 
-        // Time of message creation (edition, deletion).
+        public string AvatarUrl { get; set; }
+
         public DateTime MessageTime { get; set; }
-
-        public string StatusMessage { get; set; }
-
-        public int StatusMessageId { get; set; }
     }
 }
