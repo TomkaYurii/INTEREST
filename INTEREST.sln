@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INTEREST.DAL", "INTEREST.DA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "INTEREST.BLL", "INTEREST.BLL\INTEREST.BLL.csproj", "{76201D8C-DCF2-40D9-B807-1069B66E6D90}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INTEREST.TESTS.BLL", "INTEREST.TESTS.BLL\INTEREST.TESTS.BLL.csproj", "{A1A00969-BAD1-4E90-8802-4D82EE543B33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{76201D8C-DCF2-40D9-B807-1069B66E6D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76201D8C-DCF2-40D9-B807-1069B66E6D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76201D8C-DCF2-40D9-B807-1069B66E6D90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1A00969-BAD1-4E90-8802-4D82EE543B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1A00969-BAD1-4E90-8802-4D82EE543B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1A00969-BAD1-4E90-8802-4D82EE543B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1A00969-BAD1-4E90-8802-4D82EE543B33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

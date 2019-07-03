@@ -43,8 +43,12 @@ namespace INTEREST.WEB
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), x => x.MigrationsAssembly("INTEREST.DAL")));
 
             // dotnet ef migrations add InitDB --project ../LetsTogether.DAL -c AppDBContext
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDBContext>();
-
+            services.AddIdentity<User, IdentityRole>(config =>
+            {
+                config.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
+            }).
+                AddEntityFrameworkStores<AppDBContext>().
+                AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -69,7 +73,6 @@ namespace INTEREST.WEB
 
             //services.AddAutoMapper();
             services.AddAutoMapper(typeof(MappingProfile).GetTypeInfo().Assembly);
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //DI REPOSITORIES
@@ -86,6 +89,7 @@ namespace INTEREST.WEB
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserProfileService, UserProfileService>();
             services.AddTransient<IRolesService, RolesService>();
+            services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IMessageService, MessageService>();

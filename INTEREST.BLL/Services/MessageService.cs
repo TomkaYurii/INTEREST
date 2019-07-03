@@ -37,7 +37,6 @@ namespace INTEREST.BLL.Services
                 };
                 messages.Add(message);
             }
-            //return Mapper.Map<IEnumerable<Message>, IEnumerable<MessageDTO>> (Database.MessageRepository.GetAllMessages(id));
             return messages;
         }
 
@@ -46,5 +45,12 @@ namespace INTEREST.BLL.Services
             var message = _mapper.Map<CreateMessageDTO, Message>(createMessageDTO);
             return Database.MessageRepository.CreateMessage(message);
         }
+
+        public void DeleteMessage(int event_id, int internal_id)
+        {
+            Database.MessageRepository.Delete(Database.MessageRepository.FindMessagebyEventIdInteralId(event_id, internal_id));
+            Database.SaveAsync();
+        }
+
     }
 }

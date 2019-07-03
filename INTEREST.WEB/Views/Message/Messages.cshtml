@@ -6,14 +6,15 @@
 
 <link href="~/css/forum.css" rel="stylesheet" type="text/css" />
 
-@foreach (var item in Model.Messages)
-{
-    <div class="row">
-        <div class="col-md-12 bg-white ">
-            <div class="chat-message">
-                <ul class="chat">
 
+<div class="row">
 
+    <div class="col-md-7 bg-white ">
+        <div class="chat-message">
+            <ul class="chat">
+
+                @foreach (var item in Model.Messages)
+                {
                     <li class="left clearfix">
                         <span class="chat-img pull-left">
 
@@ -32,39 +33,81 @@
                             <div class="header">
                                 <strong class="primary-font"> @item.UserName </strong>
                                 <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> @item.MessageTime.ToString("dddd") @item.MessageTime.Day @item.MessageTime.ToString("MMMM") @item.MessageTime.Year TIME: @item.MessageTime.Hour:@item.MessageTime.Minute</small>
+                                @if (item.UserName == User.Identity.Name || User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="DeleteMessage" asp-controller="Message" asp-route-event_id="@Model.EventId" asp-route-internal_id="@item.InternalId">
+                                        Delete message
+                                    </a>
+                                }
                             </div>
                             <p>
                                 @item.MessageText
                             </p>
                         </div>
                     </li>
-                </ul>
+                }
+
+            </ul>
+        </div>
+
+        <div class="container">
+            <div class="row justify-content-md-center">
+                @if (Model.PageViewModel.HasPreviousPage)
+                {
+                    <a asp-action="Messages" asp-controller="Message" asp-route-event_id="@Model.EventId" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+                       class="btn btn-sm btn-primary">
+                        Previous
+                    </a>
+                }
+                &nbsp;
+                @if (Model.PageViewModel.HasNextPage)
+                {
+                    <a asp-action="Messages" asp-controller="Message" asp-route-event_id="@Model.EventId" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+                       class="btn btn-sm btn-primary">
+                        Next
+                    </a>
+                }
             </div>
         </div>
-    </div>
-}
 
-<div class="container">
-    <div class="row justify-content-md-center">
-        @if (Model.PageViewModel.HasPreviousPage)
-        {
-            <a asp-action="Messages" asp-controller="Message" asp-route-event_id="@Model.EventId" asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-               class="btn btn-sm btn-primary">
-                Previous
-            </a>
-        }
-        &nbsp;
-        @if (Model.PageViewModel.HasNextPage)
-        {
-            <a asp-action="Messages" asp-controller="Message" asp-route-event_id="@Model.EventId" asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-               class="btn btn-sm btn-primary">
-                Next
-            </a>
-        }
     </div>
+
+    <div class="col-md-5 ">
+        <h4>SUBSCRIBERS</h4>
+        <br>
+        <div class = "chat-message">
+            <ul class="chat list-group">
+                @foreach (var item in Model.Subscribers)
+                {
+                <li>
+                    <span class="chat-img pull-left">
+                        @if (@item.Url == "Default")
+
+                        {
+                            <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="User Avatar">
+                        }
+                        else
+                        {
+                            <img src="@item.Url" alt="User Avatar">
+                        }
+                    </span>
+                    &#8195;
+                    @item.UserName 
+                    &#8195;
+                    @item.PhoneNumber 
+                    &#8195;
+                    @item.City
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+
 </div>
 
 <a asp-action="CreateMessage" asp-controller="Message" asp-route-event_id="@Model.EventId"
    class="btn btn-sm btn-warning">
     LEAVE YOUR COMMENT
 </a>
+<br>

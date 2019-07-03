@@ -30,9 +30,7 @@ namespace INTEREST.WEB.MappingProfiles
                 .ForMember(dest => dest.UserName, opts => opts.MapFrom(x => x.UserProfile.User.UserName));
 
 
-            //CreateMap<DeleteMessageViewModel, DeleteMessageDTO>();
-            //CreateMap<EditMessageViewModel, EditMessageDTO>();
-            //CreateMap<MessageViewModel, MessageDTO>();
+
             //event
             //CreateMap<CreateEventViewModel, CreateEventDTO>();
         }

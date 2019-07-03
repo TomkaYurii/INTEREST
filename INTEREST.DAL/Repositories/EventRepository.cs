@@ -12,7 +12,17 @@ namespace INTEREST.DAL.Repositories
         public EventRepository(AppDBContext context) : base(context)
         {
         }
-        
+
+        public IEnumerable<Event> GetEventsByDate(int number)
+        {
+            var evnts = context.Events.OrderByDescending(e => e.DateFrom).Take(number)
+                .Include(l => l.Location)
+                .Include(u => u.UserProfile)
+                    .ThenInclude(u => u.User)
+                .Include(p => p.Photo);
+            return evnts;
+        }
+
         public IQueryable<Event> GetAllEventsInfo()
         {
             var evnt = context.Events
@@ -23,7 +33,7 @@ namespace INTEREST.DAL.Repositories
             return evnt;
         }
 
-        public Event GetEverythingAboutEvent(int id)
+        public Event GetOneEventInfo(int id)
         {
             Event evnt = context.Events
                 .Include (l => l.Location)

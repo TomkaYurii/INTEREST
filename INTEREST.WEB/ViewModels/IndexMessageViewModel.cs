@@ -10,6 +10,7 @@ namespace INTEREST.WEB.ViewModels
     {
         public int EventId { get; set; }
         public List<MessageViewModel> Messages { get; set; }
+        public List <SubscribersViewModel> Subscribers { get; set; }
         public PageViewModel PageViewModel { get; set; }
     }
 }

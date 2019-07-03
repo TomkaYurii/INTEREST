@@ -10,12 +10,26 @@
 <h2>Create Event</h2>
 
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+
+    <div class="col-sm-2">
+    </div>
+
+
+    <div class="col-sm-8">
+
+
+
+
         <form asp-action="AddEvent" asp-controller="Event" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="file" required name="formFile" class="form-control" />
+
+            <div class="text-center">
+                <div class="custom-file">
+                    <input type="file" required name="formFile" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Select your photo for event</label>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -23,45 +37,64 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateFrom" class="control-label"></label>
-                <input asp-for="DateFrom" value="" required class="form-control" />
-                <span asp-validation-for="DateFrom" class="text-danger"></span>
+                <label asp-for="Description" class="control-label"></label>
+                @*<input asp-for="Description" class="form-control" />*@
+                <textarea asp-for="Description" rows="6" class="form-control" placeholder="your message" required autofocus></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DateTo" class="control-label"></label>
-                <input asp-for="DateTo" value="" required class="form-control" />
-                <span asp-validation-for="DateTo" class="text-danger"></span>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="DateFrom" class="control-label">Event must start:</label>
+                        <input asp-for="DateFrom" value="" required class="form-control" />
+                        <span asp-validation-for="DateFrom" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="DateTo" class="control-label">Event must end:</label>
+                        <input asp-for="DateTo" value="" required class="form-control" />
+                        <span asp-validation-for="DateTo" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
+
             <div class="form-group">
-                <select onchange="set_country(this,country,city_state)" size="1" name="region">
+                <select class="form-control-sm" onchange="set_country(this,country,city_state)" size="1" name="region">
                     <option value="" selected="selected">SELECT REGION</option>
                     <option value=""></option>
                     <script type="text/javascript">setRegions(this);</script>
                 </select>
-                Country <select name="country" size="1" disabled="disabled" onchange="set_city_state(this,city_state)"></select>
-                City/State <select name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)"></select>
+                Country: <select class="form-control-sm" name="country" size="1" disabled="disabled" onchange="set_city_state(this,city_state)"></select>
+                City/State: <select class="form-control-sm" name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)"></select>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <ul class="ks-cboxtags">
+            <ul class="list-group list-group-horizontal borderless">
                 @foreach (var item in Model.Categories)
                 {
-                    <li>
-                        <input name="SelectedCategories" type="checkbox" id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text> checked</text> } value="@item.Name">
-                        <label for="@item.Id">@item.Name</label>
+                    <li class="row list-group-item border-0">
+                        <div class="custom-control custom-checkbox">
+                            <input name="SelectedCategories" type="checkbox" class="custom-control-input"
+                                   id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text>checked</text> } value="@item.Name">
+                            <label class="custom-control-label" for="@item.Id">@item.Name</label>
+                        </div>
                     </li>
                 }
             </ul>
-
+            <br>
             <div class="form-group">
-                <input type="submit" name="submit" value="Save" class="btn btn-default" />
+                <input type="submit" name="submit" value="Save" class="btn btn-sm btn-warning" />
             </div>
-
         </form>
+     </div>
+
+    <div class="col-sm-2">
     </div>
 </div>
 
+
+<script type="text/javascript">
+    document.getElementsByClassName("custom-file-input")[0].addEventListener("change", function () {
+        var fileName = this.value.split("\\").pop();
+    });
+</script>

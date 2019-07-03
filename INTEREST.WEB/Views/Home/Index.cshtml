@@ -1,7 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using INTEREST.BLL.DTO
+@model List<EventInfoDTO>
+@{
+    ViewData["Title"] = "Events";
 }
 
 <link href="~/css/tiket.css" rel="stylesheet" type="text/css" />
 
-
+@foreach (var item in Model)
+{
+    <div class="blog-card alt">
+        <div class="meta">
+            <div class="photo" style="background-image: url(@item.URL)"></div>
+            <ul class="details">
+                <li class="author">@item.UserName</li>
+                <br>
+                <li class="date">START - @item.DateFrom.ToString("dddd") @item.DateFrom.Day @item.DateFrom.ToString("MMMM") @item.DateFrom.Year (@item.DateFrom.Hour:@item.DateFrom.Minute)</li>
+                <li class="date">FINISH - @item.DateTo.ToString("dddd") @item.DateTo.Day @item.DateTo.ToString("MMMM") @item.DateTo.Year (@item.DateTo.Hour:@item.DateTo.Minute)</li>
+                <li class="date">COUNTRY: @item.Country </li>
+                <li class="date">CITY: @item.City </li>
+                <br>
+                <li class="tags">
+                    <ul>
+                        @foreach (var cat in item.SelectedCategories)
+                        {
+                            <li>#@cat</li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="description">
+            <h1>@item.EventName</h1>
+            <h2>@item.UserName</h2>
+            <p> 
+                @item.EventText
+            </p>
+        </div>
+    </div>
+}

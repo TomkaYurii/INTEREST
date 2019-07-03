@@ -36,6 +36,20 @@ namespace INTEREST.WEB.Controllers
         [HttpGet]
         public IActionResult Messages(int event_id, int page)
         {
+
+            List<SubscribersViewModel> subscribers = new List<SubscribersViewModel>();
+            foreach (var item in _eventService.AllInfoAboutSubscribers(event_id))
+            {
+                var subscriber = new SubscribersViewModel
+                {
+                    UserName = item.UserName,
+                    PhoneNumber = item.PhoneNumber,
+                    Url = item.Url,
+                    City = item.City
+                };
+                subscribers.Add(subscriber);
+            }
+
             int pageSize = 5;
 
             List<MessageViewModel> messages = new List<MessageViewModel>();
@@ -60,11 +74,9 @@ namespace INTEREST.WEB.Controllers
             {
                 EventId = event_id,
                 PageViewModel = pageViewModel,
-                Messages = items
+                Messages = items,
+                Subscribers = subscribers
             };
-            //    //var messageList = Mapper.Map<IEnumerable<MessageDTO>, IEnumerable<MessageViewModel>>
-            //    //   (_messageService.GetAllMessages(id)).ToList();
-
             return View(viewModel);
         }
 
@@ -96,6 +108,15 @@ namespace INTEREST.WEB.Controllers
             }
             return RedirectToAction("Messages", "Message", new { event_id, page = 1 });
         }
+
+
+        [Authorize]
+        public ActionResult DeleteMessage(int event_id, int internal_id)
+        {
+            _messageService.DeleteMessage(event_id, internal_id);
+            return RedirectToAction("Messages", "Message", new { event_id, page = 1 });
+        }
+
 
         private string RegularMessage(string messageText)
         {

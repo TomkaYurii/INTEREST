@@ -16,12 +16,13 @@ namespace INTEREST.BLL.Services
     public class UserService : IUserService
     {
         private IUnitOfWork Database { get; set; }
-        public UserService(IUnitOfWork uow)
+        private IEmailService emailService { get; set; }
+        public UserService(IUnitOfWork uow, IEmailService _emailService)
         {
             Database = uow;
+            emailService = _emailService;
         }
 
-        //CREATE USER
         public async Task<OperationDetails> CreateAsync(UserDTO userDTO)
         {
             User user = await Database.UserManager.FindByEmailAsync(userDTO.Email);
@@ -68,6 +69,14 @@ namespace INTEREST.BLL.Services
                 user.ProfileId = userProfile.Id;
                 result = await Database.UserManager.UpdateAsync(user);
 
+
+                var code = await Database.UserManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = "https://localhost:44330/Account/ConfirmEmail?code=" + code + "&id=" + user.Id;
+                await emailService.SendEmailAsync(user.Email, "Confirm your account",
+                    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+
+
                 await Database.SaveAsync();
                 return new OperationDetails(true, "Registration is sucsessfuly complited", "");
             }
@@ -77,7 +86,6 @@ namespace INTEREST.BLL.Services
             }
         }
 
-        //AUTENTIFICATION
         public async Task<bool> SignInAsync(UserDTO userDto)
         {    
             var userName = userDto.Email;
@@ -94,7 +102,6 @@ namespace INTEREST.BLL.Services
             return auth.Succeeded;
         }
 
-        // DATABASE INITIALIZATION
         public async Task AdminCreateAsync(UserDTO adminDto)
         {
             if (!Database.UserManager.Users.Any())
@@ -103,19 +110,16 @@ namespace INTEREST.BLL.Services
             }
         }
 
-        //GET CURRENT USER
         public async Task<User> GetCurrentUserAsync(HttpContext context)
         {
             return await Database.UserManager.GetUserAsync(context.User);
         }
 
-        // SIGN OUT
         public async Task SignOutAsync()
         {
             await Database.SignInManager.SignOutAsync();
         }
 
-        // DELETE USER
         public async Task DeleteUser(string name)
         {
             User user = await Database.UserManager.FindByNameAsync(name);

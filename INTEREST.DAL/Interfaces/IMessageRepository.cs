@@ -10,5 +10,6 @@ namespace INTEREST.DAL.Interfaces
         string GetMessage(Message message);
         IEnumerable<Message> GetAllMessages(int id);
         bool CreateMessage(Message message);
+        Message FindMessagebyEventIdInteralId(int event_id, int internal_id);
     }
 }

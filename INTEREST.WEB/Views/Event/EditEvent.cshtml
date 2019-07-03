@@ -7,75 +7,96 @@
 <h2>EditEvent</h2>
 
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+
+    <div class="col-sm-2">
+    </div>
 
 
+    <div class="col-sm-8">
         <form asp-action="EditEvent" asp-controller="Event">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <img src="@Model.URL" width="450" height="250">
-
             <div class="form-group">
-                <input type="file" required name="formFile" class="form-control" />
+                <input type="hidden" asp-for="EventId" value="@Model.EventId" />
             </div>
 
-            <div class="form-group">
-            <input type="hidden" asp-for="EventId" value="@Model.EventId" />
-             </div>
+            <div class="text-center">
+                @*<img src="@Model.URL" width="450" height="250">*@
+                @*<br>*@
+                <div class="custom-file">
+                    <input type="file" required name="formFile" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">Select your photo for event</label>
+                </div>
+            </div>
+
+            <br>
 
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                <label asp-for="Title" class="control-label"> The name of event: </label>
                 <input asp-for="Title" required class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Description" class="control-label">Description of your event:</label>
+                <textarea asp-for="Description" rows="8" class="form-control" placeholder="your message" required autofocus></textarea>
+                <span asp-validation-for="Description" class="text-danger"> </span>
             </div>
 
             <div class="form-group">
-                <label asp-for="DateFrom" class="control-label"></label>
+                <label asp-for="DateFrom" class="control-label">The Date of Start</label>
                 <input asp-for="DateFrom" required class="form-control" />
                 <span asp-validation-for="DateFrom" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="DateTo" class="control-label"></label>
+                <label asp-for="DateTo" class="control-label">The Date of End</label>
                 <input asp-for="DateTo" class="form-control" />
                 <span asp-validation-for="DateTo" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="country" class="control-label"></label>
+                <label asp-for="country" class="control-label">Country of Event</label>
                 <input asp-for="country" class="form-control" />
                 <span asp-validation-for="country" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="city_state" class="control-label"></label>
+                <label asp-for="city_state" class="control-label">City of Event</label>
                 <input asp-for="city_state" class="form-control" />
                 <span asp-validation-for="city_state" class="text-danger"></span>
             </div>
 
-            <ul class="ks-cboxtags">
+            <ul class="list-group list-group-horizontal borderless">
                 @foreach (var item in Model.Categories)
                 {
-                    <li>
-                        <input name="SelectedCategories" type="checkbox" id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text> checked </text> } value="@item.Name">
-                        <label for="@item.Id">@item.Name</label>
+                    <li class="row list-group-item border-0">
+                        <div class="custom-control custom-checkbox">
+                            <input name="SelectedCategories" type="checkbox" class="custom-control-input"
+                                   id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text> checked </text> } value="@item.Name">
+                            <label class="custom-control-label" for="@item.Id">@item.Name</label>
+                        </div>
                     </li>
                 }
             </ul>
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+            <hr>
 
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-sm btn-warning" />
+            </div>
         </form>
-    </div> 
+    </div>
+
+    <div class="col-sm-2">
+    </div>
+
 </div>
+<script type="text/javascript">
+    document.getElementsByClassName("custom-file-input")[0].addEventListener("change", function () {
+        var fileName = this.value.split("\\").pop();
+    });
+</script>
 

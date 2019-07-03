@@ -25,7 +25,6 @@ namespace INTEREST.BLL.Services
         }
 
 
-        // Edit User
         public async Task<OperationDetails> EditProfile(UserProfileDTO model)
         {
             User user = await Database.UserManager.FindByIdAsync(model.UserId);
@@ -62,7 +61,6 @@ namespace INTEREST.BLL.Services
             return new OperationDetails(true, "Ok", "");
         }
 
-        // Delete User by UserID
         public async Task DeleteUser(string email)
         {
             var user = await Database.UserManager.FindByEmailAsync(email);
@@ -72,7 +70,6 @@ namespace INTEREST.BLL.Services
             }
         }
 
-        // Add Photo of Avatar
         public async Task AddAvatar(string url, UserProfile userProfile)
         {
             if (userProfile.Avatar.URL != "Default")
@@ -93,7 +90,6 @@ namespace INTEREST.BLL.Services
             await Database.SaveAsync();
         }
 
-        //GET ALL INFO ABOUT 1 user by NAME
         public UserProfileDTO GetProfile(string user_name)
         {
             User profile = Database.UserProfileRepository.FindByUserName(user_name);
@@ -111,7 +107,6 @@ namespace INTEREST.BLL.Services
             };
         }
 
-        //GET ALL USERS
         public List<UserProfileDTO> GetUsersAsync()
         {
             var profiles = Database.UserProfileRepository.GetAll()
@@ -138,7 +133,6 @@ namespace INTEREST.BLL.Services
             return result;
         }
 
-        //Get all user info by NAME
         public User GetUserByName(string user)
         {
             return Database.UserProfileRepository.FindByUserName(user);

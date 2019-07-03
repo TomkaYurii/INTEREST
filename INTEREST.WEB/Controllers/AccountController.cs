@@ -89,7 +89,11 @@ namespace INTEREST.WEB.Controllers
                 };
                 OperationDetails operationDetails = await _userService.CreateAsync(userDto);
                 if (operationDetails.Succedeed)
-                    return RedirectToAction("Login", "Account");
+                //return RedirectToAction("Login", "Account");
+                {
+                    ViewBag.Msg = "We sent you an email with your registration link to your email address.Please confirm your email address with this link.";
+                    return View();
+                }
                 else
                     ModelState.AddModelError(operationDetails.Property, 
                                              operationDetails.Message);

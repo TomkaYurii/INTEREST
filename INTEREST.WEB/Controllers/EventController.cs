@@ -30,13 +30,16 @@ namespace INTEREST.WEB.Controllers
         }
 
 
-        // All Events
         [HttpGet]
-        public IActionResult Events(string title, int page=1, EventSortState sortOrder = EventSortState.TitleAsc)
+        public IActionResult Events(string title, 
+            string author, 
+            string country,
+            string city,
+            int page=1, 
+            EventSortState sortOrder = EventSortState.TitleAsc)
+
         {
-            //var model = _eventService.GetAllEvents();
-            //return View(model);
-            int pageSize = 1;
+            int pageSize = 2;
 
             var events = _eventService.GetAllEvents();
    
@@ -45,11 +48,41 @@ namespace INTEREST.WEB.Controllers
             {
                 events = events.Where(p => p.EventName.Contains(title));
             }
+            if (!String.IsNullOrEmpty(author))
+            {
+                events = events.Where(p => p.UserProfile.User.UserName.Contains(author));
+            }
+            if (!String.IsNullOrEmpty(country))
+            {
+                events = events.Where(p => p.Location.Country.Contains(country));
+            }
+            if (!String.IsNullOrEmpty(city))
+            {
+                events = events.Where(p => p.Location.City.Contains(city));
+            }
 
             switch (sortOrder)
             {
                 case EventSortState.TitleDesc:
                     events = events.OrderByDescending(s => s.EventName);
+                    break;
+                case EventSortState.AuthorAsc:
+                    events = events.OrderBy(s => s.UserProfile.User.UserName);
+                    break;
+                case EventSortState.AuthorDesc:
+                    events = events.OrderByDescending(s => s.UserProfile.User.UserName);
+                    break;
+                case EventSortState.CountryAsc:
+                    events = events.OrderBy(s => s.Location.Country);
+                    break;
+                case EventSortState.CountryDesc:
+                    events = events.OrderByDescending(s => s.Location.Country);
+                    break;
+                case EventSortState.CityAsc:
+                    events = events.OrderBy(s => s.Location.City);
+                    break;
+                case EventSortState.CityDesc:
+                    events = events.OrderByDescending(s => s.Location.City);
                     break;
                 default:
                     events = events.OrderBy(s => s.EventName);
@@ -60,25 +93,28 @@ namespace INTEREST.WEB.Controllers
             var items = events.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             List<List<string>> sel_cat = new List<List<string>>();
+            List<int> count_subscribers = new List<int>();
             foreach (var x in items)
             {
                 List<string> event_category = new List<string>();
                 event_category = _categoryService.CategoriesOfEvent(x.Id);
                 sel_cat.Add(event_category);
+                count_subscribers.Add(_eventService.CountSubscribers(x.Id));
             }
+            
 
             IndexEventsViewModel viewModel = new IndexEventsViewModel
             {
                 PageViewModel = new PageViewModel(count, page, pageSize),
                 SortEventsViewModel = new SortEventsViewModel(sortOrder),
-                FilterEventsViewModel = new FilterEventsViewModel(title),
+                FilterEventsViewModel = new FilterEventsViewModel(title, author, country, city),
                 Events = items,
-                Selected_Categories = sel_cat
+                Selected_Categories = sel_cat,
+                Count_Subscribers = count_subscribers
             };
             return View(viewModel);
         }
 
-        // Create event
         [Authorize]
         [HttpGet]
         public IActionResult CreateEvent()
@@ -112,7 +148,7 @@ namespace INTEREST.WEB.Controllers
             return RedirectToAction("UserProfile", "UserProfile");
         }
 
-        //User Events
+
         [HttpGet]
         public IActionResult UserEvents()
         {
@@ -121,7 +157,6 @@ namespace INTEREST.WEB.Controllers
             return View(model);
         }
 
-        // Edit Event
         [HttpGet]
         public IActionResult EditEvent(int event_id)
         {
@@ -162,14 +197,12 @@ namespace INTEREST.WEB.Controllers
             return RedirectToAction("Events", "Event");
         }
 
-        // Delete Event
         public IActionResult DeleteEvent(int event_id)
         {
             _eventService.DeleteEvent(event_id);
             return RedirectToAction("Events", "Event");
         }
 
-        // Select Event
         public IActionResult JoinToEvent(int event_id)
         {
             var p = _userProfileService.GetUserByName(User.Identity.Name);

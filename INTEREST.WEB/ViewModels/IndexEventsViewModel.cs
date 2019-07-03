@@ -11,6 +11,7 @@ namespace INTEREST.WEB.ViewModels
     {
         public IEnumerable<Event> Events { get; set; }
         public List<List<string>> Selected_Categories { get; set; }
+        public List<int> Count_Subscribers { get; set; }
         public PageViewModel PageViewModel { get; set; }
         public FilterEventsViewModel FilterEventsViewModel { get; set; }
         public SortEventsViewModel SortEventsViewModel { get; set; }

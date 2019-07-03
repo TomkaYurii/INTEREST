@@ -15,9 +15,14 @@ namespace INTEREST.DAL.Repositories
         public IQueryable<UserProfileEvent> GetProfilesByEventId(int event_id)
         {
             return context.UserProfileEvents.Where(x => x.EventId == event_id)
-                .Include(x => x.Event)
                 .Include(x => x.UserProfile)
                     .ThenInclude(u=>u.User);
         }
+
+        public int CountSubscribers(int event_id)
+        {
+            return context.UserProfileEvents.Where(x => x.EventId == event_id).Count();
+        }
+
     }
 }

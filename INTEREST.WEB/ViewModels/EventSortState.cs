@@ -8,6 +8,12 @@ namespace INTEREST.WEB.ViewModels
     public enum EventSortState
     {
         TitleAsc,
-        TitleDesc
+        TitleDesc,
+        AuthorAsc,
+        AuthorDesc,
+        CountryAsc,
+        CountryDesc,
+        CityAsc,
+        CityDesc,
     }
 }

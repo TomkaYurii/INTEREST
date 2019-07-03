@@ -22,7 +22,7 @@ namespace INTEREST.DAL.Repositories
 
         public IEnumerable<Message> GetAllMessages(int id)
         {
-            return context.Messages.Where(i => i.EventId == id).OrderByDescending(o => o.InternalId)
+            return context.Messages.Where(i => i.EventId == id).OrderByDescending(o => o.MessageTime)
                 .Include(src => src.UserProfile)
                     .ThenInclude(u => u.User)
                 .ToList();
@@ -41,6 +41,9 @@ namespace INTEREST.DAL.Repositories
             return true;
         }
 
-
+        public Message FindMessagebyEventIdInteralId(int event_id, int internal_id)
+        {
+            return context.Messages.FirstOrDefault(x => x.InternalId == internal_id && x.EventId == event_id);
+        }
     }
 }

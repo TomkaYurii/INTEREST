@@ -9,9 +9,9 @@ namespace INTEREST.DAL.Interfaces
     {
 
         IQueryable<Event> GetAllEventsInfo();
+        IEnumerable<Event> GetEventsByDate(int number);
 
-
-        Event GetEverythingAboutEvent(int id);
+        Event GetOneEventInfo(int id);
         List<Event> UserEvents(int userProfile_id);
     }
 }

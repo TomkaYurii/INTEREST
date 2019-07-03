@@ -2,32 +2,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>РОБОТА ІЗ КОРИСТУВАЧАМИ</h2>
-<h2>-----------------------</h2>
-<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-    <ul class="navbar-nav flex-grow-1">
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Users">Work with users</a>
-        </li>
-    </ul>
-</div>
-<h2>РОБОТА ІЗ РОЛЯМИ</h2>
-<h2>-----------------------</h2>
-<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-    <ul class="navbar-nav flex-grow-1">
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Roles">Work with roles</a>
-        </li>
-    </ul>
-</div>
+    <h3>Admin Tools</h3>
+    <br>
 
-<h2>РОБОТА ІЗ Категоріями</h2>
-<h2>-----------------------</h2>
-<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-    <ul class="navbar-nav flex-grow-1">
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Categories">Work with categories</a>
-        </li>
-    </ul>
-</div>
-<h2>-----------------------</h2>
+    <div class="list-group">
+        <a class="list-group-item list-group-item-action"
+           asp-area="" asp-controller="Admin" asp-action="Users">USERS</a>
+        <a class="list-group-item list-group-item-action"
+           asp-area="" asp-controller="Admin" asp-action="Roles">ROLES</a>
+        <a class="list-group-item list-group-item-action"
+           asp-area="" asp-controller="Admin" asp-action="Categories">CATEGORIES</a>
+    </div>

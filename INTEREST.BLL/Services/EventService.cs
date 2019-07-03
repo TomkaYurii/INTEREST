@@ -24,7 +24,6 @@ namespace INTEREST.BLL.Services
             _appEnvironment = hostingEnvironment;
         }
 
-        // Create event
         public async Task<OperationDetails> CreateEvent(EventDTO eventDTO)
         {
             //add base info about evnt
@@ -81,7 +80,6 @@ namespace INTEREST.BLL.Services
             return new OperationDetails(true, "Ok", "");
         }
 
-        // Update event
         public async Task<OperationDetails> UpdateEvent(EventDTO evntDTO)
         {
             var evnt = Database.EventRepository.GetById(evntDTO.EventId);
@@ -136,10 +134,9 @@ namespace INTEREST.BLL.Services
             return new OperationDetails(true, "Ok", "");
         }
 
-        // Get information about event
         public EventInfoDTO GetEventInformation (int event_id)
         {
-            var evnt = Database.EventRepository.GetEverythingAboutEvent(event_id);
+            var evnt = Database.EventRepository.GetOneEventInfo(event_id);
             var usr = Database.UserProfileRepository.FindByUserProfileId(evnt.UserProfileId.Value);
 
             List<string> selected_categories = new List<string>();
@@ -165,13 +162,21 @@ namespace INTEREST.BLL.Services
             return evntInfoDTO;
         }
 
-        // List of All Events
+        public List<EventInfoDTO> GetEventsByDate(int number)
+        {
+            List<EventInfoDTO> last_events = new List<EventInfoDTO>();
+            foreach (var x in Database.EventRepository.GetEventsByDate(number))
+            {
+                last_events.Add(GetEventInformation(x.Id));
+            }
+            return last_events;
+        }
+
         public IQueryable<Event> GetAllEvents()
         {
             return Database.EventRepository.GetAllEventsInfo();
         }
 
-        // MyEvents
         public List<EventInfoDTO> GetUserEvents(int user_id)
         {
             List<EventInfoDTO> UserEvents = new List<EventInfoDTO>();
@@ -182,16 +187,21 @@ namespace INTEREST.BLL.Services
             return UserEvents;
         }
         
-        // Delete Event
         public void DeleteEvent(int event_id)
         {
             Database.EventRepository.Delete(Database.EventRepository.GetById(event_id));
             Database.SaveAsync();
         }
 
-
         public void UserSubscribeOnEvent(int user_prof_id, int event_id)
         {
+
+            foreach (var item in Database.UserProfileEventRepository.GetAll())
+            {
+                if (item.UserProfileId == user_prof_id && item.EventId == event_id )
+                    Database.UserProfileEventRepository.Delete(item);
+            }
+
             Database.UserProfileEventRepository.Create(new UserProfileEvent
                 {
                     EventId = event_id,
@@ -200,7 +210,28 @@ namespace INTEREST.BLL.Services
             Database.SaveAsync();
         }
 
+        public List<SubscribersDTO> AllInfoAboutSubscribers(int event_id)
+        {
+            List<SubscribersDTO> subscribers_info = new List<SubscribersDTO>();
+            foreach (var info in Database.UserProfileEventRepository.GetProfilesByEventId(event_id))
+            {
+                var photo = Database.PhotoRepository.GetById(info.UserProfile.PhotoId.Value);
+                var location = Database.LocationRepository.GetById(info.UserProfile.LocationId.Value);
+                SubscribersDTO subscriber = new SubscribersDTO
+                {
+                    UserName = info.UserProfile.User.UserName,
+                    PhoneNumber = info.UserProfile.User.PhoneNumber,
+                    Url = photo.URL,
+                    City = location.City
+                };
+                subscribers_info.Add(subscriber);
+            }
+            return subscribers_info;
+        }
 
-
+        public int CountSubscribers(int event_id)
+        {
+            return Database.UserProfileEventRepository.CountSubscribers(event_id);
+        }
     }
 }

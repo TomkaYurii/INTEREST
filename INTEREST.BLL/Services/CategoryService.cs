@@ -24,10 +24,13 @@ namespace INTEREST.BLL.Services
         
         public async Task<OperationDetails> AddCategoryAsync(string title)
         {
+            if (string.IsNullOrEmpty( title))
+                return new OperationDetails(false, "Category cannt be null", "");
+
             foreach (var item in Database.CategoryRepository.GetAll())
             {
                 if (item.Name == title)
-                    return new OperationDetails(false, "We have this category", ""); ;
+                    return new OperationDetails(false, "We have this category", "");
             }
 
             Database.CategoryRepository.Create(new Category() { Name = title });
@@ -36,6 +39,7 @@ namespace INTEREST.BLL.Services
 
             return new OperationDetails(true, "", "");
         }
+
         public async Task<OperationDetails> DeleteCategoryAsync(int id)
         {
             if (id == 0)
@@ -61,6 +65,7 @@ namespace INTEREST.BLL.Services
             }
             return selected_categories;
         }
+
         public List<Category> CategoriesOfUser(string UserName)
         {
             return Database.CategoryRepository.UserCategories(UserName);

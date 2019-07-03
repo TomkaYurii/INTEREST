@@ -6,6 +6,15 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <script type="text/javascript" src="~/js/city_state.js"></script>
 
+@if (ViewBag.Msg != null)
+{
+    <center>
+        <h4 style="margin-top:300px;">@ViewBag.Msg</h4>
+    </center>
+}
+else
+{
+
 <div class="container">
     <form asp-action="Register">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -191,6 +200,7 @@
         </div>
     </form>
 </div>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
