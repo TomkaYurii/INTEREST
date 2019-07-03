@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace INTEREST.WEB.Controllers
 {
+    [Authorize]
     public class MessageController : Controller
     {
         private readonly IEventService _eventService;

@@ -5,6 +5,7 @@ using INTEREST.BLL.Interfaces;
 using INTEREST.BLL.Services;
 using INTEREST.DAL.Entities;
 using INTEREST.WEB.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace INTEREST.WEB.Controllers
 {
+    [Authorize]
     public class UserProfileController : Controller
     {
         private readonly IUserService _userService;

@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 
 namespace INTEREST.WEB.Controllers
 {
+    [Authorize]
     public class EventController : Controller
     {
         private readonly IEventService _eventService;
         private readonly IUserProfileService _userProfileService;
         private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
-
 
         public EventController(IEventService eventService, 
                                 IUserProfileService userProfileService,
