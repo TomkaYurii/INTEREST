@@ -1,4 +1,5 @@
-﻿using INTEREST.BLL.DTO;
+﻿using AutoMapper;
+using INTEREST.BLL.DTO;
 using INTEREST.BLL.Infrastructure;
 using INTEREST.BLL.Interfaces;
 using INTEREST.BLL.Services;
@@ -21,32 +22,25 @@ namespace INTEREST.WEB.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IUserProfileService _userProfileService;
         private readonly IHostingEnvironment _appEnvironment;
+        private readonly IMapper _mapper;
 
         public UserProfileController(
             IHostingEnvironment appEnvironment,
             IUserService userService,
             ICategoryService categoryService,
-            IUserProfileService userProfileService)
+            IUserProfileService userProfileService,
+            IMapper mapper)
         {
             _appEnvironment = appEnvironment;
             _userService = userService;
             _categoryService = categoryService;
             _userProfileService = userProfileService;
+            _mapper = mapper;
         }
 
-        //USER PROFILE
         public IActionResult UserProfile(string userId)
         {
-            //UserProfileDTO profile = new UserProfileDTO();
-            //if (User.IsInRole("Admin"))
-            //{
-            //    User user = await userProfileService.GetUserById(userId);
-            //    profile = userProfileService.GetProfile(user.UserName);
-            //}
-            //else
-            //{
-                var profile = _userProfileService.GetProfile(User.Identity.Name);
-            //}
+            var profile = _userProfileService.GetProfile(User.Identity.Name);
 
             List<string> user_categories = new List<string>();
             foreach (var item in _categoryService.CategoriesOfUser(profile.UserName))
@@ -74,7 +68,6 @@ namespace INTEREST.WEB.Controllers
         public IActionResult EditProfile(string userId)
         {
             var profile = _userProfileService.GetProfile(User.Identity.Name);
-
             var editUserProfileViewModel = new EditUserProfileViewModel
             {
                 UserId = profile.UserId,
@@ -92,16 +85,8 @@ namespace INTEREST.WEB.Controllers
         public async Task<IActionResult> EditProfile(EditUserProfileViewModel model)
         {
             var user = _userProfileService.GetUserByName(User.Identity.Name);
-            var userProfileDTO = new UserProfileDTO
-            {
-                UserId = user.Id,
-                UserName = model.UserName,
-                Email = model.Email,
-                PhoneNumber = model.Phone,
-                Country = model.Country,
-                City = model.City,
-                Birthday = model.Birthday,
-            };
+            var userProfileDTO = _mapper.Map<EditUserProfileViewModel,UserProfileDTO>(model);
+            userProfileDTO.UserId = user.Id;
             await _userProfileService.EditProfile(userProfileDTO);
             return RedirectToAction("UserProfile", "UserProfile");
         }
@@ -113,7 +98,6 @@ namespace INTEREST.WEB.Controllers
             return RedirectToAction("Logout", "Account");
         }
 
-        // AVATAR
         [HttpPost]
         public async Task<IActionResult> AddAvatar(IFormFile formFile)
         {
@@ -130,8 +114,6 @@ namespace INTEREST.WEB.Controllers
             return RedirectToAction("UserProfile", "UserProfile");
         }
         
-
-        //CATEGORIES OF USER
         [HttpGet]
         public IActionResult SelectCategories(string id)
         {

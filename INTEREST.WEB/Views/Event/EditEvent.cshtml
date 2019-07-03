@@ -15,7 +15,7 @@
 
 
     <div class="col-sm-8">
-        <form asp-action="EditEvent" asp-controller="Event">
+        <form asp-action="EditEvent" asp-controller="Event" enctype="multipart/form-data">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -23,8 +23,6 @@
             </div>
 
             <div class="text-center">
-                @*<img src="@Model.URL" width="450" height="250">*@
-                @*<br>*@
                 <div class="custom-file">
                     <input type="file" required name="formFile" class="custom-file-input" id="customFile">
                     <label class="custom-file-label" for="customFile">Select your photo for event</label>
@@ -69,18 +67,20 @@
                 <span asp-validation-for="city_state" class="text-danger"></span>
             </div>
 
-            <ul class="list-group list-group-horizontal borderless">
-                @foreach (var item in Model.Categories)
-                {
-                    <li class="row list-group-item border-0">
-                        <div class="custom-control custom-checkbox">
-                            <input name="SelectedCategories" type="checkbox" class="custom-control-input"
-                                   id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text> checked </text> } value="@item.Name">
-                            <label class="custom-control-label" for="@item.Id">@item.Name</label>
-                        </div>
-                    </li>
-                }
-            </ul>
+            <div class="form-group">
+                <ul class="list-group list-group-horizontal borderless">
+                    @foreach (var item in Model.Categories)
+                    {
+                        <li class="row list-group-item border-0">
+                            <div class="custom-control custom-checkbox">
+                                <input name="SelectedCategories" type="checkbox" class="custom-control-input"
+                                       id="@item.Id" @if (Model.SelectedCategories.Contains(item.Name)) { <text> checked </text> } value="@item.Name">
+                                <label class="custom-control-label" for="@item.Id">@item.Name</label>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
 
             <hr>
 
@@ -92,11 +92,12 @@
 
     <div class="col-sm-2">
     </div>
-
 </div>
+
 <script type="text/javascript">
     document.getElementsByClassName("custom-file-input")[0].addEventListener("change", function () {
         var fileName = this.value.split("\\").pop();
+        document.getElementsByClassName("custom-file-label")[0].innerHTML = fileName;
     });
 </script>
 

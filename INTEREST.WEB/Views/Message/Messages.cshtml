@@ -9,7 +9,7 @@
 
 <div class="row">
 
-    <div class="col-md-7 bg-white ">
+    <div class="col-md-8 bg-white ">
         <div class="chat-message">
             <ul class="chat">
 
@@ -72,7 +72,7 @@
 
     </div>
 
-    <div class="col-md-5 ">
+    <div class="col-md-4 ">
         <h4>SUBSCRIBERS</h4>
         <br>
         <div class = "chat-message">
@@ -91,12 +91,9 @@
                             <img src="@item.Url" alt="User Avatar">
                         }
                     </span>
-                    &#8195;
-                    @item.UserName 
-                    &#8195;
-                    @item.PhoneNumber 
-                    &#8195;
-                    @item.City
+                    &nbsp;&#8211;&nbsp;@item.UserName
+                    [@item.PhoneNumber]
+                    @*@item.City*@
                 </li>
                 }
             </ul>

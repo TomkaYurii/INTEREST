@@ -18,10 +18,6 @@
 
 
     <div class="col-sm-8">
-
-
-
-
         <form asp-action="AddEvent" asp-controller="Event" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -96,5 +92,6 @@
 <script type="text/javascript">
     document.getElementsByClassName("custom-file-input")[0].addEventListener("change", function () {
         var fileName = this.value.split("\\").pop();
+    document.getElementsByClassName("custom-file-label")[0].innerHTML = fileName;
     });
 </script>

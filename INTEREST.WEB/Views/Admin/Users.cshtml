@@ -60,11 +60,11 @@
             </td>
             <td>
                 <div class="form-group row">
-                    <form asp-action="EditRole" asp-route-id="" method="post">
+                    @*<form asp-action="EditRole" asp-route-id="" method="post">
                         <button type="submit" class="btn btn-sm btn-warning">
                             EditRole
                         </button>
-                    </form>
+                    </form>*@
                     <form asp-controller="Admin" asp-action="DeleteUser" asp-route-email="@item.Email" method="post">
                         <button type="submit" class="btn btn-sm btn-danger">
                             Delete

@@ -18,15 +18,18 @@ namespace INTEREST.WEB.Controllers
         private readonly IEventService _eventService;
         private readonly IUserProfileService _userProfileService;
         private readonly ICategoryService _categoryService;
-        
+        private readonly IMapper _mapper;
+
 
         public EventController(IEventService eventService, 
                                 IUserProfileService userProfileService,
-                                ICategoryService categoryService)
+                                ICategoryService categoryService,
+                                IMapper mapper)
         {
             _eventService = eventService;
             _categoryService = categoryService;
             _userProfileService = userProfileService;
+            _mapper = mapper;
         }
 
 
@@ -37,7 +40,6 @@ namespace INTEREST.WEB.Controllers
             string city,
             int page=1, 
             EventSortState sortOrder = EventSortState.TitleAsc)
-
         {
             int pageSize = 2;
 
@@ -132,22 +134,11 @@ namespace INTEREST.WEB.Controllers
         public async Task<IActionResult> CreateEvent(EventViewModel model)
         {
             UserProfileDTO userProfileDTO = _userProfileService.GetProfile(User.Identity.Name);
-            EventDTO eventDTO = new EventDTO
-            {
-                EventName = model.Title,
-                EventText = model.Description,
-                DateFrom = model.DateFrom,
-                DateTo = model.DateTo,
-                City = model.city_state,
-                Country = model.country,
-                Categories = model.SelectedCategories,
-                Photo = model.formFile,
-                UserId = userProfileDTO.UserId
-            };
+            EventDTO eventDTO = _mapper.Map<EventViewModel, EventDTO>(model);
+            eventDTO.UserId = userProfileDTO.UserId;
             await _eventService.CreateEvent(eventDTO);
             return RedirectToAction("UserProfile", "UserProfile");
         }
-
 
         [HttpGet]
         public IActionResult UserEvents()
@@ -160,39 +151,15 @@ namespace INTEREST.WEB.Controllers
         [HttpGet]
         public IActionResult EditEvent(int event_id)
         {
-            EventInfoDTO evntDTO = _eventService.GetEventInformation(event_id);
-
-            EventViewModel eventViewModel = new EventViewModel
-            {
-                EventId = evntDTO.EventId,
-                Title = evntDTO.EventName,
-                Description = evntDTO.EventText,
-                DateFrom = evntDTO.DateFrom,
-                DateTo = evntDTO.DateTo,
-                country = evntDTO.Country,
-                city_state = evntDTO.City,
-                URL = evntDTO.URL,
-                Categories = _categoryService.Categories(),
-                SelectedCategories = evntDTO.SelectedCategories
-            };
+            EventViewModel eventViewModel = _mapper.Map<EventInfoDTO,EventViewModel>(_eventService.GetEventInformation(event_id));
+            eventViewModel.Categories = _categoryService.Categories();
             return View(eventViewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> EditEvent(EventViewModel model)
         {
-            EventDTO eventDTO = new EventDTO
-            {
-                EventId = model.EventId,
-                EventName = model.Title,
-                EventText = model.Description,
-                DateFrom = model.DateFrom,
-                DateTo = model.DateTo,
-                City = model.city_state,
-                Country = model.country,
-                Categories = model.SelectedCategories,
-                Photo = model.formFile,
-            };
+            EventDTO eventDTO = _mapper.Map<EventViewModel, EventDTO>(model);
             await _eventService.UpdateEvent(eventDTO);
             return RedirectToAction("Events", "Event");
         }

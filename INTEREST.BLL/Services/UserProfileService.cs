@@ -24,7 +24,6 @@ namespace INTEREST.BLL.Services
             _appEnvironment = hostingEnvironment;
         }
 
-
         public async Task<OperationDetails> EditProfile(UserProfileDTO model)
         {
             User user = await Database.UserManager.FindByIdAsync(model.UserId);

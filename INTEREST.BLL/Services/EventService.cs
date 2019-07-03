@@ -104,31 +104,33 @@ namespace INTEREST.BLL.Services
                 evnt.Location = location;
             }
 
-            //foreach (var item in evntDTO.Categories)
-            //{
-            //    Database.CategoryEventRepository.Create(new CategoryEvent
-            //    {
-            //        Event = evnt,
-            //        Category = Database.CategoryRepository.GetByTitle(item)
-            //    });
-            //}
 
+            foreach (var item in Database.CategoryEventRepository.FindByEventId(evnt.Id))
+            {
+                Database.CategoryEventRepository.Delete(item);
+            }
+            foreach (var item in evntDTO.Categories)
+            {
+                Database.CategoryEventRepository.Create(new CategoryEvent
+                {
+                    Event = evnt,
+                    Category = Database.CategoryRepository.GetByTitle(item)
+                });
+            }
             Database.EventRepository.Update(evnt);
 
             //add photo
-            //if (evntDTO.Photo != null)
-            //{
-            //    string path = "/files/" + evntDTO.Photo.FileName;
-            //    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-            //    {
-            //        await evntDTO.Photo.CopyToAsync(fileStream);
-            //    }
-
-            //    Photo photo = Database.PhotoRepository.Create(new Photo { URL = path });
-            //    evnt.Photo = photo;
-            //    Database.EventRepository.Update(evnt);
-            //}
-
+            if (evntDTO.Photo != null)
+            {
+                string path = "/files/" + evntDTO.Photo.FileName;
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await evntDTO.Photo.CopyToAsync(fileStream);
+                }
+                Photo photo = Database.PhotoRepository.Create(new Photo { URL = path });
+                evnt.Photo = photo;
+                Database.EventRepository.Update(evnt);
+            }
 
             await Database.SaveAsync();
             return new OperationDetails(true, "Ok", "");
